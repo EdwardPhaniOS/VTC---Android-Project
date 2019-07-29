@@ -14,8 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/background2"
-        android:contentDescription="TODO" />
+        app:srcCompat="@drawable/background2" />
 
     <ImageView
         android:id="@+id/appLogo"
@@ -27,7 +26,7 @@
         app:layout_constraintStart_toEndOf="@+id/backGround"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo_flashcard"
-        />
+        android:contentDescription="TODO" />
 
     <TextView
         android:id="@+id/appName"
@@ -52,7 +51,7 @@
         app:layout_constraintStart_toEndOf="@+id/backGround"
         app:layout_constraintTop_toBottomOf="@+id/appLogo"
         app:srcCompat="@drawable/login_background"
-        />
+        android:contentDescription="TODO" />
 
     <EditText
         android:id="@+id/userEmail"
@@ -60,7 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:ems="10"
-        android:hint="@string/email"
+        android:hint="Email "
         android:inputType="textPersonName"
         app:layout_constraintEnd_toStartOf="@+id/smallBackGround"
         app:layout_constraintHorizontal_bias="0.5"
@@ -88,9 +87,8 @@
         android:layout_height="50dp"
         android:layout_marginStart="56dp"
         android:layout_marginTop="24dp"
-        android:backgroundTint="#4252AB"
+        android:backgroundTint="#6AA0DC"
         android:text="@string/login"
-        android:textColor="#F2F2F2"
         app:layout_constraintStart_toStartOf="@+id/smallBackGround"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
@@ -102,7 +100,6 @@
         android:layout_marginEnd="99dp"
         android:backgroundTint="#8E77B9"
         android:text="@string/register"
-        android:textColor="#F2F2F2"
         app:layout_constraintEnd_toEndOf="@+id/backGround"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
