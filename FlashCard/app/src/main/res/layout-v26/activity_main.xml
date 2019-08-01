@@ -21,12 +21,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:contentDescription="TODO"
         app:layout_constraintEnd_toStartOf="@+id/backGround"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/backGround"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo_flashcard"
-        android:contentDescription="TODO" />
+        app:srcCompat="@drawable/logo_flashcard" />
 
     <TextView
         android:id="@+id/appName"
@@ -47,39 +47,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:contentDescription="TODO"
         app:layout_constraintEnd_toStartOf="@+id/backGround"
         app:layout_constraintStart_toEndOf="@+id/backGround"
         app:layout_constraintTop_toBottomOf="@+id/appLogo"
-        app:srcCompat="@drawable/login_background"
-        android:contentDescription="TODO" />
+        app:srcCompat="@drawable/login_background" />
 
     <EditText
         android:id="@+id/userEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
+        android:autofillHints=""
         android:ems="10"
         android:hint="Email "
         android:inputType="textPersonName"
         app:layout_constraintEnd_toStartOf="@+id/smallBackGround"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/smallBackGround"
-        app:layout_constraintTop_toTopOf="@+id/smallBackGround"
-        android:autofillHints="" />
+        app:layout_constraintTop_toTopOf="@+id/smallBackGround" />
 
     <EditText
         android:id="@+id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="27dp"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword"
         app:layout_constraintEnd_toStartOf="@+id/smallBackGround"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/smallBackGround"
-        app:layout_constraintTop_toBottomOf="@+id/userEmail"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/userEmail" />
 
     <Button
         android:id="@+id/loginButton"
@@ -115,7 +115,18 @@
         android:textColor="#F2F2F2"
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="@+id/backGround"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/backGround"
         app:layout_constraintTop_toBottomOf="@+id/smallBackGround" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/google_sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toStartOf="@+id/backGround"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/backGround"
+        app:layout_constraintTop_toBottomOf="@+id/forgotYourPassword" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

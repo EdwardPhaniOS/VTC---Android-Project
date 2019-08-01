@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".RegisterActivity">
 
     <ImageView
         android:id="@+id/backGround"
@@ -14,8 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/background2"
-        android:contentDescription="TODO" />
+        app:srcCompat="@drawable/background2" />
 
     <ImageView
         android:id="@+id/appLogo"
@@ -26,22 +25,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/backGround"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo_flashcard"
-        />
-
-    <TextView
-        android:id="@+id/appName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="85dp"
-        android:fontFamily="@font/aclonica"
-        android:text="@string/flash_card"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/appLogo"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/appLogo"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:srcCompat="@drawable/logo_flashcard" />
 
     <ImageView
         android:id="@+id/smallBackGround"
@@ -51,74 +35,85 @@
         app:layout_constraintEnd_toStartOf="@+id/backGround"
         app:layout_constraintStart_toEndOf="@+id/backGround"
         app:layout_constraintTop_toBottomOf="@+id/appLogo"
-        app:srcCompat="@drawable/login_background"
-        />
+        app:srcCompat="@drawable/login_background" />
 
     <EditText
         android:id="@+id/userEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="100dp"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/email"
-        android:inputType="textPersonName"
+        android:inputType="textEmailAddress"
         app:layout_constraintEnd_toStartOf="@+id/smallBackGround"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toEndOf="@+id/smallBackGround"
-        app:layout_constraintTop_toTopOf="@+id/smallBackGround"
-        android:autofillHints="" />
+        app:layout_constraintTop_toTopOf="@+id/smallBackGround" />
 
     <EditText
         android:id="@+id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="27dp"
+        android:layout_marginTop="24dp"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword"
         app:layout_constraintEnd_toStartOf="@+id/smallBackGround"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/smallBackGround"
-        app:layout_constraintTop_toBottomOf="@+id/userEmail"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/userEmail" />
 
     <Button
-        android:id="@+id/loginButton"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="24dp"
+        android:id="@+id/signUpButton"
+        android:layout_width="274dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="2dp"
         android:backgroundTint="#4252AB"
-        android:text="@string/login"
+        android:text="Sign Up"
         android:textColor="#F2F2F2"
-        app:layout_constraintStart_toStartOf="@+id/smallBackGround"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        app:layout_constraintEnd_toStartOf="@+id/backGround"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/backGround"
+        app:layout_constraintTop_toBottomOf="@+id/smallBackGround" />
 
-    <Button
-        android:id="@+id/registerButton"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="99dp"
-        android:backgroundTint="#8E77B9"
-        android:text="@string/register"
-        android:textColor="#F2F2F2"
-        app:layout_constraintEnd_toEndOf="@+id/backGround"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
-
-    <Button
-        android:id="@+id/forgotYourPassword"
+    <TextView
+        android:id="@+id/userEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="135dp"
-        android:layout_marginEnd="135dp"
-        android:background="@android:color/transparent"
-        android:text="@string/forgot_your_password"
-        android:textAllCaps="false"
-        android:textColor="#F2F2F2"
-        android:textStyle="bold|italic"
-        app:layout_constraintEnd_toEndOf="@+id/backGround"
+        android:layout_marginTop="55dp"
+        android:text="Create new account"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/smallBackGround"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/smallBackGround"
+        app:layout_constraintTop_toTopOf="@+id/smallBackGround" />
+
+    <EditText
+        android:id="@+id/confirmPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="Confirm password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toStartOf="@+id/smallBackGround"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/smallBackGround"
+        app:layout_constraintTop_toBottomOf="@+id/password" />
+
+    <ImageButton
+        android:id="@+id/cancelButton"
+        style="@android:style/Widget.DeviceDefault.ImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="80dp"
+        android:backgroundTint="#0A343798"
+        android:tint="#F2F2F2"
         app:layout_constraintStart_toStartOf="@+id/backGround"
-        app:layout_constraintTop_toBottomOf="@+id/smallBackGround" />
+        app:layout_constraintTop_toTopOf="@+id/backGround"
+        app:srcCompat="@android:drawable/ic_delete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
