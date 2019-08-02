@@ -74,7 +74,7 @@ public class RegisterActivity extends AppCompatActivity
             Toast.makeText(RegisterActivity.this, "Please enter your email and password",
                     Toast.LENGTH_SHORT).show();
         } else {
-            if (confirmPasswordString == passwordString) {
+            if (passwordString.matches(confirmPasswordString)) {
                 mAuth.createUserWithEmailAndPassword(email, passwordString)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
