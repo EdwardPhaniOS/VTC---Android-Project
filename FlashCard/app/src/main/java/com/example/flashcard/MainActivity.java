@@ -27,6 +27,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class MainActivity extends AppCompatActivity
 {
     //Test github
+    // Test github Nghiaz
     private FirebaseAuth mAuth;
     GoogleSignInClient mGoogleSignInClient;
 
