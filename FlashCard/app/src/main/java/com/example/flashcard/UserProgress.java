@@ -1,8 +1,10 @@
 package com.example.flashcard;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
@@ -19,14 +21,17 @@ public class UserProgress extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                case R.id.navigation_progress:
+                    mTextMessage.setText("Progess");
                     return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+                case R.id.navigation_my_cards:
+                    mTextMessage.setText("My Cards");
                     return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
+                case R.id.navigation_download:
+                    mTextMessage.setText("Download");
+                    return true;
+                case R.id.navigation_account_info:
+                    mTextMessage.setText("Account Info");
                     return true;
             }
             return false;

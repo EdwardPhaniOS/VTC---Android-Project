@@ -40,29 +40,30 @@
     <EditText
         android:id="@+id/userEmail"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_height="61dp"
+        android:layout_marginTop="87dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toStartOf="@+id/smallBackGround"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/smallBackGround"
         app:layout_constraintTop_toTopOf="@+id/smallBackGround" />
 
     <EditText
         android:id="@+id/password"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_height="61dp"
+        android:layout_marginTop="156dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword"
         app:layout_constraintEnd_toStartOf="@+id/smallBackGround"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/smallBackGround"
-        app:layout_constraintTop_toBottomOf="@+id/userEmail" />
+        app:layout_constraintTop_toTopOf="@+id/smallBackGround" />
 
     <Button
         android:id="@+id/signUpButton"
@@ -93,15 +94,15 @@
     <EditText
         android:id="@+id/confirmPassword"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_height="61dp"
+        android:layout_marginTop="225dp"
         android:ems="10"
         android:hint="Confirm password"
         android:inputType="textPassword"
         app:layout_constraintEnd_toStartOf="@+id/smallBackGround"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/smallBackGround"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        app:layout_constraintTop_toTopOf="@+id/smallBackGround" />
 
     <ImageButton
         android:id="@+id/cancelButton"
@@ -115,5 +116,10 @@
         app:layout_constraintStart_toStartOf="@+id/backGround"
         app:layout_constraintTop_toTopOf="@+id/backGround"
         app:srcCompat="@android:drawable/ic_delete" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -66,35 +66,44 @@ public class RegisterActivity extends AppCompatActivity
 
         String email = userEmail.getText().toString();
         String passwordString = password.getText().toString();
+        String confirmPasswordString = confirmPassword.getText().toString();
         final String TAG = "FlashCardAuth";
 
-        if (email.isEmpty() || passwordString.isEmpty()) {
+        if (email.isEmpty() || passwordString.isEmpty() || confirmPasswordString.isEmpty())
+        {
             Toast.makeText(RegisterActivity.this, "Please enter your email and password",
                     Toast.LENGTH_SHORT).show();
         } else {
-            mAuth.createUserWithEmailAndPassword(email, passwordString)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                Log.d(TAG, "createUserWithEmail:success");
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                Toast.makeText(RegisterActivity.this, "Success.",
-                                        Toast.LENGTH_SHORT).show();
-                                navigateToMainPage();
+            if (confirmPasswordString == passwordString) {
+                mAuth.createUserWithEmailAndPassword(email, passwordString)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    Log.d(TAG, "createUserWithEmail:success");
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    Toast.makeText(RegisterActivity.this, "Success.",
+                                            Toast.LENGTH_SHORT).show();
+                                    navigateToMainPage();
 
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                Toast.makeText(RegisterActivity.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                    Toast.makeText(RegisterActivity.this, "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show();
 
+                                }
+
+                                // ...
                             }
+                        });
+            } else {
+                Toast.makeText(RegisterActivity.this,
+                        "Your password and confirm password is not match",
+                        Toast.LENGTH_SHORT).show();
+            }
 
-                            // ...
-                        }
-                    });
         }
 
     }
