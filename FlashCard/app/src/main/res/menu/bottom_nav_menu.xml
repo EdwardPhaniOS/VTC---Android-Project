@@ -7,9 +7,9 @@
         android:title="Progress" />
 
     <item
-        android:id="@+id/navigation_my_cards"
+        android:id="@+id/navigation_my_decks"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="My Cards" />
+        android:title="My Decks" />
 
     <item
         android:id="@+id/navigation_download"

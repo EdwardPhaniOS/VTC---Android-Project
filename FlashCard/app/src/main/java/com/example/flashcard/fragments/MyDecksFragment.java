@@ -1,23 +1,29 @@
-package com.example.flashcard;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.flashcard.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+
+import com.example.flashcard.DeckDetailActivity;
+import com.example.flashcard.R;
 import com.example.flashcard.adapters.DeckList;
 import com.example.flashcard.models.Deck;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,22 +33,24 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListDecksActivity extends AppCompatActivity {
+
+public class MyDecksFragment extends Fragment {
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private String userId = user.getUid();
     ListView listViewDecks;
     List<Deck> decks;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference databaseDecks = database.getReference("DBFlashCard");
 
-
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_decks);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_list_decks, null);
 
-        listViewDecks = findViewById(R.id.lvDecks);
+        listViewDecks = rootView.findViewById(R.id.lvDecks);
         // initial
         decks = new ArrayList<>();
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,19 +63,22 @@ public class ListDecksActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Deck deck = decks.get(position);
 
-                Intent intent = new Intent(getApplicationContext(),DeckDetailActivity.class);
+                Intent intent = new Intent(getContext(), DeckDetailActivity.class);
                 // put data to intent
                 //intent.putExtra(ARTIST_NAME, artist.getArtistName());
                 //intent.putExtra(ARTIST_ID, artist.getArtistId());
                 startActivity(intent);
             }
         });
+
+        return rootView;
     }
+
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
 
-        databaseDecks.child("decks").addValueEventListener(new ValueEventListener() {
+        databaseDecks.child("decks").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 decks.clear();
@@ -77,7 +88,7 @@ public class ListDecksActivity extends AppCompatActivity {
                     Deck deck = postSnapshot.getValue(Deck.class);
                     decks.add(deck);
                 }
-                DeckList deckAdapter = new DeckList(ListDecksActivity.this, decks);
+                DeckList deckAdapter = new DeckList(getActivity(), decks);
                 listViewDecks.setAdapter(deckAdapter);
             }
 
@@ -89,7 +100,7 @@ public class ListDecksActivity extends AppCompatActivity {
     }
 
     private void showCreateDeckDialog() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.create_deck_dialog, null);
         dialogBuilder.setView(dialogView);
@@ -111,12 +122,12 @@ public class ListDecksActivity extends AppCompatActivity {
                     String id = databaseDecks.push().getKey();
                     Deck deck = new Deck(id,name);
                     // save to db
-                    databaseDecks.child("decks").child(id).setValue(deck);
+                    databaseDecks.child("decks").child(userId).child(id).setValue(deck);
                     // set blank for name
                     editTextName.setText("");
                     // notify success
                     b.dismiss();
-                    Toast.makeText(ListDecksActivity.this, "Deck added", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Deck added", Toast.LENGTH_LONG).show();
                 } else {
                     //updateArtist(artistId, artistName, genre);
                     editTextName.setError("Cannot empty");
@@ -132,5 +143,4 @@ public class ListDecksActivity extends AppCompatActivity {
         });
 
     }
-
 }
