@@ -26,8 +26,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class MainActivity extends AppCompatActivity
 {
-    //Test github
-    // Test github Nghiaz
     private FirebaseAuth mAuth;
     GoogleSignInClient mGoogleSignInClient;
 
@@ -44,9 +42,15 @@ public class MainActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        //Auto sign in with the last account
+//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        if (account != null || currentUser != null) {
+//            navigateToProgressPage();
+//        }
+
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (account != null || currentUser != null) {
+        if (currentUser != null) {
             navigateToProgressPage();
         }
     }
@@ -183,7 +187,6 @@ public class MainActivity extends AppCompatActivity
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mAuth.getCurrentUser();
                             navigateToProgressPage();
 
                         } else {
