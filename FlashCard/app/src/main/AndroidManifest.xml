@@ -12,9 +12,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".DeckDetailActivity"
+            android:theme="@style/AppTheme.NoActionBarNghia"></activity>
+        <activity android:name=".ListDecksActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".UserProgress"
-            android:label="@string/title_activity_user_progress"></activity>
+            android:label="@string/title_activity_user_progress" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
