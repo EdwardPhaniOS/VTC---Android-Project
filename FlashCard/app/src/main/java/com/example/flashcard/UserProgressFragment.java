@@ -1,15 +1,12 @@
 package com.example.flashcard;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
@@ -23,6 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserProgressFragment extends Fragment {
+
+    private String[] settings = {
+            "#FF0000", "#FFFF00", "#00CC00", "#0099FF"
+    };
 
     @Nullable
     @Override
@@ -40,7 +41,9 @@ public class UserProgressFragment extends Fragment {
 
         pie.data(data);
 
-        AnyChartView anyChartView = (AnyChartView) rootView.findViewById(R.id.any_chart_view);
+        pie.palette(settings);
+
+        AnyChartView anyChartView = rootView.findViewById(R.id.any_chart_view);
 
         pie.title("Progression Report");
 
@@ -55,7 +58,5 @@ public class UserProgressFragment extends Fragment {
 
         return rootView;
     }
-
-
 
 }

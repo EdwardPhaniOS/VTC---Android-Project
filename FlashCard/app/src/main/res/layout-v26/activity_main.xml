@@ -10,45 +10,41 @@
         android:id="@+id/backGround"
         android:layout_width="411dp"
         android:layout_height="731dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/background2" />
 
     <ImageView
         android:id="@+id/appLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:contentDescription="TODO"
         app:layout_constraintEnd_toStartOf="@+id/backGround"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/backGround"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo_flashcard" />
+        app:srcCompat="@drawable/logo_flashcard"
+        tools:layout_editor_absoluteY="27dp" />
 
     <TextView
         android:id="@+id/appName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="85dp"
+        android:layout_marginBottom="51dp"
         android:fontFamily="@font/aclonica"
         android:text="@string/flash_card"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/smallBackGround"
         app:layout_constraintEnd_toStartOf="@+id/appLogo"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/appLogo"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/appLogo" />
 
     <ImageView
         android:id="@+id/smallBackGround"
         android:layout_width="350dp"
         android:layout_height="300dp"
-        android:layout_marginTop="5dp"
         android:contentDescription="TODO"
+        app:layout_constraintBottom_toTopOf="@+id/forgotYourPassword"
         app:layout_constraintEnd_toStartOf="@+id/backGround"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/backGround"
         app:layout_constraintTop_toBottomOf="@+id/appLogo"
         app:srcCompat="@drawable/login_background" />
@@ -57,7 +53,7 @@
         android:id="@+id/userEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="63dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="Email "
@@ -85,48 +81,56 @@
         android:id="@+id/loginButton"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="39dp"
+        android:layout_marginEnd="8dp"
         android:backgroundTint="#6AA0DC"
         android:text="@string/login"
-        app:layout_constraintStart_toStartOf="@+id/smallBackGround"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
     <Button
         android:id="@+id/registerButton"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="99dp"
+        android:layout_marginStart="8dp"
         android:backgroundTint="#8E77B9"
         android:text="@string/register"
-        app:layout_constraintEnd_toEndOf="@+id/backGround"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/loginButton"
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
 
     <Button
         android:id="@+id/forgotYourPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="135dp"
-        android:layout_marginEnd="135dp"
+        android:layout_marginTop="3dp"
         android:background="@android:color/transparent"
         android:text="@string/forgot_your_password"
         android:textAllCaps="false"
         android:textColor="#F2F2F2"
         android:textStyle="bold|italic"
-        app:layout_constraintEnd_toEndOf="@+id/backGround"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/backGround"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/smallBackGround" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/google_sign_in_button"
         android:layout_width="150dp"
         android:layout_height="50dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="17dp"
         app:layout_constraintEnd_toStartOf="@+id/backGround"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/backGround"
         app:layout_constraintTop_toBottomOf="@+id/forgotYourPassword" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_percent="0.50121653"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

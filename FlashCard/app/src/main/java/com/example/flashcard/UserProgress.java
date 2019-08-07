@@ -1,14 +1,15 @@
 package com.example.flashcard;
 
-import android.content.Intent;
 import android.os.Bundle;
-import com.example.flashcard.fragments.MyDecksFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import androidx.appcompat.app.AppCompatActivity;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import android.view.MenuItem;
+
+import com.example.flashcard.fragments.MyDecksFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class UserProgress extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
