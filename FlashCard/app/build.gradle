@@ -37,12 +37,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
     implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
     implementation 'com.google.firebase:firebase-database:18.0.1'
-<<<<<<< HEAD
     implementation 'com.google.firebase:firebase-storage:18.1.1'
     implementation 'com.github.bumptech.glide:glide:3.7.0'
-=======
     implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
->>>>>>> d7cd7becc87bebc71c1a95bb37f6bdc2fabf211c
 }
 
 apply plugin: 'com.google.gms.google-services'

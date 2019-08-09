@@ -34,8 +34,8 @@ public class DeckList extends ArrayAdapter<Deck> {
         TextView tvQuantityOfCard = (TextView)listViewItem.findViewById(R.id.tvQuantityOfCard);
         TextView tvPercent = (TextView)listViewItem.findViewById(R.id.tvPercent);
 
-        Deck artist = decks.get(position);
-        tvNameDeck.setText(artist.getDeckName());
+        Deck deck = decks.get(position);
+        tvNameDeck.setText(deck.getDeckName());
         // tvQuantityOfCard ????
 
         return listViewItem;
