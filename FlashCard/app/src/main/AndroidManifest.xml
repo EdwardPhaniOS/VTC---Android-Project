@@ -12,13 +12,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DeckDetailActivity"
-            android:theme="@style/AppTheme.NoActionBarNghia"></activity>
+        <activity android:name=".ManageFlashcardsActivity"
+            android:theme="@style/AppTheme.NoActionBarNghia"/>
+        <activity
+            android:name=".DeckDetailActivity"
+            android:theme="@style/AppTheme.NoActionBarNghia" />
         <activity
             android:name=".UserProgress"
             android:label="@string/title_activity_user_progress"
-            android:theme="@style/AppTheme.NoActionBarNghia"
-            />
+            android:theme="@style/AppTheme.NoActionBarNghia" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

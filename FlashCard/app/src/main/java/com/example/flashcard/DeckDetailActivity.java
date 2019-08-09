@@ -13,9 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.flashcard.adapters.DeckList;
+import com.example.flashcard.fragments.MyDecksFragment;
 import com.example.flashcard.fragments.TrainingFragment;
 import com.example.flashcard.fragments.TrainingSettingFragment;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,10 @@ public class DeckDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deck_detail);
+
+        Intent intent = getIntent();
+
+        setTitle(intent.getStringExtra(MyDecksFragment.DECK_NAME));
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

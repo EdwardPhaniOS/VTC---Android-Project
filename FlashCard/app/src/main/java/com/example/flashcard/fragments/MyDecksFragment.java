@@ -35,6 +35,11 @@ import java.util.List;
 
 
 public class MyDecksFragment extends Fragment {
+    // key to send data through intent
+    public static final String DECK_NAME = "com.example.flashcard.deckname";
+    public static final String DECK_ID = "com.example.flashcard.deckid";
+    public static final String USER_ID = "com.example.flashcard.userid";
+
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private String userId = user.getUid();
     ListView listViewDecks;
@@ -65,8 +70,9 @@ public class MyDecksFragment extends Fragment {
 
                 Intent intent = new Intent(getContext(), DeckDetailActivity.class);
                 // put data to intent
-                //intent.putExtra(ARTIST_NAME, artist.getArtistName());
-                //intent.putExtra(ARTIST_ID, artist.getArtistId());
+                intent.putExtra(DECK_NAME, deck.getDeckName());
+                intent.putExtra(DECK_ID, deck.getDeckId());
+                intent.putExtra(USER_ID, userId);
                 startActivity(intent);
             }
         });

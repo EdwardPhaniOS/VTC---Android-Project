@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Vocabulary"
+        android:textStyle="bold"
+        android:paddingLeft="20dp"
+        android:textSize="18sp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/etEditVocabulary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            android:paddingRight="40dp"
+            android:hint="Enter your vocabulary" />
+        <ImageButton
+            android:id="@+id/buttonEditMicVocabulary"
+            android:layout_marginLeft="-40dp"
+            android:background="@android:color/transparent"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_mic_black_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Definition"
+        android:textStyle="bold"
+        android:paddingLeft="20dp"
+        android:textSize="18sp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/etEditDefinition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            android:paddingRight="40dp"
+            android:hint="Enter definition of vocabulary" />
+        <ImageButton
+            android:id="@+id/buttonEditMicDefinition"
+            android:layout_marginLeft="-40dp"
+            android:background="@android:color/transparent"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_mic_black_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/imageViewFlashCard"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:layout_centerHorizontal="true"
+        android:padding="20dp"/>
+    <LinearLayout
+        android:id="@+id/imageViewDefault"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_image_black_90dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"
+            android:text="Add image"
+            android:textStyle="bold"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <ImageButton
+            android:id="@+id/buttonDeleteFlashcard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_delete_black_24dp"/>
+        <Button
+            android:id="@+id/buttonCancelEditFlashcard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/buttonOkEditFlashcard"
+            android:text="CANCEL" />
+
+        <Button
+            android:id="@+id/buttonOkEditFlashcard"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"
+            android:text="OK" />
+
+
+    </RelativeLayout>
+</LinearLayout>
