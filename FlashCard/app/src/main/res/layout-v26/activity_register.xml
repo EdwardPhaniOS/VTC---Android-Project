@@ -110,7 +110,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="40dp"
         android:backgroundTint="#0A343798"
         android:tint="#F2F2F2"
         app:layout_constraintStart_toStartOf="@+id/backGround"

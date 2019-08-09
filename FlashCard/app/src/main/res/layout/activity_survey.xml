@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SurveyActivity">
+
+    <TextView
+        android:id="@+id/txt_quantity_question"
+        android:layout_width="234dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="18dp"
+        android:fontFamily="monospace"
+        android:text="How many cards do you want to test?"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/number_of_cards_input"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_time_question"
+        android:layout_width="234dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="24dp"
+        android:fontFamily="monospace"
+        android:text="How long would you like?"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.42000002" />
+
+    <EditText
+        android:id="@+id/number_of_cards_input"
+        android:layout_width="200dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="40dp"
+        android:ems="10"
+        android:fontFamily="monospace"
+        android:hint="example: 20"
+        android:inputType="number"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/txt_time_question"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_max_cards"
+        android:layout_width="77dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="14dp"
+        android:fontFamily="monospace"
+        android:text="/Max"
+        app:layout_constraintBaseline_toBaselineOf="@+id/number_of_cards_input"
+        app:layout_constraintStart_toEndOf="@+id/number_of_cards_input" />
+
+    <Button
+        android:id="@+id/unlimitedButton"
+        android:layout_width="210dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="10dp"
+        android:background="#CC6CA4D8"
+        android:fontFamily="monospace"
+        android:text="Or click here for unlimited time"
+        android:textColor="#ECEEED"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time_input" />
+
+    <EditText
+        android:id="@+id/time_input"
+        android:layout_width="200dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="18dp"
+        android:ems="10"
+        android:fontFamily="monospace"
+        android:hint="example: 15"
+        android:inputType="number"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_time_question" />
+
+    <TextView
+        android:id="@+id/txt_cards_response"
+        android:layout_width="120dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="monospace"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/unlimitedButton" />
+
+    <TextView
+        android:id="@+id/txt_time_response"
+        android:layout_width="120dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="12dp"
+        android:fontFamily="monospace"
+        app:layout_constraintBaseline_toBaselineOf="@+id/txt_cards_response"
+        app:layout_constraintStart_toEndOf="@+id/txt_cards_response" />
+
+    <Button
+        android:id="@+id/survey_confirm_button"
+        android:layout_width="103dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="29dp"
+        android:background="#D82196F3"
+        android:fontFamily="monospace"
+        android:text="Confirm"
+        android:textColor="#ECEEED"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_time_response" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
