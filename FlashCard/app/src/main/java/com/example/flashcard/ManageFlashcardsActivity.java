@@ -9,10 +9,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -43,6 +46,9 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -255,6 +261,7 @@ public class ManageFlashcardsActivity extends AppCompatActivity {
                     // notify success
                     b.dismiss();
                     if(filePath != null){
+                        card_To_UploadImage = newCard;
                         uploadFile();
                     }
                     Toast.makeText(ManageFlashcardsActivity.this, "Card edited", Toast.LENGTH_LONG).show();
@@ -303,6 +310,8 @@ public class ManageFlashcardsActivity extends AppCompatActivity {
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading");
             progressDialog.show();
+            // resize
+
             // create node file to store
             StorageReference sRef = storageReference.child("uploads/"
                     + System.currentTimeMillis() + "." + getFileExtension(filePath));
@@ -374,5 +383,4 @@ public class ManageFlashcardsActivity extends AppCompatActivity {
             }
         }
     }
-
 }
