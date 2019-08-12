@@ -11,6 +11,8 @@ public class Card {
     private String vocabularyUrl;
     private String definitionUrl;
 
+    private String cardStatus;
+
     public Card() {
 
     }
@@ -19,6 +21,8 @@ public class Card {
         this.cardId = cardId;
         this.vocabulary = vocabulary;
         this.definition = definition;
+        this.vocabularyUrl = "";
+        this.cardStatus = "BLUE"; // default
     }
 
     public Card(String cardId, String vocabulary, String definition, String vocabularyUrl) {
@@ -26,6 +30,7 @@ public class Card {
         this.vocabulary = vocabulary;
         this.definition = definition;
         this.vocabularyUrl = vocabularyUrl;
+        this.cardStatus = "BLUE"; // return BLUE when edit
     }
 
     public String getCardId() {
@@ -50,5 +55,13 @@ public class Card {
 
     public void setVocabularyUrl(String vocabularyUrl) {
         this.vocabularyUrl = vocabularyUrl;
+    }
+
+    public String getCardStatus() {
+        return cardStatus;
+    }
+
+    public void setCardStatus(String cardStatus) {
+        this.cardStatus = cardStatus;
     }
 }
