@@ -37,6 +37,18 @@
         app:layout_constraintTop_toBottomOf="@+id/appLogo"
         app:srcCompat="@drawable/login_background" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="55dp"
+        android:text="Create new account"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/smallBackGround"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/smallBackGround"
+        app:layout_constraintTop_toTopOf="@+id/smallBackGround" />
+
     <EditText
         android:id="@+id/userEmail"
         android:layout_width="wrap_content"
@@ -77,19 +89,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/backGround"
         app:layout_constraintTop_toBottomOf="@+id/smallBackGround" />
-
-    <TextView
-        android:id="@+id/userEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="55dp"
-        android:text="Create new account"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/smallBackGround"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/smallBackGround"
-        app:layout_constraintTop_toTopOf="@+id/smallBackGround" />
 
     <EditText
         android:id="@+id/confirmPassword"

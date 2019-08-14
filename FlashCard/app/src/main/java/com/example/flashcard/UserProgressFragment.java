@@ -1,5 +1,7 @@
 package com.example.flashcard;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.SynchronousQueue;
 
 
 public class UserProgressFragment extends Fragment {
@@ -39,12 +42,15 @@ public class UserProgressFragment extends Fragment {
     private TextView totalDeck;
     private TextView totalCard;
 
+    private View rootView;
+    private AnyChartView anyChartView;
+    private Pie pie;
+
     List<Deck> decks;
     List<Card> cards;
     ArrayList<String> deckIds = new ArrayList<String>();
 
-    //firebase
-    private FirebaseAuth mAuth;
+    //Fire base
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference databaseDecks = database.getReference("DBFlashCard");
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -54,102 +60,23 @@ public class UserProgressFragment extends Fragment {
             "#FF0000", "#FFFF00", "#00CC00", "#0099FF"
     };
 
-
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_user_progress, null);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_user_progress, null);
+        anyChartView = rootView.findViewById(R.id.any_chart_view);
+
+        decks = new ArrayList<>();
+        cards = new ArrayList<>();
+        cards.clear();
 
         totalDeck = rootView.findViewById(R.id.total_decks_number);
         totalCard = rootView.findViewById(R.id.total_cards_number);
 
-        decks = new ArrayList<>();
-        cards = new ArrayList<>();
-
-        databaseDecks.child("decks").child(userId).
-                addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                decks.clear();
-
-                // iterating through all the nodes
-                for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
-                    Deck deck = postSnapshot.getValue(Deck.class);
-                    decks.add(deck);
-
-                    final String deckId = deck.getDeckId();
-                    deckIds.add(deckId);
-
-                }
-
-                getAllCard();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        //adding chart
-        AnyChartView anyChartView = rootView.findViewById(R.id.any_chart_view);
-        Pie pieChart = createPieChart();
-        anyChartView.setChart(pieChart);
+        AsyncTask task = new MyTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         return rootView;
-    }
-
-    private Pie createPieChart() {
-        Pie pie = AnyChart.pie();
-
-        List<DataEntry> data = new ArrayList<>();
-        data.add(new ValueDataEntry("Thuộc lòng", 10000));
-        data.add(new ValueDataEntry("Sơ sơ", 12000));
-        data.add(new ValueDataEntry("Đã quên", 18000));
-        data.add(new ValueDataEntry("Chưa thuộc", 18000));
-
-        pie.data(data);
-
-        pie.palette(settings);
-
-        pie.title("Progression Report");
-
-        pie.labels().position("outside");
-
-        pie.legend()
-                .position("center-bottom")
-                .itemsLayout(LegendLayout.HORIZONTAL)
-                .align(Align.CENTER);
-
-        return pie;
-    }
-
-    private void getAllCard() {
-        //TODO: need to loop through all deck ids at child of deckdetails
-        cards.clear();
-        for (String id : deckIds)
-        {
-            databaseDecks.child("deckdetails").child(id)
-                    .addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-                        {
-                            // iterating through all the nodes
-                            for(DataSnapshot postSnapshot : dataSnapshot.getChildren())
-                            {
-                                Card card = postSnapshot.getValue(Card.class);
-                                cards.add(card);
-                            }
-
-                            updateUI();
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                        }
-                    });
-
-        }
-
     }
 
     private void updateUI() {
@@ -157,4 +84,164 @@ public class UserProgressFragment extends Fragment {
         totalCard.setText(String.valueOf(cards.size()));
     }
 
+
+    private class MyTask extends AsyncTask<Pie, Integer, Pie> {
+
+        public MyTask() {
+        }
+
+
+        @Override
+        protected Pie doInBackground(Pie... pie) {
+
+            //get all decks, deckIds and all cards
+            databaseDecks.child("decks").child(userId).
+                    addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            decks.clear();
+
+                            // iterating through all the nodes
+                            for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                                Deck deck = postSnapshot.getValue(Deck.class);
+
+                                decks.add(deck);
+                                
+                                final String deckId = deck.getDeckId();
+                                deckIds.add(deckId);
+                            }
+
+                            getAllCard();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+            //create a chart
+            Pie pieChart = createPieChart();
+
+            pieChart.normal().outline().enabled(true);
+            pieChart.normal().outline().width("5%");
+            pieChart.hovered().outline().width("10%");
+            pieChart.selected().outline().width("3");
+            pieChart.selected().outline().fill("#455a64");
+            pieChart.selected().outline().stroke(null);
+            pieChart.selected().outline().offset(2);
+            pieChart.draw(false);
+
+            return pieChart;
+        }
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+
+        }
+
+        @Override
+        protected void onPostExecute(Pie p) {
+
+            //add chart to view then update it
+            anyChartView.setChart(p);
+            updateChart();
+        }
+
+        private void getAllCard() {
+
+            for (String id : deckIds)
+            {
+                databaseDecks.child("deckdetails").child(id)
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                            {
+                                // iterating through all the nodes
+                                for(DataSnapshot postSnapshot : dataSnapshot.getChildren())
+                                {
+                                    Card card = postSnapshot.getValue(Card.class);
+                                    cards.add(card);
+                                }
+                                updateUI();
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+            }
+
+        }
+
+        private Pie createPieChart()
+        {
+            int blueCards = 1;
+            int redCards = 1;
+            int yellowCards = 1;
+            int greenCards = 1;
+
+            pie = AnyChart.pie();
+
+            List<DataEntry> data = new ArrayList<>();
+            data.add(new ValueDataEntry("Thuộc lòng", redCards));
+            data.add(new ValueDataEntry("Sơ sơ", yellowCards));
+            data.add(new ValueDataEntry("Đã quên", greenCards));
+            data.add(new ValueDataEntry("Chưa thuộc", blueCards));
+
+            pie.data(data);
+
+            pie.palette(settings);
+
+            pie.title("Progression Report");
+
+            pie.labels().position("outside");
+
+            pie.legend()
+                    .position("center-bottom")
+                    .itemsLayout(LegendLayout.HORIZONTAL)
+                    .align(Align.CENTER);
+
+            return pie;
+        }
+
+        private void updateChart() {
+
+            int blueCards = 0;
+            int redCards = 0;
+            int yellowCards = 0;
+            int greenCards = 0;
+
+            for (int i = 0; i < cards.size(); i++) {
+                if (cards.get(i).getCardStatus().matches("BLUE")) {
+                    blueCards++;
+
+                } else  if (cards.get(i).getCardStatus().matches("RED")) {
+                    redCards++;
+
+                } else  if (cards.get(i).getCardStatus().matches("YELLOW")) {
+                    yellowCards++;
+
+                }  else {
+                    greenCards++;
+                }
+            }
+
+            List<DataEntry> data = new ArrayList<>();
+            data.add(new ValueDataEntry("Thuộc lòng", redCards));
+            data.add(new ValueDataEntry("Sơ sơ", yellowCards));
+            data.add(new ValueDataEntry("Đã quên", greenCards));
+            data.add(new ValueDataEntry("Chưa thuộc", blueCards));
+
+            pie.data(data);
+            pie.draw(false);
+            anyChartView.setChart(pie);
+
+            //TODO: reload activity
+        }
+    }
 }
