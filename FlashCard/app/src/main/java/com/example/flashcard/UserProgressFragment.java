@@ -85,7 +85,7 @@ public class UserProgressFragment extends Fragment {
         totalDeck.setText("loading");
         totalCard.setText("loading");
     }
-    
+
     private class MyTask extends AsyncTask<Void, Integer, Pie> {
 
         MyTask() { }
