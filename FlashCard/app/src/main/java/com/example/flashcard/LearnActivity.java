@@ -1,6 +1,7 @@
 package com.example.flashcard;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.ProgressDialog;
@@ -17,6 +18,7 @@ import com.example.flashcard.Utilities.CardColor;
 import com.example.flashcard.Utilities.DataAll;
 import com.example.flashcard.Utilities.OnGetDataListener;
 import com.example.flashcard.adapters.FlashcardsFragmentAdapter;
+import com.example.flashcard.fragments.FlashcardLearnFragment;
 import com.example.flashcard.fragments.MyDecksFragment;
 import com.example.flashcard.models.Card;
 import com.google.firebase.database.DataSnapshot;
@@ -154,6 +156,12 @@ public class LearnActivity extends AppCompatActivity{
                 buttonYellow.setBackgroundResource(R.drawable.border_button_yellow_default);
                 buttonRed.setBackgroundResource(R.drawable.border_button_red_default);
                 updateColor(CardColor.BLUE);
+
+                Fragment fragment = (Fragment) mAdapter.instantiateItem(viewPagerLearn, currentPosition);
+
+                if (fragment != null && fragment instanceof FlashcardLearnFragment) {
+                    ((FlashcardLearnFragment) fragment).changeColorBackground();
+                }
             }
         });
         buttonRed.setOnClickListener(new View.OnClickListener() {
@@ -164,6 +172,11 @@ public class LearnActivity extends AppCompatActivity{
                 buttonGreen.setBackgroundResource(R.drawable.border_button_green_default);
                 buttonYellow.setBackgroundResource(R.drawable.border_button_yellow_default);
                 updateColor(CardColor.RED);
+                Fragment fragment = (Fragment) mAdapter.instantiateItem(viewPagerLearn, currentPosition);
+
+                if (fragment != null && fragment instanceof FlashcardLearnFragment) {
+                    ((FlashcardLearnFragment) fragment).changeColorBackground();
+                }
             }
         });
         buttonGreen.setOnClickListener(new View.OnClickListener() {
@@ -174,6 +187,11 @@ public class LearnActivity extends AppCompatActivity{
                 buttonBlue.setBackgroundResource(R.drawable.border_button_blue_default);
                 buttonYellow.setBackgroundResource(R.drawable.border_button_yellow_default);
                 updateColor(CardColor.GREEN);
+                Fragment fragment = (Fragment) mAdapter.instantiateItem(viewPagerLearn, currentPosition);
+
+                if (fragment != null && fragment instanceof FlashcardLearnFragment) {
+                    ((FlashcardLearnFragment) fragment).changeColorBackground();
+                }
             }
         });
         buttonYellow.setOnClickListener(new View.OnClickListener() {
@@ -184,6 +202,11 @@ public class LearnActivity extends AppCompatActivity{
                 buttonRed.setBackgroundResource(R.drawable.border_button_red_default);
                 buttonBlue.setBackgroundResource(R.drawable.border_button_blue_default);
                 updateColor(CardColor.YELLOW);
+                Fragment fragment = (Fragment) mAdapter.instantiateItem(viewPagerLearn, currentPosition);
+
+                if (fragment != null && fragment instanceof FlashcardLearnFragment) {
+                    ((FlashcardLearnFragment) fragment).changeColorBackground();
+                }
             }
         });
         updateUI(0);

@@ -38,7 +38,7 @@ public class FlashcardLearnFragment extends Fragment {
 
     private TextView textViewFront;
     private TextView textViewBack;
-
+    private String backgroundColor;
     public FlashcardLearnFragment() {
         // Required empty public constructor
     }
@@ -54,7 +54,7 @@ public class FlashcardLearnFragment extends Fragment {
         textViewBack = view.findViewById(R.id.textViewBack);
         String textVocabulary = getArguments().getString("textVocabulary");
         String textDefinition = getArguments().getString("textDefinition");
-        String backgroundColor = getArguments().getString("backgroundColor");
+         backgroundColor = getArguments().getString("backgroundColor");
 
 
         layoutFront = (LinearLayout) view.findViewById(R.id.layoutFront);
@@ -63,22 +63,7 @@ public class FlashcardLearnFragment extends Fragment {
         textViewFront.setText(textVocabulary);
         textViewBack.setText(textDefinition);
         Log.d(TAG,backgroundColor);
-        if(backgroundColor == "BLUE"){
-            layoutFront.setBackgroundResource(R.drawable.border_flashcard_learn_blue);
-            layoutBack.setBackgroundResource(R.drawable.border_flashcard_learn_blue);
-        }
-        if(backgroundColor == "RED"){
-            layoutFront.setBackgroundResource(R.drawable.border_flashcard_learn_red);
-            layoutBack.setBackgroundResource(R.drawable.border_flashcard_learn_red);
-        }
-        if(backgroundColor == "GREEN"){
-            layoutFront.setBackgroundResource(R.drawable.border_flashcard_learn_green);
-            layoutBack.setBackgroundResource(R.drawable.border_flashcard_learn_green);
-        }
-        if(backgroundColor == "YELLOW"){
-            layoutFront.setBackgroundResource(R.drawable.border_flashcard_learn_yellow);
-            layoutBack.setBackgroundResource(R.drawable.border_flashcard_learn_yellow);
-        }
+
 
 
 
@@ -135,6 +120,25 @@ public class FlashcardLearnFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public void changeColorBackground(){
+        if(backgroundColor == "BLUE"){
+            layoutFront.setBackgroundResource(R.drawable.border_flashcard_learn_blue);
+            layoutBack.setBackgroundResource(R.drawable.border_flashcard_learn_blue);
+        }
+        if(backgroundColor == "RED"){
+            layoutFront.setBackgroundResource(R.drawable.border_flashcard_learn_red);
+            layoutBack.setBackgroundResource(R.drawable.border_flashcard_learn_red);
+        }
+        if(backgroundColor == "GREEN"){
+            layoutFront.setBackgroundResource(R.drawable.border_flashcard_learn_green);
+            layoutBack.setBackgroundResource(R.drawable.border_flashcard_learn_green);
+        }
+        if(backgroundColor == "YELLOW"){
+            layoutFront.setBackgroundResource(R.drawable.border_flashcard_learn_yellow);
+            layoutBack.setBackgroundResource(R.drawable.border_flashcard_learn_yellow);
+        }
     }
 
 

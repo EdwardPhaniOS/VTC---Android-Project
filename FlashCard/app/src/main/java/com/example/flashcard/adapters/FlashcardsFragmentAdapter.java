@@ -30,7 +30,7 @@ public class FlashcardsFragmentAdapter extends FragmentStatePagerAdapter {
 
 
         bundle.putString("textVocabulary", cards.get(position).getVocabulary());
-        bundle.putString("textDefinition", cards.get(position).getVocabulary());
+        bundle.putString("textDefinition", cards.get(position).getDefinition());
         bundle.putString("backgroundColor", cards.get(position).getCardStatus());
 
         cardFragment.setArguments(bundle);
