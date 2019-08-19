@@ -36,8 +36,9 @@ public class TrainingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), LearnActivity.class);
-                // put extra userLogin
-
+                // put extra deckId
+                String deckId = getActivity().getIntent().getStringExtra(MyDecksFragment.DECK_ID);
+                intent.putExtra(MyDecksFragment.DECK_ID, deckId);
                 startActivity(intent);
             }
         });
