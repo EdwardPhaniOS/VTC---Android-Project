@@ -30,6 +30,9 @@ public class UserProgress extends AppCompatActivity implements BottomNavigationV
         BottomNavigationView navigation = findViewById(R.id.nav_view);
         navigation.setOnNavigationItemSelectedListener(this);
 
+        Fragment fragment = new UserProgressFragment();
+        loadFragment(fragment);
+
     }
 
     @Override
