@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.flashcard.DeckDetailActivity;
 import com.example.flashcard.R;
+import com.example.flashcard.Utilities.ConstantVariable;
 import com.example.flashcard.adapters.DeckList;
 import com.example.flashcard.models.Deck;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -35,10 +36,6 @@ import java.util.List;
 
 
 public class MyDecksFragment extends Fragment {
-    // key to send data through intent
-    public static final String DECK_NAME = "com.example.flashcard.deckname";
-    public static final String DECK_ID = "com.example.flashcard.deckid";
-    public static final String USER_ID = "com.example.flashcard.userid";
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private String userId = user.getUid();
@@ -70,9 +67,9 @@ public class MyDecksFragment extends Fragment {
 
                 Intent intent = new Intent(getContext(), DeckDetailActivity.class);
                 // put data to intent
-                intent.putExtra(DECK_NAME, deck.getDeckName());
-                intent.putExtra(DECK_ID, deck.getDeckId());
-                intent.putExtra(USER_ID, userId);
+                intent.putExtra(ConstantVariable.DECK_NAME, deck.getDeckName());
+                intent.putExtra(ConstantVariable.DECK_ID, deck.getDeckId());
+                intent.putExtra(ConstantVariable.USER_ID, userId);
                 startActivity(intent);
             }
         });

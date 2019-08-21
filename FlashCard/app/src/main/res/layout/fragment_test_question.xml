@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.TestQuestionFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tvQuestionTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Question 1"
+            android:layout_margin="5dp"
+            android:paddingLeft="30dp"
+            android:textStyle="bold"
+            android:textSize="25sp"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:id="@+id/rbAnswer1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Answer 1"
+                    android:paddingLeft="5dp"
+                    android:layout_marginBottom="8dp"
+                    android:textSize="20sp" />
+                <RadioButton
+                    android:id="@+id/rbAnswer2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Answer 2"
+                    android:paddingLeft="5dp"
+                    android:layout_marginBottom="8dp"
+                    android:textSize="20sp" />
+                <RadioButton
+                    android:id="@+id/rbAnswer3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Answer 3"
+                    android:paddingLeft="5dp"
+                    android:layout_marginBottom="8dp"
+                    android:textSize="20sp" />
+                <RadioButton
+                    android:id="@+id/rbAnswer4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Answer 4"
+                    android:paddingLeft="5dp"
+                    android:layout_marginBottom="8dp"
+                    android:textSize="20sp" />
+            </RadioGroup>
+        </ScrollView>
+    </LinearLayout>
+</FrameLayout>

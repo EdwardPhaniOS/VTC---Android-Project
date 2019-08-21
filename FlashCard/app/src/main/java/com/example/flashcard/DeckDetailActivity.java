@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.flashcard.Utilities.ConstantVariable;
 import com.example.flashcard.adapters.DeckList;
 import com.example.flashcard.fragments.MyDecksFragment;
 import com.example.flashcard.fragments.TrainingFragment;
@@ -33,7 +34,7 @@ public class DeckDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        setTitle(intent.getStringExtra(MyDecksFragment.DECK_NAME));
+        setTitle(intent.getStringExtra(ConstantVariable.DECK_NAME));
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -58,8 +59,18 @@ public class DeckDetailActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
+        // listen for button Test
+        TrainingFragment.OnButtonTestClickListener listener = new TrainingFragment.OnButtonTestClickListener() {
+            @Override
+            public void OnButtonTestClick() {
+                // transition
+                //finish();
+                overridePendingTransition(R.anim.slide_in_up,R.anim.slide_out_up);
+            }
+        };
+        //
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new TrainingFragment(), "TRAINING");
+        adapter.addFragment(new TrainingFragment(listener), "TRAINING");
         adapter.addFragment(new TrainingSettingFragment(), "SETTING");
         viewPager.setAdapter(adapter);
     }
@@ -92,6 +103,5 @@ public class DeckDetailActivity extends AppCompatActivity {
             return mFragmentTitleList.get(position);
         }
     }
-
 
 }

@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.flashcard.ManageFlashcardsActivity;
 import com.example.flashcard.R;
+import com.example.flashcard.Utilities.ConstantVariable;
 import com.example.flashcard.models.Deck;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -49,19 +50,19 @@ public class TrainingSettingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ManageFlashcardsActivity.class);
-                String name = getActivity().getIntent().getStringExtra(MyDecksFragment.DECK_NAME);
-                String id = getActivity().getIntent().getStringExtra(MyDecksFragment.DECK_ID);
-                intent.putExtra(MyDecksFragment.DECK_NAME, name);
-                intent.putExtra(MyDecksFragment.DECK_ID, id);
+                String name = getActivity().getIntent().getStringExtra(ConstantVariable.DECK_NAME);
+                String id = getActivity().getIntent().getStringExtra(ConstantVariable.DECK_ID);
+                intent.putExtra(ConstantVariable.DECK_NAME, name);
+                intent.putExtra(ConstantVariable.DECK_ID, id);
                 startActivity(intent);
             }
         });
         textViewRenameDeck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showUpdateDeckNameDialog(getActivity().getIntent().getStringExtra(MyDecksFragment.DECK_ID)
-                                        ,getActivity().getIntent().getStringExtra(MyDecksFragment.DECK_NAME)
-                                        ,getActivity().getIntent().getStringExtra(MyDecksFragment.USER_ID));
+                showUpdateDeckNameDialog(getActivity().getIntent().getStringExtra(ConstantVariable.DECK_ID)
+                                        ,getActivity().getIntent().getStringExtra(ConstantVariable.DECK_NAME)
+                                        ,getActivity().getIntent().getStringExtra(ConstantVariable.USER_ID));
             }
         });
         textViewDeleteDeck.setOnClickListener(new View.OnClickListener() {
@@ -69,13 +70,13 @@ public class TrainingSettingFragment extends Fragment {
             public void onClick(View v) {
                 new AlertDialog.Builder(getContext())
                         .setTitle("Delete confirmation")
-                        .setMessage("Do you really want to delete" + getActivity().getIntent().getStringExtra(MyDecksFragment.DECK_NAME) +" deck?")
+                        .setMessage("Do you really want to delete" + getActivity().getIntent().getStringExtra(ConstantVariable.DECK_NAME) +" deck?")
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                deleteDeck(getActivity().getIntent().getStringExtra(MyDecksFragment.DECK_ID)
-                                            ,getActivity().getIntent().getStringExtra(MyDecksFragment.USER_ID));
+                                deleteDeck(getActivity().getIntent().getStringExtra(ConstantVariable.DECK_ID)
+                                            ,getActivity().getIntent().getStringExtra(ConstantVariable.USER_ID));
 
                                 // back to my deck list
                                 // TODO: Chưa biết làm khi xóa thì back lại activity chứa fragment
