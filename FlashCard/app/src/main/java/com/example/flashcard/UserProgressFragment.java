@@ -154,8 +154,9 @@ public class UserProgressFragment extends Fragment {
             }
 
             //give thread of listener time to download all cards
+            final int time = decks.size() * 80;
             try {
-                Thread.sleep(500);
+                Thread.sleep(time);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
