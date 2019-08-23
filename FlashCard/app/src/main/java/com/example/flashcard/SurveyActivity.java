@@ -91,9 +91,51 @@ public class SurveyActivity extends AppCompatActivity {
     View.OnClickListener listener_Survey_confirm_button = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
+            if (number_of_cards_input.getText().toString().equals("")){
+                number_of_cards_input.setError("Cannot empty");
+                return;
+            }
+            if(time_input.getText().toString().equals("")){
+                time_input.setError("Cannot empty");
+                return;
+            }
+
+            int numberOfCards = Integer.valueOf(number_of_cards_input.getText().toString());
+            int time = -1;
+
+            if(!time_input.getText().toString().equals("No limit time")){
+                time = Integer.valueOf(time_input.getText().toString());
+            }
+
+
+            if(checkNumberLowerThanFour(numberOfCards) && checkNumberLowerThanOne(time)){
+                number_of_cards_input.setError("Must have 4 cards to test!!!");
+                time_input.setError("Time must greater than 0");
+                return;
+            }
+            else {
+                if(checkNumberLowerThanFour(numberOfCards)) {
+                    number_of_cards_input.setError("Must have 4 cards to test!!!");
+                    return;
+                }
+                if(checkNumberLowerThanOne(time)) {
+                    time_input.setError("Time must greater than 0");
+                    return;
+                }
+            }
+
+            numberOfCards = numberOfCards > max ? max : numberOfCards;
+
+
+            time = time > 60 ? 60 : time;
+
             Intent intent = new Intent(SurveyActivity.this,TestActivity.class);
             intent.putExtra(ConstantVariable.DECK_ID, getIntent().getStringExtra(ConstantVariable.DECK_ID));
+            intent.putExtra(ConstantVariable.INPUT_CARDS,numberOfCards);
+            intent.putExtra(ConstantVariable.INPUT_TIME,time);
             startActivity(intent);
+            finish();
         }
     };
 
@@ -173,6 +215,18 @@ public class SurveyActivity extends AppCompatActivity {
         });
     }
 
+    private boolean checkNumberLowerThanFour(int input){
+        if(input < 4){
+            return true;
+        }
+        return false;
+    }
+    private boolean checkNumberLowerThanOne(int input){
+        if(input < 1 && input >=0){
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public void finish() {
