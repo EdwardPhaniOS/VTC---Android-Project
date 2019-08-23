@@ -2,8 +2,10 @@ package com.example.flashcard.models;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.io.Serializable;
+
 @IgnoreExtraProperties
-public class Card {
+public class Card implements Serializable {
     private String cardId;
     private String vocabulary;
     private String definition;

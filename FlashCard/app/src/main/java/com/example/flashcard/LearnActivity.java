@@ -1,6 +1,7 @@
 package com.example.flashcard;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -15,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.flashcard.Utilities.CardColor;
+import com.example.flashcard.Utilities.ConstantVariable;
 import com.example.flashcard.Utilities.DataAll;
 import com.example.flashcard.Utilities.OnGetDataListener;
 import com.example.flashcard.adapters.FlashcardsFragmentAdapter;
@@ -51,13 +53,20 @@ public class LearnActivity extends AppCompatActivity{
 
     DatabaseReference databaseReference;
 
+
+    Toolbar toolbarLearn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_learn);
 
-        String deckID = getIntent().getStringExtra(MyDecksFragment.DECK_ID);
+        setupToolbar();
+
+        String deckID = getIntent().getStringExtra(ConstantVariable.DECK_ID);
         databaseReference = FirebaseDatabase.getInstance().getReference("DBFlashCard/deckdetails").child(deckID);
+        String deckName = getIntent().getStringExtra(ConstantVariable.DECK_NAME);
+        setTitle(deckName);
+
         cards = new ArrayList<>();
 
         textViewProgress = findViewById(R.id.textViewProgress);
@@ -68,8 +77,6 @@ public class LearnActivity extends AppCompatActivity{
         viewPagerLearn.addOnPageChangeListener(swipeListener);
 
         getCardOfDeckId(deckID);
-
-
     }
 
     ViewPager.OnPageChangeListener swipeListener = new ViewPager.OnPageChangeListener() {
@@ -157,10 +164,11 @@ public class LearnActivity extends AppCompatActivity{
                 buttonRed.setBackgroundResource(R.drawable.border_button_red_default);
                 updateColor(CardColor.BLUE);
 
-                Fragment fragment = (Fragment) mAdapter.instantiateItem(viewPagerLearn, currentPosition);
+                Fragment fragment = (Fragment) mAdapter.getRegisteredFragment(currentPosition);
 
                 if (fragment != null && fragment instanceof FlashcardLearnFragment) {
-                    ((FlashcardLearnFragment) fragment).changeColorBackground();
+                    Log.d(ConstantVariable.TAG_COLOR, "Vo duoc fragment");
+                    ((FlashcardLearnFragment) fragment).changeColorBackground("BLUE");
                 }
             }
         });
@@ -175,7 +183,7 @@ public class LearnActivity extends AppCompatActivity{
                 Fragment fragment = (Fragment) mAdapter.instantiateItem(viewPagerLearn, currentPosition);
 
                 if (fragment != null && fragment instanceof FlashcardLearnFragment) {
-                    ((FlashcardLearnFragment) fragment).changeColorBackground();
+                    ((FlashcardLearnFragment) fragment).changeColorBackground("RED");
                 }
             }
         });
@@ -190,7 +198,7 @@ public class LearnActivity extends AppCompatActivity{
                 Fragment fragment = (Fragment) mAdapter.instantiateItem(viewPagerLearn, currentPosition);
 
                 if (fragment != null && fragment instanceof FlashcardLearnFragment) {
-                    ((FlashcardLearnFragment) fragment).changeColorBackground();
+                    ((FlashcardLearnFragment) fragment).changeColorBackground("GREEN");
                 }
             }
         });
@@ -205,7 +213,7 @@ public class LearnActivity extends AppCompatActivity{
                 Fragment fragment = (Fragment) mAdapter.instantiateItem(viewPagerLearn, currentPosition);
 
                 if (fragment != null && fragment instanceof FlashcardLearnFragment) {
-                    ((FlashcardLearnFragment) fragment).changeColorBackground();
+                    ((FlashcardLearnFragment) fragment).changeColorBackground("YELLOW");
                 }
             }
         });
@@ -246,6 +254,22 @@ public class LearnActivity extends AppCompatActivity{
             databaseReference.child(currentCard.getCardId()).setValue(currentCard);
             viewPagerLearn.setCurrentItem(currentPosition);
         }
+    }
+
+    private void setupToolbar(){
+        toolbarLearn = (Toolbar)findViewById(R.id.toolbarLearn);
+        setSupportActionBar(toolbarLearn);
+
+        getSupportActionBar();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbarLearn.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(ConstantVariable.TAG_COLOR, "toolbarLearn backbutton");
+                onBackPressed();
+            }
+        });
     }
 
 

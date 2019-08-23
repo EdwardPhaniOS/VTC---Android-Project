@@ -26,4 +26,10 @@ public class DataAll {
             }
         });
     }
+
+    public static void updateColorWhenMakeTest(String deckId,Card card){
+        DatabaseReference databaseDeckDetails = FirebaseDatabase.getInstance().getReference("DBFlashCard").child("deckdetails")
+                .child(deckId);
+        databaseDeckDetails.child(card.getCardId()).setValue(card);
+    }
 }

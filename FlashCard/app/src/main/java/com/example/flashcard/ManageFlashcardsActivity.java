@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.flashcard.Utilities.ConstantVariable;
 import com.example.flashcard.adapters.CardRecyclerAdapter;
 import com.example.flashcard.fragments.MyDecksFragment;
 import com.example.flashcard.models.Card;
@@ -80,9 +81,9 @@ public class ManageFlashcardsActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         // CREATE NOTE BY NAME OF DECK ( DECK_ID )
         databaseDeckDetails = FirebaseDatabase.getInstance().getReference("DBFlashCard").child("deckdetails")
-                .child(intent.getStringExtra(MyDecksFragment.DECK_ID));
+                .child(intent.getStringExtra(ConstantVariable.DECK_ID));
         // SET TITLE FOR TOOLBAR APPBARLAYOUT
-        setTitle(intent.getStringExtra(MyDecksFragment.DECK_NAME));
+        setTitle(intent.getStringExtra(ConstantVariable.DECK_NAME));
         ///////// USING TOOLBAR AS ACTION BAR ( CUSTOM PURPOSE )
         toolbar = (Toolbar)findViewById(R.id.toolbarEditFlashCard);
         setSupportActionBar(toolbar);

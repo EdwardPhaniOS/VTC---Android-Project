@@ -12,11 +12,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LearnActivity" />
+        <activity android:name=".Utilities.TestActivity"></activity>
+        <activity
+            android:name=".LearnActivity"
+            android:theme="@style/AppTheme.NoActionBarNghia" />
         <activity
             android:name=".ManageFlashcardsActivity"
             android:theme="@style/AppTheme.NoActionBarNghia" />
-        <activity android:name=".SurveyActivity" />
+        <activity
+            android:name=".SurveyActivity"
+            android:theme="@style/AppTheme.NoActionBarNghia" />
         <activity
             android:name=".DeckDetailActivity"
             android:theme="@style/AppTheme.NoActionBarNghia" >

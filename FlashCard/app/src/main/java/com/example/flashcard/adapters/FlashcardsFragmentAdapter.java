@@ -2,6 +2,8 @@ package com.example.flashcard.adapters;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseArray;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,6 +18,9 @@ import java.util.List;
 public class FlashcardsFragmentAdapter extends FragmentStatePagerAdapter {
     public final static String TAG = "CheckFlowAsync";
     public List<Card> cards;
+
+    SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
+
     public FlashcardsFragmentAdapter(FragmentManager fm,List<Card> cards){
         super(fm);
         this.cards = cards;
@@ -42,6 +47,23 @@ public class FlashcardsFragmentAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         Log.d(TAG, "getCount");
         return cards.size();
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        Fragment fragment = (Fragment) super.instantiateItem(container, position);
+        registeredFragments.put(position, fragment);
+        return fragment;
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        registeredFragments.remove(position);
+        super.destroyItem(container, position, object);
+    }
+
+    public Fragment getRegisteredFragment(int position) {
+        return registeredFragments.get(position);
     }
 
 
