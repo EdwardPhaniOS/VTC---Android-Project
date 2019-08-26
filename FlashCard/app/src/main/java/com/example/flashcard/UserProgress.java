@@ -2,6 +2,7 @@ package com.example.flashcard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -18,21 +19,30 @@ import com.google.firebase.auth.FirebaseUser;
 public class UserProgress extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     private Toolbar toolbar;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
+    private int tabIndex;
 
     @Override
     protected void onResume() {
         super.onResume();
-        loadDataOfCurrentUser();
+
+        BottomNavigationView navigation = findViewById(R.id.nav_view);
+
+        int tabIndex = navigation.getSelectedItemId();
+        loadDataOfCurrentTab(tabIndex);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        loadDataOfCurrentUser();
+
+        BottomNavigationView navigation = findViewById(R.id.nav_view);
+
+        int tabIndex = navigation.getSelectedItemId();
+        Log.i("tabIndex", String.valueOf(tabIndex));
+        loadDataOfCurrentTab(tabIndex);
     }
 
-    private void loadDataOfCurrentUser()
+    private void loadDefaultTab()
     {
         if (user == null) {
             Intent intent = new Intent(UserProgress.this, MainActivity.class);
@@ -41,6 +51,17 @@ public class UserProgress extends AppCompatActivity implements BottomNavigationV
             //loading the default fragment
             Fragment userProgressFragment = new UserProgressFragment();
             loadFragment(userProgressFragment);
+        }
+    }
+
+    private void loadDataOfCurrentTab(int Index)
+    {
+        if (Index == 2131362083) //2131362083 la index tuong ung voi tab MyDecksFragment
+        {
+            Fragment myDeckFragment = new MyDecksFragment();
+            loadFragment(myDeckFragment);
+        } else {
+            loadDefaultTab();
         }
     }
 
@@ -58,7 +79,10 @@ public class UserProgress extends AppCompatActivity implements BottomNavigationV
         BottomNavigationView navigation = findViewById(R.id.nav_view);
         navigation.setOnNavigationItemSelectedListener(this);
 
-        loadDataOfCurrentUser();
+        int tabIndex = navigation.getSelectedItemId();
+        Log.i("tabIndex", String.valueOf(tabIndex));
+
+        loadDataOfCurrentTab(tabIndex);
     }
 
     @Override

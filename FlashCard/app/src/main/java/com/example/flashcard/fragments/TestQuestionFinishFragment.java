@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.example.flashcard.R;
+import com.example.flashcard.ShowTestResultActivity;
 import com.example.flashcard.SurveyActivity;
 import com.example.flashcard.Utilities.CardColor;
 import com.example.flashcard.Utilities.ConstantVariable;
@@ -79,7 +80,7 @@ public class TestQuestionFinishFragment extends Fragment {
     View.OnClickListener onClickListener_buttonTestViewResult = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(getActivity(), SurveyActivity.class);
+            Intent intent = new Intent(getActivity(), ShowTestResultActivity.class);
             intent.putStringArrayListExtra(ConstantVariable.RESULT_QUESTION_FOR_SHOWTESTRESULT, (ArrayList<String>) result_question);
             intent.putStringArrayListExtra(ConstantVariable.RESULT_ANSWER_RIGHT_FOR_SHOWTESTRESULT, (ArrayList<String>) result_answer_right);
             intent.putStringArrayListExtra(ConstantVariable.RESULT_ANSWER_WRONG_FOR_SHOWTESTRESULT, (ArrayList<String>) result_answer_wrong);
