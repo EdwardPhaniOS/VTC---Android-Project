@@ -3,8 +3,6 @@
     xmlns:dist="http://schemas.android.com/apk/distribution"
     package="com.example.flashcard">
 
-    <dist:module dist:instant="true" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Utilities.TestActivity"></activity>
+        <activity android:name=".ShowTestResultActivity"></activity>
+        <activity android:name=".Utilities.TestActivity" />
         <activity
             android:name=".LearnActivity"
             android:theme="@style/AppTheme.NoActionBarNghia" />
@@ -24,9 +23,7 @@
             android:theme="@style/AppTheme.NoActionBarNghia" />
         <activity
             android:name=".DeckDetailActivity"
-            android:theme="@style/AppTheme.NoActionBarNghia" >
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBarNghia"></activity>
         <activity
             android:name=".UserProgress"
             android:label="@string/title_activity_user_progress"
@@ -42,11 +39,13 @@
             android:theme="@style/AppTheme.NoActionBarNghia" />
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBarNghia"></activity>
+            android:theme="@style/AppTheme.NoActionBarNghia" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
+
+    <dist:module dist:instant="true" />
 
 </manifest>

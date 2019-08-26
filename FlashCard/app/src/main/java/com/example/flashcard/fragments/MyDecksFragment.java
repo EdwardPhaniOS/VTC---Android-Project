@@ -91,8 +91,12 @@ public class MyDecksFragment extends Fragment {
                     Deck deck = postSnapshot.getValue(Deck.class);
                     decks.add(deck);
                 }
-                DeckList deckAdapter = new DeckList(getActivity(), decks);
-                listViewDecks.setAdapter(deckAdapter);
+
+                if (getActivity() != null) {
+                    DeckList deckAdapter = new DeckList(getActivity(), decks);
+                    listViewDecks.setAdapter(deckAdapter);
+                }
+
             }
 
             @Override
