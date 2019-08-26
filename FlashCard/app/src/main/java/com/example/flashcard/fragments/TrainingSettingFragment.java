@@ -80,6 +80,7 @@ public class TrainingSettingFragment extends Fragment {
 
                                 // back to my deck list
                                 // TODO: Chưa biết làm khi xóa thì back lại activity chứa fragment
+
                             }})
                         .setNegativeButton(android.R.string.no, null).show();
             }
@@ -144,6 +145,7 @@ public class TrainingSettingFragment extends Fragment {
         DatabaseReference drFlashcards = FirebaseDatabase.getInstance().getReference("DBFlashCard/deckdetails").child(id);
         drFlashcards.removeValue();
         Toast.makeText(getContext(), "Delete completed", Toast.LENGTH_SHORT).show();
+        getActivity().finish();
         return true;
     }
 }

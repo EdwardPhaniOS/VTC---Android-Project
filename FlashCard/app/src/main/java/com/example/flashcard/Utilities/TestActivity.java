@@ -79,7 +79,7 @@ public class TestActivity extends AppCompatActivity {
         time = getIntent().getIntExtra(ConstantVariable.INPUT_TIME,0);
         timer = timer * time;
 
-                buttonSubmitTest = findViewById(R.id.buttonSubmitTest);
+        buttonSubmitTest = findViewById(R.id.buttonSubmitTest);
         buttonSubmitTest.setOnClickListener(submitButtonListener);
 
         textViewProgressTest = findViewById(R.id.textViewProgressTest);
@@ -138,7 +138,6 @@ public class TestActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if(lastQuestion){
-
                 return;
             }
             //
@@ -151,7 +150,7 @@ public class TestActivity extends AppCompatActivity {
                 buttonSubmitTest.setVisibility(View.GONE);
                 textViewProgressTest.setVisibility(View.GONE);
                 viewpagerTest.setVisibility(View.GONE);
-                addTestFinishFragment();
+                addTestFinishFragment(result_question,result_answer_right,result_answer_wrong,result_color);
 //                String s = new String();
 //                for(int i = 0;i<result_question.size();i++){
 //                    s += result_question.get(i) + " - " + result_color.get(i) + "\n";
@@ -239,7 +238,17 @@ public class TestActivity extends AppCompatActivity {
                     buttonSubmitTest.setVisibility(View.GONE);
                     textViewProgressTest.setVisibility(View.GONE);
                     viewpagerTest.setVisibility(View.GONE);
-                    addTestFinishFragment();
+
+                    if(result_question.size() < sizeOfCards){
+                        for(int i=result_question.size();i<sizeOfCards;i++){
+                            result_question.add(cards.get(i).getVocabulary());
+                            result_answer_right.add(cards.get(i).getDefinition());
+                            result_answer_wrong.add(ConstantVariable.UNSUBMIITED_QUESTION);
+                            result_color.add(cards.get(i).getCardStatus());
+                        }
+                    }
+
+                    addTestFinishFragment(result_question,result_answer_right,result_answer_wrong,result_color);
                 }
             }.start();
         }
@@ -266,9 +275,13 @@ public class TestActivity extends AppCompatActivity {
         });
     }
 
-    private void addTestFinishFragment(){
+    private void addTestFinishFragment(List<String> __result_question
+                                        ,List<String> __result_answer_right
+                                        ,List<String> __result_answer_wrong
+                                        ,List<String> __result_color){
         // Create new fragment and transaction
-        TestQuestionFinishFragment newFragment = new TestQuestionFinishFragment();
+        TestQuestionFinishFragment newFragment = new TestQuestionFinishFragment(__result_question,__result_answer_right
+                                                                                ,__result_answer_wrong,__result_color);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         // Replace whatever is in the fragment_container view with this fragment,
@@ -279,9 +292,10 @@ public class TestActivity extends AppCompatActivity {
         // Commit the transaction
         //transaction.commit();
         transaction.commitAllowingStateLoss();
-        countDownTimer.cancel();
+        if(countDownTimer != null){
+            countDownTimer.cancel();
 
-
+        }
         String s = "";
 
         for(int i = 0 ; i< result_question.size();i++){
