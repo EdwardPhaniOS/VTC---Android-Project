@@ -9,10 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.flashcard.R;
+import com.example.flashcard.models.QuizResult;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RecyclerAdapterForResultPage extends RecyclerView.Adapter<RecyclerAdapterForResultPage.ViewHolder> {
 
     private boolean isShowWrongAnswer;
+    QuizResult quizResult;
 
     private String[] indexNumberInFirstPage = {"1", "3", "6"};
     private String[] questionTitlesForFirstPage = {"Chapter One", "Chapter Two", "Chapter Three"};
@@ -28,8 +33,9 @@ public class RecyclerAdapterForResultPage extends RecyclerView.Adapter<RecyclerA
     private String[] correctAnswersForSecondPage = {"Item one details",
             "Item two details", "Item three details",};
 
-    public RecyclerAdapterForResultPage(boolean isShowWrongAnswer) {
+    public RecyclerAdapterForResultPage(boolean isShowWrongAnswer, QuizResult quizResult) {
         this.isShowWrongAnswer = isShowWrongAnswer;
+        this.quizResult = quizResult;
     }
 
     @NonNull
@@ -38,6 +44,7 @@ public class RecyclerAdapterForResultPage extends RecyclerView.Adapter<RecyclerA
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.result_cell_layout, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(v);
+
         return viewHolder;
     }
 
@@ -45,24 +52,26 @@ public class RecyclerAdapterForResultPage extends RecyclerView.Adapter<RecyclerA
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
 
         if (isShowWrongAnswer) {
-            viewHolder.questionNumber.setText("Question " + indexNumberInFirstPage[i]);
-            viewHolder.questionTitle.setText(questionTitlesForFirstPage[i]);
-            viewHolder.correctAnswer.setText(correctAnswersForFirstPage[i]);
-            viewHolder.yourAnswer.setText(yourAnswersForFirstPage[i]);
+            viewHolder.questionNumber.setText("Question "
+                    + quizResult.getIndexNumberInFirstPage().get(i));
+            viewHolder.questionTitle.setText(quizResult.getQuestionTitlesForFirstPage().get(i));
+            viewHolder.correctAnswer.setText(quizResult.getCorrectAnswersForFirstPage().get(i));
+            viewHolder.yourAnswer.setText(quizResult.getYourAnswersForFirstPage().get(i));
         } else {
-            viewHolder.questionNumber.setText("Question " + indexNumberInSecondPage[i]);
-            viewHolder.questionTitle.setText(questionTitlesForSecondPage[i]);
-            viewHolder.correctAnswer.setText(correctAnswersForSecondPage[i]);
-            viewHolder.yourAnswer.setText(yourAnswersForSecondPage[i]);
+            viewHolder.questionNumber.setText("Question "
+                    + quizResult.getIndexNumberInSecondPage().get(i));
+            viewHolder.questionTitle.setText(quizResult.getQuestionTitlesForSecondPage().get(i));
+            viewHolder.correctAnswer.setText(quizResult.getCorrectAnswersForSecondPage().get(i));
+            viewHolder.yourAnswer.setText(quizResult.getYourAnswersForSecondPage().get(i));
         }
     }
 
     @Override
     public int getItemCount() {
         if (isShowWrongAnswer) {
-            return correctAnswersForFirstPage.length;
+            return quizResult.getCorrectAnswersForFirstPage().size();
         } else {
-            return correctAnswersForSecondPage.length;
+            return quizResult.getCorrectAnswersForSecondPage().size();
         }
     }
 

@@ -74,6 +74,11 @@ public class UserProgressFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
     private void updateUI()
     {
         totalDeck.setText(String.valueOf(decks.size()));
@@ -126,7 +131,7 @@ public class UserProgressFragment extends Fragment {
 
             //give thread of listener time to download user decks
             try {
-                Thread.sleep(100);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -192,8 +197,8 @@ public class UserProgressFragment extends Fragment {
         {
             updateUI();
             anyChartView.setChart(pie);
-
         }
+
 
         private Pie createPieChart()
         {

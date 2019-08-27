@@ -12,7 +12,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Utilities.TestActivity"
             android:theme="@style/AppTheme.NoActionBarNghia" />
-        <activity android:name=".ShowTestResultActivity"></activity>
+        <activity android:name=".ShowTestResultActivity"
+            android:theme="@style/AppTheme.NoActionBarNghia" ></activity>
 
         <activity
             android:name=".LearnActivity"

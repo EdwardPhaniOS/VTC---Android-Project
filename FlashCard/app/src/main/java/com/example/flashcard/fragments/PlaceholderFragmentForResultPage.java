@@ -16,6 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.flashcard.R;
 import com.example.flashcard.adapters.RecyclerAdapterForResultPage;
 import com.example.flashcard.models.PageViewModelForResultPage;
+import com.example.flashcard.models.QuizResult;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlaceholderFragmentForResultPage extends Fragment {
 
@@ -26,9 +30,35 @@ public class PlaceholderFragmentForResultPage extends Fragment {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
+    QuizResult quizResult;
+    QuizResult quizResultAfterAnalysis;
 
-    public static PlaceholderFragmentForResultPage newInstance(int index) {
-        PlaceholderFragmentForResultPage fragment = new PlaceholderFragmentForResultPage();
+    private List<String> result_question = new ArrayList<String>();
+    private List<String> result_answer_right = new ArrayList<String>();
+    private List<String> result_user_answer = new ArrayList<String>();
+    private List<String> result_color = new ArrayList<String>();
+
+    //Test cach nhanh hon
+//    private List<Integer> wrongtAnswerIndex = new ArrayList<Integer>();
+//    private List<Integer> rightAnswerIndex = new ArrayList<Integer>();
+
+    private List<String> indexNumberInFirstPage = new ArrayList<String>();;
+    private List<String> questionTitlesForFirstPage = new ArrayList<String>();;
+    private List<String> yourAnswersForFirstPage = new ArrayList<String>();;
+    private List<String> correctAnswersForFirstPage = new ArrayList<String>();;
+
+    private List<String> indexNumberInSecondPage = new ArrayList<String>();;
+    private List<String> questionTitlesForSecondPage = new ArrayList<String>();;
+    private List<String> yourAnswersForSecondPage = new ArrayList<String>();;
+    private List<String> correctAnswersForSecondPage = new ArrayList<String>();;
+
+    public PlaceholderFragmentForResultPage(QuizResult quizResult) {
+        this.quizResult = quizResult;
+    }
+
+    public static PlaceholderFragmentForResultPage newInstance(int index, QuizResult quizResult) {
+        PlaceholderFragmentForResultPage fragment =
+                new PlaceholderFragmentForResultPage(quizResult);
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_SECTION_NUMBER, index);
         fragment.setArguments(bundle);
@@ -43,6 +73,38 @@ public class PlaceholderFragmentForResultPage extends Fragment {
         if (getArguments() != null) {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
+
+        //Phan tich so lieu
+        result_question = quizResult.getResult_question();
+        result_answer_right = quizResult.getResult_answer_right();
+        result_user_answer = quizResult.getResult_user_answer();
+        result_color = quizResult.getResult_color();
+
+        for (int i = 0; i < result_question.size(); i++)
+        {
+            if (result_answer_right.get(i).matches(result_user_answer.get(i))) {
+                indexNumberInSecondPage.add("" + (i + 1));
+                questionTitlesForSecondPage.add(result_question.get(i));
+                correctAnswersForSecondPage.add(result_answer_right.get(i));
+                yourAnswersForSecondPage.add(result_user_answer.get(i));
+
+//                rightAnswerIndex.add(i);
+
+            } else {
+                indexNumberInFirstPage.add("" + (i + 1));
+                questionTitlesForFirstPage.add(result_question.get(i));
+                correctAnswersForFirstPage.add(result_answer_right.get(i));
+                yourAnswersForFirstPage.add(result_user_answer.get(i));
+
+//                wrongtAnswerIndex.add(i);
+            }
+        }
+
+        quizResultAfterAnalysis = new QuizResult(indexNumberInFirstPage, questionTitlesForFirstPage,
+                yourAnswersForFirstPage, correctAnswersForFirstPage, indexNumberInSecondPage, questionTitlesForSecondPage,
+                yourAnswersForSecondPage, correctAnswersForSecondPage);
+
+
         pageViewModelForResultPage.setIndex(index);
     }
 
@@ -61,10 +123,12 @@ public class PlaceholderFragmentForResultPage extends Fragment {
             @Override
             public void onChanged(@Nullable String index) {
                 if (index.matches("1")) {
-                    adapter = new RecyclerAdapterForResultPage(true);
+                    adapter = new RecyclerAdapterForResultPage(true,
+                            quizResultAfterAnalysis);
                     recyclerView.setAdapter(adapter);
                 } else {
-                    adapter = new RecyclerAdapterForResultPage(false);
+                    adapter = new RecyclerAdapterForResultPage(false,
+                            quizResultAfterAnalysis);
                     recyclerView.setAdapter(adapter);
                 }
 
