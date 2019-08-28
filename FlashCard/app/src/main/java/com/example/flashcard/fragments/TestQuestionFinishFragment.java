@@ -87,6 +87,7 @@ public class TestQuestionFinishFragment extends Fragment {
             intent.putStringArrayListExtra(ConstantVariable.RESULT_COLOR_FOR_SHOWTESTRESULT, (ArrayList<String>) result_color);
             //ArrayList<String> test = getIntent().getStringArrayListExtra("test");
             startActivity(intent);
+            getActivity().finish();
         }
     };
     View.OnClickListener onClickListener_buttonTestExit = new View.OnClickListener() {
