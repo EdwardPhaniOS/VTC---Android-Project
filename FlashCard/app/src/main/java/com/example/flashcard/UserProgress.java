@@ -2,7 +2,6 @@ package com.example.flashcard;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -79,6 +78,11 @@ public class UserProgress extends AppCompatActivity implements BottomNavigationV
                 fragment = new MyDecksFragment();
                 setTitle("My Decks");
                 break;
+            case R.id.navigation_download:
+                fragment = new DownloadCardsFragment();
+                setTitle("Downloads");
+                break;
+
         }
 
         return loadFragment(fragment);
