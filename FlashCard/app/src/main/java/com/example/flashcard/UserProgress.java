@@ -38,9 +38,9 @@ public class UserProgress extends AppCompatActivity implements BottomNavigationV
         } else {
             BottomNavigationView navigation = findViewById(R.id.nav_view);
 
-            navigation.getMenu().getItem(1).setChecked(true);
+            navigation.getMenu().getItem(0).setChecked(true);
 
-            onNavigationItemSelected(navigation.getMenu().getItem(1));
+            onNavigationItemSelected(navigation.getMenu().getItem(0));
         }
     }
 
