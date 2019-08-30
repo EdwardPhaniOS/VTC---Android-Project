@@ -131,7 +131,7 @@ public class UserProgressFragment extends Fragment {
 
             //give thread of listener time to download user decks
             try {
-                Thread.sleep(200);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -159,7 +159,7 @@ public class UserProgressFragment extends Fragment {
             }
 
             //give thread of listener time to download all cards
-            final int time = decks.size() * 80;
+            final int time = decks.size() * 100;
             try {
                 Thread.sleep(time);
             } catch (InterruptedException e) {
@@ -184,6 +184,12 @@ public class UserProgressFragment extends Fragment {
 
             Pie pie = createPieChart();
 
+            try {
+                Thread.sleep(time);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             return pie;
         }
 
@@ -206,14 +212,14 @@ public class UserProgressFragment extends Fragment {
 
             List<DataEntry> data = new ArrayList<>();
             data.add(new ValueDataEntry("Thuộc lòng", redCards));
-            data.add(new ValueDataEntry("Sơ sơ", yellowCards));
-            data.add(new ValueDataEntry("Đã quên", greenCards));
+            data.add(new ValueDataEntry("Sơ sơ", greenCards));
+            data.add(new ValueDataEntry("Đã quên", yellowCards));
             data.add(new ValueDataEntry("Chưa thuộc", blueCards));
 
             pie.data(data);
 
             String[] settings = {
-                    "#FF0000", "#FFFF00", "#00CC00", "#0099FF"
+                    "#FF0000", "#00CC00", "#FFFF00", "#0099FF"
             };
 
             pie.palette(settings);

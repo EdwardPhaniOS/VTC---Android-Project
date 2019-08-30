@@ -38,19 +38,17 @@ public class PlaceholderFragmentForResultPage extends Fragment {
     private List<String> result_user_answer = new ArrayList<String>();
     private List<String> result_color = new ArrayList<String>();
 
-    //Test cach nhanh hon
-//    private List<Integer> wrongtAnswerIndex = new ArrayList<Integer>();
-//    private List<Integer> rightAnswerIndex = new ArrayList<Integer>();
+    private List<String> indexNumberInFirstPage = new ArrayList<String>();
+    private List<String> questionTitlesForFirstPage = new ArrayList<String>();
+    private List<String> yourAnswersForFirstPage = new ArrayList<String>();
+    private List<String> correctAnswersForFirstPage = new ArrayList<String>();
+    private List<String> resultColorForFirstPage = new ArrayList<String>();
 
-    private List<String> indexNumberInFirstPage = new ArrayList<String>();;
-    private List<String> questionTitlesForFirstPage = new ArrayList<String>();;
-    private List<String> yourAnswersForFirstPage = new ArrayList<String>();;
-    private List<String> correctAnswersForFirstPage = new ArrayList<String>();;
-
-    private List<String> indexNumberInSecondPage = new ArrayList<String>();;
-    private List<String> questionTitlesForSecondPage = new ArrayList<String>();;
-    private List<String> yourAnswersForSecondPage = new ArrayList<String>();;
-    private List<String> correctAnswersForSecondPage = new ArrayList<String>();;
+    private List<String> indexNumberInSecondPage = new ArrayList<String>();
+    private List<String> questionTitlesForSecondPage = new ArrayList<String>();
+    private List<String> yourAnswersForSecondPage = new ArrayList<String>();
+    private List<String> correctAnswersForSecondPage = new ArrayList<String>();
+    private List<String> resultColorForSecondPage = new ArrayList<String>();
 
     public PlaceholderFragmentForResultPage(QuizResult quizResult) {
         this.quizResult = quizResult;
@@ -87,22 +85,20 @@ public class PlaceholderFragmentForResultPage extends Fragment {
                 questionTitlesForSecondPage.add(result_question.get(i));
                 correctAnswersForSecondPage.add(result_answer_right.get(i));
                 yourAnswersForSecondPage.add(result_user_answer.get(i));
-
-//                rightAnswerIndex.add(i);
+                resultColorForSecondPage.add(result_color.get(i));
 
             } else {
                 indexNumberInFirstPage.add("" + (i + 1));
                 questionTitlesForFirstPage.add(result_question.get(i));
                 correctAnswersForFirstPage.add(result_answer_right.get(i));
                 yourAnswersForFirstPage.add(result_user_answer.get(i));
-
-//                wrongtAnswerIndex.add(i);
+                resultColorForFirstPage.add(result_color.get(i));
             }
         }
 
         quizResultAfterAnalysis = new QuizResult(indexNumberInFirstPage, questionTitlesForFirstPage,
                 yourAnswersForFirstPage, correctAnswersForFirstPage, indexNumberInSecondPage, questionTitlesForSecondPage,
-                yourAnswersForSecondPage, correctAnswersForSecondPage);
+                yourAnswersForSecondPage, correctAnswersForSecondPage, resultColorForFirstPage, resultColorForSecondPage);
 
 
         pageViewModelForResultPage.setIndex(index);
