@@ -33,8 +33,9 @@ public class ShowTestResultActivity extends AppCompatActivity
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ShowTestResultActivity.this, UserProgress.class);
-                startActivity(intent);
+//                Intent intent = new Intent(ShowTestResultActivity.this, UserProgress.class);
+//                startActivity(intent);
+                finish();
             }
         });
 

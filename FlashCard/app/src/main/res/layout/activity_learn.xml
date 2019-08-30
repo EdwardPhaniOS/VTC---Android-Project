@@ -68,7 +68,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="#0ce004"
+        android:background="@color/cardGreen"
         android:text="Button"
 
         app:layout_constraintEnd_toStartOf="@+id/guideline"
@@ -82,7 +82,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="#f7142e"
+        android:background="@color/cardRed"
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"
@@ -90,7 +90,7 @@
 
     <Button
         android:id="@+id/buttonYellow"
-        android:background="#f2eb11"
+        android:background="@color/cardYellow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -105,7 +105,7 @@
 
     <Button
         android:id="@+id/buttonBlue"
-        android:background="#458af7"
+        android:background="@color/cardBlue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
