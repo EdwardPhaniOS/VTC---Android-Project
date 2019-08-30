@@ -10,15 +10,17 @@ public class QuizResult
     private List<String> result_user_answer = new ArrayList<String>();
     private List<String> result_color = new ArrayList<String>();
 
-    private List<String> indexNumberInFirstPage = new ArrayList<String>();;
-    private List<String> questionTitlesForFirstPage = new ArrayList<String>();;
-    private List<String> yourAnswersForFirstPage = new ArrayList<String>();;
-    private List<String> correctAnswersForFirstPage = new ArrayList<String>();;
+    private List<String> indexNumberInFirstPage = new ArrayList<String>();
+    private List<String> questionTitlesForFirstPage = new ArrayList<String>();
+    private List<String> yourAnswersForFirstPage = new ArrayList<String>();
+    private List<String> correctAnswersForFirstPage = new ArrayList<String>();
+    private List<String> resultColorForFirstPage = new ArrayList<String>();
 
-    private List<String> indexNumberInSecondPage = new ArrayList<String>();;
-    private List<String> questionTitlesForSecondPage = new ArrayList<String>();;
-    private List<String> yourAnswersForSecondPage = new ArrayList<String>();;
-    private List<String> correctAnswersForSecondPage = new ArrayList<String>();;
+    private List<String> indexNumberInSecondPage = new ArrayList<String>();
+    private List<String> questionTitlesForSecondPage = new ArrayList<String>();
+    private List<String> yourAnswersForSecondPage = new ArrayList<String>();
+    private List<String> correctAnswersForSecondPage = new ArrayList<String>();
+    private List<String> resultColorForSecondPage = new ArrayList<String>();
 
 
     public QuizResult(List<String> result_question, List<String> result_answer_right,
@@ -33,17 +35,20 @@ public class QuizResult
     public QuizResult(List<String> indexNumberInFirstPage, List<String> questionTitlesForFirstPage,
                       List<String> yourAnswersForFirstPage, List<String> correctAnswersForFirstPage,
                       List<String> indexNumberInSecondPage, List<String> questionTitlesForSecondPage,
-                      List<String> yourAnswersForSecondPage, List<String> correctAnswersForSecondPage)
+                      List<String> yourAnswersForSecondPage, List<String> correctAnswersForSecondPage,
+                      List<String> resultColorForFirstPage, List<String> resultColorForSecondPage)
     {
         this.indexNumberInFirstPage = indexNumberInFirstPage;
         this.questionTitlesForFirstPage = questionTitlesForFirstPage;
         this.yourAnswersForFirstPage = yourAnswersForFirstPage;
         this.correctAnswersForFirstPage = correctAnswersForFirstPage;
+        this.resultColorForFirstPage = resultColorForFirstPage;
 
         this.indexNumberInSecondPage = indexNumberInSecondPage;
         this.questionTitlesForSecondPage = questionTitlesForSecondPage;
         this.yourAnswersForSecondPage = yourAnswersForSecondPage;
         this.correctAnswersForSecondPage = correctAnswersForSecondPage;
+        this.resultColorForSecondPage = resultColorForSecondPage;
     }
 
     public List<String> getResult_question() {
@@ -92,5 +97,13 @@ public class QuizResult
 
     public List<String> getCorrectAnswersForSecondPage() {
         return correctAnswersForSecondPage;
+    }
+
+    public List<String> getResultColorForFirstPage() {
+        return resultColorForFirstPage;
+    }
+
+    public List<String> getResultColorForSecondPage() {
+        return resultColorForSecondPage;
     }
 }
