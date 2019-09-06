@@ -152,7 +152,6 @@ public class MyDecksFragment extends Fragment {
                                                 listDeck.add(item);
                                             }
                                             deckAdapter = new DeckList(getActivity(), listDeck);
-
                                             listViewDecks.setAdapter(deckAdapter);
                                             setupSearchViewDeck();
                                         }

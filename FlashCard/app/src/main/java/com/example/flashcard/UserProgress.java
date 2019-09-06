@@ -2,7 +2,6 @@ package com.example.flashcard;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -10,8 +9,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import com.example.flashcard.fragments.AccountInfoFragment;
+import com.example.flashcard.fragments.DownloadCardsFragment;
 import com.example.flashcard.fragments.MyDecksFragment;
 import com.example.flashcard.fragments.RemindersFragment;
+import com.example.flashcard.fragments.UserProgressFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -50,9 +52,7 @@ public class UserProgress extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_progress);
-        // use offline
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        //
+
         // use toolbar as appbarLayout
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -88,8 +88,11 @@ public class UserProgress extends AppCompatActivity implements BottomNavigationV
                 fragment = new RemindersFragment();
                 setTitle("Reminders");
                 break;
+            case R.id.navigation_download:
+                fragment = new DownloadCardsFragment();
+                setTitle("Downloads");
+                break;
         }
-
         return loadFragment(fragment);
     }
 

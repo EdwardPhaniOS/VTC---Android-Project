@@ -23,6 +23,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -43,16 +44,15 @@ public class MainActivity extends AppCompatActivity
         super.onStart();
 
         //Auto sign in with the last account
-//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        if (account != null || currentUser != null) {
-//            navigateToProgressPage();
-//        }
-
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
+        if (account != null || currentUser != null) {
             navigateToProgressPage();
         }
+
+//        if (currentUser != null) {
+//            navigateToProgressPage();
+//        }
     }
 
     private void navigateToProgressPage() {
@@ -60,13 +60,16 @@ public class MainActivity extends AppCompatActivity
                 Intent(MainActivity.this,
                 UserProgress.class);
         startActivity(intentToProgressPage);
+        finish();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+//        // use offline
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+//        //
         preSetUp();
 
         loginButton.setOnClickListener(new View.OnClickListener() {
