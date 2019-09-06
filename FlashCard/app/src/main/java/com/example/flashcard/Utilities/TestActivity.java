@@ -27,6 +27,9 @@ import com.example.flashcard.adapters.QuestionTestFragmentAdapter;
 import com.example.flashcard.fragments.TestQuestionFinishFragment;
 import com.example.flashcard.fragments.TestQuestionFragment;
 import com.example.flashcard.models.Card;
+import com.example.flashcard.models.Reminder;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,6 +41,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class TestActivity extends AppCompatActivity {
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private String userId = user.getUid();
     public List<Card> cards;
     private ViewPager viewpagerTest;
     private QuestionTestFragmentAdapter mAdapter;
@@ -67,6 +72,10 @@ public class TestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
+
+        // use offline
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        //
 
         setupToolbar();
 
@@ -112,9 +121,11 @@ public class TestActivity extends AppCompatActivity {
                     Card card = postSnapshot.getValue(Card.class);
                     getAllCards.add(card);
                 }
-                Collections.shuffle(getAllCards);
+                List<Card> cardsAfterFilter = filterCardByColor(getAllCards
+                                                                ,getIntent().getStringExtra(ConstantVariable.CARD_COLOR));
+                Collections.shuffle(cardsAfterFilter);
 
-                cards = new ArrayList<Card>(getAllCards.subList(0, numberOfCards));
+                cards = new ArrayList<Card>(cardsAfterFilter.subList(0, numberOfCards));
 
                 mAdapter = new QuestionTestFragmentAdapter(getSupportFragmentManager(),cards);
                 sizeOfCards = cards.size();
@@ -145,17 +156,15 @@ public class TestActivity extends AppCompatActivity {
                 return;
 
             if(getItem(+1) == sizeOfCards){
+                if(ValidateCheckForReminder.isTriggerFromTestTotalButton && ValidateCheckForReminder.reminderSave!=null){
+                    ValidateCheckForReminder.isFinishTest = true;
+                }
                 lastQuestion = true;
 
                 buttonSubmitTest.setVisibility(View.GONE);
                 textViewProgressTest.setVisibility(View.GONE);
                 viewpagerTest.setVisibility(View.GONE);
                 addTestFinishFragment(result_question,result_answer_right,result_answer_wrong,result_color);
-//                String s = new String();
-//                for(int i = 0;i<result_question.size();i++){
-//                    s += result_question.get(i) + " - " + result_color.get(i) + "\n";
-//                }
-//                Toast.makeText(TestActivity.this, s, Toast.LENGTH_LONG).show();
             }
 
             // go to next page
@@ -247,7 +256,9 @@ public class TestActivity extends AppCompatActivity {
                             result_color.add(cards.get(i).getCardStatus());
                         }
                     }
-
+                    if(ValidateCheckForReminder.isTriggerFromTestTotalButton && ValidateCheckForReminder.reminderSave!=null){
+                        ValidateCheckForReminder.isFinishTest = true;
+                    }
                     addTestFinishFragment(result_question,result_answer_right,result_answer_wrong,result_color);
                 }
             }.start();
@@ -257,6 +268,18 @@ public class TestActivity extends AppCompatActivity {
         }
         return  true;
 
+    }
+
+    private List<Card> filterCardByColor(List<Card> list,String color){
+        if("Total".equals(color))
+            return list;
+
+        List<Card> res = new ArrayList<>();
+        for(Card c : list){
+            if(c.getCardStatus().equals(color))
+                res.add(c);
+        }
+        return res;
     }
 
     private void setupToolbar(){
@@ -269,6 +292,22 @@ public class TestActivity extends AppCompatActivity {
         toolbarTest.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // process for validate check reminder
+                if(ValidateCheckForReminder.isFinishTest){
+                    Reminder reminderChecked = new Reminder(ValidateCheckForReminder.reminderSave.getReminderId()
+                            ,ValidateCheckForReminder.reminderSave.getName()
+                            ,ValidateCheckForReminder.reminderSave.getNameDay()
+                            ,ValidateCheckForReminder.reminderSave.getDate()
+                            ,ValidateCheckForReminder.reminderSave.getDeckId());
+                    FirebaseDatabase.getInstance().getReference("DBFlashCard/reminders").child(userId)
+                            .child(ValidateCheckForReminder.reminderSave.getDeckId())
+                            .child(ValidateCheckForReminder.reminderSave.getReminderId())
+                            .setValue(reminderChecked);
+                    ValidateCheckForReminder.setDefault();
+                }else {
+                    ValidateCheckForReminder.setDefault();
+                }
+                //
                 finish();
                 //onBackPressed();
             }
@@ -296,13 +335,13 @@ public class TestActivity extends AppCompatActivity {
             countDownTimer.cancel();
 
         }
-        String s = "";
-
-        for(int i = 0 ; i< result_question.size();i++){
-            s += result_question.get(i).toString() + "\n";
-        }
-
-        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+//        String s = "";
+//
+//        for(int i = 0 ; i< result_question.size();i++){
+//            s += result_question.get(i).toString() + "\n";
+//        }
+//
+//        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
         // https://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this-action-after-onsaveinstancestate-wit
     }
 

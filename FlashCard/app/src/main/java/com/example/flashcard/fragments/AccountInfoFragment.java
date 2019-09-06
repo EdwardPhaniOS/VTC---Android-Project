@@ -77,8 +77,10 @@ public class AccountInfoFragment extends Fragment
                 removeLinkAccount();
 
                 Toast.makeText(getActivity(), "Log Out", Toast.LENGTH_SHORT).show();
+                getActivity().finish();
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
+
             }
         });
 

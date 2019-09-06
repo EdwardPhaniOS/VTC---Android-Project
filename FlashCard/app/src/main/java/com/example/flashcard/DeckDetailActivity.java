@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -21,6 +22,10 @@ import com.example.flashcard.fragments.MyDecksFragment;
 import com.example.flashcard.fragments.TrainingFragment;
 import com.example.flashcard.fragments.TrainingSettingFragment;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,11 +34,14 @@ public class DeckDetailActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private boolean statusSwitchOfSettingFragment = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deck_detail);
-
+        // use offline
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        //
         Intent intent = getIntent();
 
         setTitle(intent.getStringExtra(ConstantVariable.DECK_NAME));
@@ -52,12 +60,40 @@ public class DeckDetailActivity extends AppCompatActivity {
             }
         });
 
+        checkStatusSwitchButton();  // quan trọng - liên kết với onDataChange
+    }
+
+    private void setupAfterGetData(){
         viewPager = (ViewPager)findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout)findViewById(R.id.tabs);
 
         tabLayout.setupWithViewPager(viewPager); // dòng này quan trọng kết nối với viewpager
+    }
+
+    private void checkStatusSwitchButton(){
+        String userId = getIntent().getStringExtra(ConstantVariable.USER_ID);
+        String deckName = getIntent().getStringExtra(ConstantVariable.DECK_NAME);
+        String deckId = getIntent().getStringExtra(ConstantVariable.DECK_ID);
+        FirebaseDatabase.getInstance().getReference("DBFlashCard").child("reminders")
+                .child(userId).child(deckId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() == null) {
+                    statusSwitchOfSettingFragment = false;
+                    setupAfterGetData();
+                }
+                else {
+                    statusSwitchOfSettingFragment = true;
+                    setupAfterGetData();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -73,7 +109,7 @@ public class DeckDetailActivity extends AppCompatActivity {
         //
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new TrainingFragment(listener), "TRAINING");
-        adapter.addFragment(new TrainingSettingFragment(), "SETTING");
+        adapter.addFragment(new TrainingSettingFragment(statusSwitchOfSettingFragment), "SETTING");
         viewPager.setAdapter(adapter);
     }
 

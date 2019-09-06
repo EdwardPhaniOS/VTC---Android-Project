@@ -12,10 +12,12 @@ import androidx.fragment.app.Fragment;
 import com.example.flashcard.fragments.AccountInfoFragment;
 import com.example.flashcard.fragments.DownloadCardsFragment;
 import com.example.flashcard.fragments.MyDecksFragment;
+import com.example.flashcard.fragments.RemindersFragment;
 import com.example.flashcard.fragments.UserProgressFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class UserProgress extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -50,6 +52,7 @@ public class UserProgress extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_progress);
+
         // use toolbar as appbarLayout
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -81,13 +84,15 @@ public class UserProgress extends AppCompatActivity implements BottomNavigationV
                 fragment = new MyDecksFragment();
                 setTitle("My Decks");
                 break;
+            case R.id.navigation_reminder:
+                fragment = new RemindersFragment();
+                setTitle("Reminders");
+                break;
             case R.id.navigation_download:
                 fragment = new DownloadCardsFragment();
                 setTitle("Downloads");
                 break;
-
         }
-
         return loadFragment(fragment);
     }
 

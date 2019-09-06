@@ -10,9 +10,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import com.example.flashcard.Utilities.ValidateCheckForReminder;
 import com.example.flashcard.fragments.FlashcardLearnFragment;
 import com.example.flashcard.models.Card;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FlashcardsFragmentAdapter extends FragmentStatePagerAdapter {
@@ -23,12 +25,15 @@ public class FlashcardsFragmentAdapter extends FragmentStatePagerAdapter {
 
     public FlashcardsFragmentAdapter(FragmentManager fm,List<Card> cards){
         super(fm);
-        this.cards = cards;
+        this.cards = new ArrayList<Card>(cards);
     }
 
     @NonNull
     @Override
     public Fragment getItem(int position) {
+        if((position+1) == cards.size() && ValidateCheckForReminder.isTriggerFromLearnTotalButton && ValidateCheckForReminder.reminderSave != null){
+            ValidateCheckForReminder.isFinishLearn = true;
+        }
         Log.d(TAG, "getItem");
         FlashcardLearnFragment cardFragment = new FlashcardLearnFragment();
         Bundle bundle = new Bundle();

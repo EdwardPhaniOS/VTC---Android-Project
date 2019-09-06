@@ -131,6 +131,7 @@ public class SurveyActivity extends AppCompatActivity {
 
             Intent intent = new Intent(SurveyActivity.this,TestActivity.class);
             intent.putExtra(ConstantVariable.DECK_ID, getIntent().getStringExtra(ConstantVariable.DECK_ID));
+            intent.putExtra(ConstantVariable.CARD_COLOR, getIntent().getStringExtra(ConstantVariable.CARD_COLOR));
             intent.putExtra(ConstantVariable.INPUT_CARDS,numberOfCards);
             intent.putExtra(ConstantVariable.INPUT_TIME,time);
             startActivity(intent);
@@ -169,7 +170,15 @@ public class SurveyActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int count = 0;
                 for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
-                    count++;
+                    if("Total".equals(getIntent().getStringExtra(ConstantVariable.CARD_COLOR))){
+                        count++;
+                    }
+                    else {
+                        Card card = postSnapshot.getValue(Card.class);
+                        if(card.getCardStatus().equals(getIntent().getStringExtra(ConstantVariable.CARD_COLOR))){
+                            count++;
+                        }
+                    }
                 }
                 max = count;
                 execute_After_onDataChange();

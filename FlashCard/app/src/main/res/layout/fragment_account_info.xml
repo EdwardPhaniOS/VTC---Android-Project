@@ -43,7 +43,7 @@
         android:backgroundTint="#E6F44336"
         android:text="LOG OUT"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_email_info"

@@ -10,15 +10,23 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.flashcard.Utilities.ConstantVariable;
+import com.example.flashcard.Utilities.ValidateCheckForReminder;
 import com.example.flashcard.adapters.SectionsPagerAdapterForResultPage;
 import com.example.flashcard.models.QuizResult;
+import com.example.flashcard.models.Reminder;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ShowTestResultActivity extends AppCompatActivity
 {
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private String userId = user.getUid();
+
     private List<String> result_question = new ArrayList<String>();
     private List<String> result_answer_right = new ArrayList<String>();
     private List<String> result_user_answer = new ArrayList<String>();
@@ -33,8 +41,22 @@ public class ShowTestResultActivity extends AppCompatActivity
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(ShowTestResultActivity.this, UserProgress.class);
-//                startActivity(intent);
+                // process for validate check reminder
+                if(ValidateCheckForReminder.isFinishTest){
+                    Reminder reminderChecked = new Reminder(ValidateCheckForReminder.reminderSave.getReminderId()
+                            ,ValidateCheckForReminder.reminderSave.getName()
+                            ,ValidateCheckForReminder.reminderSave.getNameDay()
+                            ,ValidateCheckForReminder.reminderSave.getDate()
+                            ,ValidateCheckForReminder.reminderSave.getDeckId());
+                    reminderChecked.setIsActivated("true");
+                    FirebaseDatabase.getInstance().getReference("DBFlashCard/reminders").child(userId)
+                            .child(ValidateCheckForReminder.reminderSave.getDeckId())
+                            .child(ValidateCheckForReminder.reminderSave.getReminderId())
+                            .setValue(reminderChecked);
+                    ValidateCheckForReminder.setDefault();
+                }else {
+                    ValidateCheckForReminder.setDefault();
+                }
                 finish();
             }
         });

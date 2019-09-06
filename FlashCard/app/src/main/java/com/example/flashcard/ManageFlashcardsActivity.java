@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -64,13 +66,17 @@ public class ManageFlashcardsActivity extends AppCompatActivity {
     private StorageReference storageReference;
     DatabaseReference databaseDeckDetails;
     //
-    private RecyclerView.Adapter adapter;
+    private CardRecyclerAdapter adapter;
     private List<Card> cards;
     // Image from dialog alert builder
     ImageView imageViewFlashCard;
     LinearLayout imageViewDefault;
     //
     Card card_To_UploadImage;
+    //
+    private SearchView searchViewCard;
+    //
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,6 +122,9 @@ public class ManageFlashcardsActivity extends AppCompatActivity {
         progressDialog.setMessage("Please wait...");
         progressDialog.show();
         //
+        //
+        searchViewCard = (SearchView) findViewById(R.id.searchViewCard);
+        //
         cards = new ArrayList<>();
         //
         //databaseDeckDetails = FirebaseDatabase.getInstance().getReference("DBFlashCard").child("deckdetails");
@@ -138,6 +147,7 @@ public class ManageFlashcardsActivity extends AppCompatActivity {
                 });
 
                 recyclerView.setAdapter(adapter);
+                setupSearchViewCard();
             }
 
             @Override
@@ -224,7 +234,7 @@ public class ManageFlashcardsActivity extends AppCompatActivity {
             }
         });
 
-        if(card.getVocabularyUrl() != null && card.getVocabularyUrl() != ""){
+        if(card.getVocabularyUrl() != null && !card.getVocabularyUrl().isEmpty()){
             Glide.with(this).load(card.getVocabularyUrl()).into(imageViewFlashCard);
             imageViewFlashCard.setVisibility(View.VISIBLE);
             imageViewDefault.setVisibility(View.GONE);
@@ -262,7 +272,9 @@ public class ManageFlashcardsActivity extends AppCompatActivity {
                         card_To_UploadImage = newCard;
                         uploadFile();
                     }
-                    Toast.makeText(ManageFlashcardsActivity.this, "Card edited", Toast.LENGTH_LONG).show();
+                    else {
+                        Toast.makeText(ManageFlashcardsActivity.this, "Card edited", Toast.LENGTH_LONG).show();
+                    }
                 } else {
                     //updateArtist(artistId, artistName, genre);
                     etVocabulary.setError("Cannot empty");
@@ -325,7 +337,7 @@ public class ManageFlashcardsActivity extends AppCompatActivity {
                                 public void onSuccess(Uri uri) {
 
 
-                                    Toast.makeText(ManageFlashcardsActivity.this, "File uploaded", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(ManageFlashcardsActivity.this, "Card edited", Toast.LENGTH_LONG).show();
 //                                    // get url to assign to object Upload
 //                                    Card card = new Card(editTextName.getText().toString().trim(),uri.toString());
 //                                    // Resolve taskSnapshot.getDownloadUrl() cannot found
@@ -381,4 +393,29 @@ public class ManageFlashcardsActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void setupSearchViewCard(){
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchViewCard.setSearchableInfo(searchManager
+                .getSearchableInfo(getComponentName()));
+        searchViewCard.setMaxWidth(Integer.MAX_VALUE);
+
+        // listening to search query text change
+        searchViewCard.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // filter recycler view when query submitted
+                (ManageFlashcardsActivity.this).adapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                // filter recycler view when text is changed
+                (ManageFlashcardsActivity.this).adapter.getFilter().filter(query);
+                return false;
+            }
+        });
+    }
+
 }
