@@ -13,7 +13,6 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             />
     </com.google.android.material.appbar.AppBarLayout>
@@ -25,6 +24,7 @@
         android:orientation="vertical">
 
         <SearchView
+            android:id="@+id/searchViewCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"

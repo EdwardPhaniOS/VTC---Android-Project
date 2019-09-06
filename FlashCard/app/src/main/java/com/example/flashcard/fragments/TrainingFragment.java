@@ -2,22 +2,31 @@ package com.example.flashcard.fragments;
 
 
 import android.content.Intent;
+import android.opengl.Visibility;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.flashcard.LearnActivity;
 import com.example.flashcard.R;
 import com.example.flashcard.SurveyActivity;
 import com.example.flashcard.Utilities.CardColor;
 import com.example.flashcard.Utilities.ConstantVariable;
+import com.example.flashcard.Utilities.ValidateCheckForReminder;
 import com.example.flashcard.adapters.DeckList;
 import com.example.flashcard.models.Card;
 import com.example.flashcard.models.Deck;
@@ -27,8 +36,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,6 +74,10 @@ public class TrainingFragment extends Fragment {
     private Button buttonTestRed;
     private Button buttonTrainingRed;
 
+    private ImageButton buttonSpeak;
+    private TextToSpeech textToSpeech;
+    private TextView textViewShowSpeaking;
+
     private OnButtonTestClickListener listener;
 
     public TrainingFragment(OnButtonTestClickListener listener) {
@@ -80,6 +96,44 @@ public class TrainingFragment extends Fragment {
 
         final String deckId = getActivity().getIntent().getStringExtra(ConstantVariable.DECK_ID);
         final String deckName = getActivity().getIntent().getStringExtra(ConstantVariable.DECK_NAME);
+
+        textViewShowSpeaking = (TextView) view.findViewById(R.id.textViewShowSpeaking);
+        textViewShowSpeaking.setText("");
+
+        buttonSpeak = (ImageButton) view.findViewById(R.id.buttonSpeak);
+
+
+        buttonSpeak.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(textToSpeech.isSpeaking()){
+                    textToSpeech.stop();
+                    textViewShowSpeaking.setText("");
+                    //textToSpeech.shutdown();
+                    return;
+                }
+                //textToSpeech.stop();
+//                    String toSpeak = generateTextFromVocabularyCards(cards);
+//                    Toast.makeText(getContext(), toSpeak,Toast.LENGTH_LONG).show();
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                        textToSpeech.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null,null);
+//                    } else {
+//                        textToSpeech.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+//                    }
+                int size = cards.size();
+                for(int i = 0;i<size;i++){
+                    int count = i + 1;
+                     String toSpeak = cards.get(i).getVocabulary();
+                    String showText = "" + count + "/" + size + "\n" + "[ " + toSpeak + " ]";
+                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                         textToSpeech.speak(toSpeak + "...\n", TextToSpeech.QUEUE_ADD, null,showText);
+                     } else {
+                         textToSpeech.speak(toSpeak + "...\n", TextToSpeech.QUEUE_ADD, null);
+                     }
+                 }
+            }
+        });
+        buttonSpeak.setOnLongClickListener(speakButtonLongClickListener);
 
         buttonLearnBlue = (Button) view.findViewById(R.id.buttonLearnBlue);
         buttonTestBlue = (Button) view.findViewById(R.id.buttonTestBlue);
@@ -105,14 +159,23 @@ public class TrainingFragment extends Fragment {
         buttonTrainingTotal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(buttonSpeak.getVisibility() == View.GONE){
+                    buttonSpeak.setVisibility(View.VISIBLE);
+                }else {
+                    buttonSpeak.setVisibility(View.GONE);
+                }
                 hideAllButtonsExcept(buttonLearnTotal);
                 hideAndShowButtons(buttonLearnTotal,buttonTestTotal);
+
             }
         });
+
+
 
         buttonTrainingBlue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                buttonSpeak.setVisibility(View.GONE);
                 hideAllButtonsExcept(buttonLearnBlue);
                 hideAndShowButtons(buttonLearnBlue,buttonTestBlue);
             }
@@ -121,6 +184,7 @@ public class TrainingFragment extends Fragment {
         buttonTrainingYellow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                buttonSpeak.setVisibility(View.GONE);
                 hideAllButtonsExcept(buttonLearnYellow);
                 hideAndShowButtons(buttonLearnYellow,buttonTestYellow);
             }
@@ -129,6 +193,7 @@ public class TrainingFragment extends Fragment {
         buttonTrainingGreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                buttonSpeak.setVisibility(View.GONE);
                 hideAllButtonsExcept(buttonLearnGreen);
                 hideAndShowButtons(buttonLearnGreen,buttonTestGreen);
             }
@@ -137,6 +202,7 @@ public class TrainingFragment extends Fragment {
         buttonTrainingRed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                buttonSpeak.setVisibility(View.GONE);
                 hideAllButtonsExcept(buttonLearnRed);
                 hideAndShowButtons(buttonLearnRed,buttonTestRed);
             }
@@ -147,27 +213,202 @@ public class TrainingFragment extends Fragment {
         buttonLearnTotal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), LearnActivity.class);
-                // put extra
-                intent.putExtra(ConstantVariable.DECK_ID, deckId);
-                intent.putExtra(ConstantVariable.DECK_NAME, deckName);
-                startActivity(intent);
+                if(checkLearn(cards.size())){
+                    //
+                    ValidateCheckForReminder.isTriggerFromLearnTotalButton = true;
+                    //
+                    Intent intent = new Intent(getContext(), LearnActivity.class);
+                    // put extra
+                    intent.putExtra(ConstantVariable.DECK_ID, deckId);
+                    intent.putExtra(ConstantVariable.DECK_NAME, deckName);
+                    intent.putExtra(ConstantVariable.CARD_COLOR, "Total");
+                    startActivity(intent);
+                }
             }
         });
 
         buttonTestTotal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), SurveyActivity.class);
-                // put extra
-                intent.putExtra(ConstantVariable.DECK_ID, deckId);
-                intent.putExtra(ConstantVariable.DECK_NAME, deckName);
-                startActivity(intent);
-                listener.OnButtonTestClick();
+                if(checkTest(cards.size())){
+                    //
+                    ValidateCheckForReminder.isTriggerFromTestTotalButton = true;
+                    //
+                    Intent intent = new Intent(getContext(), SurveyActivity.class);
+                    // put extra
+                    intent.putExtra(ConstantVariable.DECK_ID, deckId);
+                    intent.putExtra(ConstantVariable.DECK_NAME, deckName);
+                    intent.putExtra(ConstantVariable.CARD_COLOR, "Total");
+                    startActivity(intent);
+                    listener.OnButtonTestClick();
+                }
             }
         });
 
+        buttonLearnBlue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkLearn(numberOfBlueCards)) {
+                    Intent intent = new Intent(getContext(), LearnActivity.class);
+                    // put extra
+                    intent.putExtra(ConstantVariable.DECK_ID, deckId);
+                    intent.putExtra(ConstantVariable.DECK_NAME, deckName);
+                    intent.putExtra(ConstantVariable.CARD_COLOR, CardColor.BLUE.name());
+                    startActivity(intent);
+                }
+            }
+        });
+
+        buttonTestBlue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkTest(numberOfBlueCards)) {
+                    Intent intent = new Intent(getContext(), SurveyActivity.class);
+                    intent.putExtra(ConstantVariable.DECK_ID, deckId);
+                    intent.putExtra(ConstantVariable.DECK_NAME, deckName);
+                    intent.putExtra(ConstantVariable.CARD_COLOR, CardColor.BLUE.name());
+                    startActivity(intent);
+                    listener.OnButtonTestClick();
+                }
+            }
+        });
+
+        buttonLearnYellow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkLearn(numberOfYellowCards)) {
+                    Intent intent = new Intent(getContext(), LearnActivity.class);
+                    // put extra
+                    intent.putExtra(ConstantVariable.DECK_ID, deckId);
+                    intent.putExtra(ConstantVariable.DECK_NAME, deckName);
+                    intent.putExtra(ConstantVariable.CARD_COLOR, CardColor.YELLOW.name());
+                    startActivity(intent);
+                }
+            }
+        });
+
+        buttonTestYellow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkTest(numberOfYellowCards)) {
+                    Intent intent = new Intent(getContext(), SurveyActivity.class);
+                    intent.putExtra(ConstantVariable.DECK_ID, deckId);
+                    intent.putExtra(ConstantVariable.DECK_NAME, deckName);
+                    intent.putExtra(ConstantVariable.CARD_COLOR, CardColor.YELLOW.name());
+                    startActivity(intent);
+                    listener.OnButtonTestClick();
+                }
+            }
+        });
+
+        buttonLearnGreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkLearn(numberOfGreenCards)) {
+                    Intent intent = new Intent(getContext(), LearnActivity.class);
+                    // put extra
+                    intent.putExtra(ConstantVariable.DECK_ID, deckId);
+                    intent.putExtra(ConstantVariable.DECK_NAME, deckName);
+                    intent.putExtra(ConstantVariable.CARD_COLOR, CardColor.GREEN.name());
+                    startActivity(intent);
+                }
+            }
+        });
+
+        buttonTestGreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkTest(numberOfGreenCards)) {
+                    Intent intent = new Intent(getContext(), SurveyActivity.class);
+                    intent.putExtra(ConstantVariable.DECK_ID, deckId);
+                    intent.putExtra(ConstantVariable.DECK_NAME, deckName);
+                    intent.putExtra(ConstantVariable.CARD_COLOR, CardColor.GREEN.name());
+                    startActivity(intent);
+                    listener.OnButtonTestClick();
+                }
+            }
+        });
+
+        buttonLearnRed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkLearn(numberOfRedCards)) {
+                    Intent intent = new Intent(getContext(), LearnActivity.class);
+                    // put extra
+                    intent.putExtra(ConstantVariable.DECK_ID, deckId);
+                    intent.putExtra(ConstantVariable.DECK_NAME, deckName);
+                    intent.putExtra(ConstantVariable.CARD_COLOR, CardColor.RED.name());
+                    startActivity(intent);
+                }
+            }
+        });
+
+        buttonTestRed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkTest(numberOfRedCards)) {
+                    Intent intent = new Intent(getContext(), SurveyActivity.class);
+                    intent.putExtra(ConstantVariable.DECK_ID, deckId);
+                    intent.putExtra(ConstantVariable.DECK_NAME, deckName);
+                    intent.putExtra(ConstantVariable.CARD_COLOR, CardColor.RED.name());
+                    startActivity(intent);
+                    listener.OnButtonTestClick();
+                }
+            }
+        });
+
+
+
+//        buttonSpeak.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                    String speakTextTxt                  = "Good morning,have a nice day";
+////                    HashMap<String, String> myHashRender = new HashMap<String, String>();
+////                    myHashRender.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, speakTextTxt);
+////                    String exStoragePath                = Environment.getExternalStorageDirectory().getAbsolutePath();
+////                    File appTmpPath                     = new File(exStoragePath + "/sounds/");
+////                    appTmpPath.mkdirs();
+////                    String tempFilename                 = "tmpaudio.mp3";
+////                    String tempDestFile                 = appTmpPath.getAbsolutePath() + "/" + tempFilename;
+//                    //textToSpeech.synthesizeToFile(speakTextTxt, myHashRender, tempDestFile);
+////                    Toast.makeText(getContext(), "Long Click",Toast.LENGTH_SHORT).show();
+//
+//                String state = Environment.getExternalStorageState();
+//                boolean mExternalStorageWriteable = false;
+//                boolean mExternalStorageAvailable = false;
+//                if (Environment.MEDIA_MOUNTED.equals(state)) {
+//                    // Can read and write the media
+//                    mExternalStorageAvailable = mExternalStorageWriteable = true;
+//
+//                } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+//                    // Can only read the media
+//                    mExternalStorageAvailable = true;
+//                    mExternalStorageWriteable = false;
+//                } else {
+//                    // Can't read or write
+//                    mExternalStorageAvailable = mExternalStorageWriteable = false;
+//                }
+//                File root = android.os.Environment.getExternalStorageDirectory();
+//                File dir = new File(root.getAbsolutePath() + "/download");
+//                dir.mkdirs();
+//                File file = new File(dir, "myData.mp3");
+//                int test = textToSpeech.synthesizeToFile((CharSequence) speakTextTxt, null, file,
+//                        "tts");
+//                Toast.makeText(getContext(), "Long Click",Toast.LENGTH_SHORT).show();
+//
+//                return true;
+//            }
+//        });
+
         return view;
+    }
+
+    private String generateTextFromVocabularyCards(List<Card> cards) {
+        String res = "";
+        for(Card card:cards){
+            res += card.getVocabulary() + "...\n";
+        }
+        return res;
     }
 
     private void loadData(){
@@ -203,10 +444,10 @@ public class TrainingFragment extends Fragment {
                 buttonTrainingBlue.setText(numberOfBlueCards + " card(s) for " + percentageOfBlue + "%");
                 int percentageOfYellow = (int)Math.round((float)numberOfYellowCards*100/total);
                 buttonTrainingYellow.setText(numberOfYellowCards + " card(s) for " + percentageOfYellow + "%");
-                int percentageOfGreen = (int)Math.round((float)numberOfGreenCards*100/total);
-                buttonTrainingGreen.setText(numberOfGreenCards + " card(s) for " + percentageOfGreen + "%");
-                int percentageOfRed = 100 - percentageOfBlue - percentageOfYellow - percentageOfGreen;
+                int percentageOfRed = (int)Math.round((float)numberOfRedCards*100/total);
                 buttonTrainingRed.setText(numberOfRedCards + " card(s) for " + percentageOfRed + "%");
+                int percentageOfGreen = 100 - percentageOfBlue - percentageOfYellow - percentageOfRed;
+                buttonTrainingGreen.setText(numberOfGreenCards + " card(s) for " + percentageOfGreen + "%");
             }
 
             @Override
@@ -221,7 +462,42 @@ public class TrainingFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        textToSpeech = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                //buttonSpeak.setEnabled(status == TextToSpeech.SUCCESS);
+                if(status != TextToSpeech.ERROR) {
+                    textToSpeech.setLanguage(Locale.US);
+                    textToSpeech.setSpeechRate(0.80f);
+                    textToSpeech.setPitch(1.050f);
+                    textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                        @Override
+                        public void onStart(String utteranceId) {
+                            textViewShowSpeaking.setText(utteranceId);
+                        }
+
+                        @Override
+                        public void onDone(String utteranceId) {
+                            textViewShowSpeaking.setText("");
+                        }
+
+                        @Override
+                        public void onError(String utteranceId) {
+
+                        }
+                    });
+                }
+            }
+        },"com.google.android.tts");
         loadData();
+    }
+    @Override
+    public void onPause(){
+        if(textToSpeech != null){
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        super.onPause();
     }
 
     public interface OnButtonTestClickListener {
@@ -291,4 +567,28 @@ public class TrainingFragment extends Fragment {
             buttonTestGreen.setVisibility(View.GONE);
         }
     }
+
+    private boolean checkTest(int quantity){
+        if(quantity < 4){
+            Toast.makeText(getContext(), "Must have 4 cards to submit", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkLearn(int quantity){
+        if(quantity < 1){
+            Toast.makeText(getContext(), "Must have at least 1 cards to submit", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    View.OnLongClickListener speakButtonLongClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            Toast.makeText(getContext(), "Long Click", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+    };
 }

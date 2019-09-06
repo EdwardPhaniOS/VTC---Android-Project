@@ -54,6 +54,9 @@ public class UserProgressFragment extends Fragment {
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private String userId = user != null ? user.getUid() : null;
     private int count = 0;
+
+    private ValueEventListener userDecksListener;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -74,11 +77,17 @@ public class UserProgressFragment extends Fragment {
 
         return rootView;
     }
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(userDecksListener != null) {
+            databaseDecks.child("decks").child(userId).removeEventListener(userDecksListener);
+        }
+    }
     @Override
     public void onStart() {
         super.onStart();
-        ValueEventListener userDecksListener = new ValueEventListener()
+        userDecksListener = new ValueEventListener()
         {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -112,24 +121,37 @@ public class UserProgressFragment extends Fragment {
                             for(DataSnapshot postSnapshot : dataSnapshot.getChildren())
                             {
                                 Card card = postSnapshot.getValue(Card.class);
+
+                                if (card.getCardStatus().matches("BLUE")) {
+                                    blueCards++;
+                                } else  if (card.getCardStatus().matches("RED")) {
+                                    redCards++;
+
+                                } else  if (card.getCardStatus().matches("YELLOW")) {
+                                    yellowCards++;
+
+                                }  else {
+                                    greenCards++;
+                                }
+
                                 cards.add(card);
                             }
                             if(count == deckIds.size()){
-                                for (int i = 0; i < cards.size(); i++) {
-                                    if (cards.get(i).getCardStatus().matches("BLUE")) {
-                                        blueCards++;
-
-                                    } else  if (cards.get(i).getCardStatus().matches("RED")) {
-                                        redCards++;
-
-                                    } else  if (cards.get(i).getCardStatus().matches("YELLOW")) {
-                                        yellowCards++;
-
-                                    }  else {
-                                        greenCards++;
-                                    }
-                                }
-                                anyChartView.setChart(null);
+//                                for (int i = 0; i < cards.size(); i++) {
+//                                    if (cards.get(i).getCardStatus().matches("BLUE")) {
+//                                        blueCards++;
+//                                    } else  if (cards.get(i).getCardStatus().matches("RED")) {
+//                                        redCards++;
+//
+//                                    } else  if (cards.get(i).getCardStatus().matches("YELLOW")) {
+//                                        yellowCards++;
+//
+//                                    }  else {
+//                                        greenCards++;
+//                                    }
+//                                }
+                                //anyChartView.setChart(null);
+                                //anyChartView.clear();
                                 Pie pie = createPieChart();
                                 updateUI();
                                 anyChartView.setChart(pie);
@@ -156,10 +178,10 @@ public class UserProgressFragment extends Fragment {
         Pie pie = AnyChart.pie();
 
         List<DataEntry> data = new ArrayList<>();
-        data.add(new ValueDataEntry("Thuộc lòng", redCards));
-        data.add(new ValueDataEntry("Sơ sơ", greenCards));
-        data.add(new ValueDataEntry("Đã quên", yellowCards));
-        data.add(new ValueDataEntry("Chưa thuộc", blueCards));
+        data.add(new ValueDataEntry(getResources().getString(R.string.textButton_Red), redCards));
+        data.add(new ValueDataEntry(getResources().getString(R.string.textButton_Green), greenCards));
+        data.add(new ValueDataEntry(getResources().getString(R.string.textButton_Yellow), yellowCards));
+        data.add(new ValueDataEntry(getResources().getString(R.string.textButton_Blue), blueCards));
 
         pie.data(data);
 
@@ -195,8 +217,8 @@ public class UserProgressFragment extends Fragment {
 
     private void showProgress()
     {
-        totalDeck.setText("loading");
-        totalCard.setText("loading");
+        totalDeck.setText("Loading...");
+        totalCard.setText("Loading...");
     }
 
 //    private class MyTask extends AsyncTask<Void, Integer, Pie> {

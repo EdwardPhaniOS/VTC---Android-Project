@@ -38,6 +38,42 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_add_alert_black_40dp" />
+
+        <TextView
+            android:id="@+id/tvActiveReminders"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Active remiders"
+            android:textSize="30dp" />
+        <Switch
+            android:id="@+id/switchActiveReminders"
+            android:layout_gravity="center"
+            android:paddingRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+<!--        <CheckBox-->
+<!--            android:id="@+id/switchActiveReminders"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:paddingRight="20dp"-->
+<!--            />-->
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
             android:src="@drawable/ic_rename_black_40dp" />
 
         <TextView
@@ -70,6 +106,28 @@
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:text="Delete deck"
+            android:textSize="30dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_format_list_bulleted_black_40dp" />
+
+        <TextView
+            android:id="@+id/tvAddListCards"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Add from text list"
             android:textSize="30dp" />
     </LinearLayout>
 </LinearLayout>

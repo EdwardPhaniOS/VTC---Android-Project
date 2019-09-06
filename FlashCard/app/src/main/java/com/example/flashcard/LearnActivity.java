@@ -8,10 +8,13 @@ import androidx.viewpager.widget.ViewPager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,10 +22,14 @@ import com.example.flashcard.Utilities.CardColor;
 import com.example.flashcard.Utilities.ConstantVariable;
 import com.example.flashcard.Utilities.DataAll;
 import com.example.flashcard.Utilities.OnGetDataListener;
+import com.example.flashcard.Utilities.ValidateCheckForReminder;
 import com.example.flashcard.adapters.FlashcardsFragmentAdapter;
 import com.example.flashcard.fragments.FlashcardLearnFragment;
 import com.example.flashcard.fragments.MyDecksFragment;
 import com.example.flashcard.models.Card;
+import com.example.flashcard.models.Reminder;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,9 +37,13 @@ import com.google.firebase.database.FirebaseDatabase;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class LearnActivity extends AppCompatActivity{
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private String userId = user.getUid();
     public final static String TAG = "CheckFlowAsync";
     private ViewPager viewPagerLearn;
     private FlashcardsFragmentAdapter mAdapter;
@@ -46,6 +57,9 @@ public class LearnActivity extends AppCompatActivity{
     Button buttonBlue;
     Button buttonGreen;
     Button buttonYellow;
+
+    ImageButton buttonSpeakerVocabulary;
+    private TextToSpeech textToSpeech;
 
     private int sizeOfCards;
     private int lastPosition = 0;
@@ -72,6 +86,33 @@ public class LearnActivity extends AppCompatActivity{
         textViewProgress = findViewById(R.id.textViewProgress);
         progressBar = findViewById(R.id.progressBar);
 
+        textToSpeech = new TextToSpeech(LearnActivity.this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    textToSpeech.setLanguage(Locale.US);
+                    textToSpeech.setSpeechRate(0.80f);
+                    textToSpeech.setPitch(1.050f);
+                }
+            }
+        },"com.google.android.tts");
+
+        buttonSpeakerVocabulary = findViewById(R.id.buttonSpeakerVocabulary);
+        buttonSpeakerVocabulary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(textToSpeech.isSpeaking()){
+                    textToSpeech.stop();
+                    return;
+                }
+                String toSpeak = cards.get(currentPosition).getVocabulary();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    textToSpeech.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null,null);
+                } else {
+                    textToSpeech.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+                }
+            }
+        });
 
         viewPagerLearn = findViewById(R.id.pagerLearnAcivity);
         viewPagerLearn.addOnPageChangeListener(swipeListener);
@@ -119,14 +160,21 @@ public class LearnActivity extends AppCompatActivity{
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
                 //DO SOME THING WHEN GET DATA SUCCESS HERE
+                List<Card> allCards = new ArrayList<>();
                 for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
                     Log.d(TAG, "LOOP - GETDATA");
                     Card card = postSnapshot.getValue(Card.class);
                     Log.d(TAG, card.getVocabulary());
-                    cards.add(card);
+                    allCards.add(card);
                 }
+                List<Card> cardsAfterFilter = filterCardByColor(allCards,getIntent().getStringExtra(ConstantVariable.CARD_COLOR));
+                cards = cardsAfterFilter;
+                //
+                Collections.shuffle(cards);
+                //
                 mAdapter = new FlashcardsFragmentAdapter(getSupportFragmentManager(),cards);
                 sizeOfCards = cards.size();
+
                 progressBar.setMax(sizeOfCards);
                 viewPagerLearn.setAdapter(mAdapter);
 
@@ -266,10 +314,41 @@ public class LearnActivity extends AppCompatActivity{
         toolbarLearn.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(ConstantVariable.TAG_COLOR, "toolbarLearn backbutton");
-                onBackPressed();
+                // process for validate check reminder
+                if(ValidateCheckForReminder.isFinishLearn){
+                    //ValidateCheckForReminder.reminderSave.setIsActivated("true"); // wrong
+                    Reminder reminderChecked = new Reminder(ValidateCheckForReminder.reminderSave.getReminderId()
+                                                            ,ValidateCheckForReminder.reminderSave.getName()
+                                                            ,ValidateCheckForReminder.reminderSave.getNameDay()
+                                                            ,ValidateCheckForReminder.reminderSave.getDate()
+                                                            ,ValidateCheckForReminder.reminderSave.getDeckId());
+                    reminderChecked.setIsActivated("true");
+                    FirebaseDatabase.getInstance().getReference("DBFlashCard/reminders").child(userId)
+                            .child(ValidateCheckForReminder.reminderSave.getDeckId())
+                            .child(ValidateCheckForReminder.reminderSave.getReminderId())
+                            .setValue(reminderChecked);
+                    Toast.makeText(LearnActivity.this, "The reminder of "
+                                                            + reminderChecked.getName() + " is done", Toast.LENGTH_LONG).show();
+                    ValidateCheckForReminder.setDefault();
+                }else {
+                    ValidateCheckForReminder.setDefault();
+                }
+                finish();
+                //onBackPressed();
             }
         });
+    }
+
+    private List<Card> filterCardByColor(List<Card> list,String color){
+        if("Total".equals(color))
+            return list;
+
+        List<Card> res = new ArrayList<Card>();
+        for(Card c : list){
+            if(c.getCardStatus().equals(color))
+                res.add(c);
+        }
+        return res;
     }
 
 

@@ -38,11 +38,9 @@ public class FlashcardLearnFragment extends Fragment {
 
     private TextView textViewFront;
     private TextView textViewBack;
-    private String backgroundColor;
     public FlashcardLearnFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,7 +52,7 @@ public class FlashcardLearnFragment extends Fragment {
         textViewBack = view.findViewById(R.id.textViewBack);
         String textVocabulary = getArguments().getString("textVocabulary");
         String textDefinition = getArguments().getString("textDefinition");
-         backgroundColor = getArguments().getString("backgroundColor");
+        String backgroundColor = getArguments().getString("backgroundColor");
 
 
         layoutFront = (LinearLayout) view.findViewById(R.id.layoutFront);
@@ -62,26 +60,23 @@ public class FlashcardLearnFragment extends Fragment {
 
         textViewFront.setText(textVocabulary);
         textViewBack.setText(textDefinition);
-        Log.d(TAG,backgroundColor);
-        if(backgroundColor == "BLUE"){
+
+        if(backgroundColor.equals("BLUE")){
             layoutFront.setBackgroundResource(R.drawable.border_flashcard_learn_blue);
             layoutBack.setBackgroundResource(R.drawable.border_flashcard_learn_blue);
-            Log.d(TAG, "setBackgroundColor --- BLUE");
         }
-        if(backgroundColor == "RED"){
+        if(backgroundColor.equals("RED")){
             layoutFront.setBackgroundResource(R.drawable.border_flashcard_learn_red);
             layoutBack.setBackgroundResource(R.drawable.border_flashcard_learn_red);
         }
-        if(backgroundColor == "GREEN"){
+        if(backgroundColor.equals("GREEN")){
             layoutFront.setBackgroundResource(R.drawable.border_flashcard_learn_green);
             layoutBack.setBackgroundResource(R.drawable.border_flashcard_learn_green);
         }
-        if(backgroundColor == "YELLOW"){
+        if(backgroundColor.equals("YELLOW")){
             layoutFront.setBackgroundResource(R.drawable.border_flashcard_learn_yellow);
             layoutBack.setBackgroundResource(R.drawable.border_flashcard_learn_yellow);
         }
-
-
 
         scrollViewFront = (ScrollView) view.findViewById(R.id.scrollViewFront);
         scrollViewBack = (ScrollView) view.findViewById(R.id.scrollViewBack);

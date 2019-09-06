@@ -3,19 +3,21 @@
 
     <item
         android:id="@+id/navigation_progress"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/ic_pie_chart_black_24dp"
         android:title="Progress" />
-
+    <item
+        android:id="@+id/navigation_reminder"
+        android:icon="@drawable/ic_add_alert_black_40dp"
+        android:title="Reminders" />
     <item
         android:id="@+id/navigation_my_decks"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_folder_open_black_24dp"
         android:title="My Decks" />
 
     <item
         android:id="@+id/navigation_download"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="Download" />
-
+        android:icon="@drawable/ic_cloud_download_black_24dp"
+        android:title="Downloads" />
     <item
         android:id="@+id/navigation_account_info"
         android:icon="@drawable/user_icon"

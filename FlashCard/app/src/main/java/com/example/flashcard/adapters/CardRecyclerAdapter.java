@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,21 +18,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.flashcard.R;
+import com.example.flashcard.Utilities.CardColor;
 import com.example.flashcard.models.Card;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapter.ViewHolder>{
-
+public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapter.ViewHolder> implements Filterable {
 
     private Context context;
     private List<Card> cards;
+    private List<Card> copyAllcards;
     private final OnCardClickListener cardListener;
 
     public CardRecyclerAdapter(Context context, List<Card> cards, OnCardClickListener cardListener) {
         this.context = context;
         this.cards = cards;
+        this.copyAllcards = cards;
         this.cardListener = cardListener;
     }
 
@@ -39,6 +44,7 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.layout_cardview_flashcard, viewGroup,false);
+
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
     }
@@ -47,6 +53,8 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         viewHolder.bind(cards.get(position),cardListener);
         final Card card = cards.get(position);
+
+
 
         viewHolder.textViewVocabulary.setText(card.getVocabulary());
         viewHolder.textViewDefinition.setText(card.getDefinition());
@@ -132,18 +140,66 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
         void onCardClick(Card item);
     }
 
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    cards = copyAllcards;
+                } else {
+                    List<Card> filteredList = new ArrayList<>();
+                    for (Card row : copyAllcards) {
+
+                        // name match condition. this might differ depending on your requirement
+                        // here we are looking for name or phone number match
+                        if (row.getVocabulary().toLowerCase().contains(charString.toLowerCase()) || row.getDefinition().contains(charSequence)) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    cards = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = cards;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                cards = (ArrayList<Card>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder{
         public TextView textViewVocabulary;
         public TextView textViewDefinition;
+        public LinearLayout layoutCard;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             textViewVocabulary = (TextView)itemView.findViewById(R.id.textViewVocabulary);
             textViewDefinition = (TextView)itemView.findViewById(R.id.textViewDefinition);
+            layoutCard = itemView.findViewById(R.id.layoutCardView);
         }
 
         public void bind(final Card item, final OnCardClickListener listener) {
+
+            if(item.getCardStatus().equals(CardColor.RED.name())){
+                layoutCard.setBackgroundResource(R.drawable.style_card_egde_red);
+            }else if(item.getCardStatus().equals(CardColor.BLUE.name())){
+                layoutCard.setBackgroundResource(R.drawable.style_card_egde_blue);
+            }else if(item.getCardStatus().equals(CardColor.YELLOW.name())){
+                layoutCard.setBackgroundResource(R.drawable.style_card_egde_yellow);
+            }else {
+                layoutCard.setBackgroundResource(R.drawable.style_card_egde_green);
+            }
+
             textViewVocabulary.setText(item.getVocabulary());
             textViewDefinition.setText(item.getDefinition());
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -154,4 +210,6 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
         }
 
     }
+
+
 }

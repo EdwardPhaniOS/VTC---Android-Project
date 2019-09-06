@@ -5,28 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
+        android:id="@+id/linearlayoutReminders"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <SearchView
-            android:id="@+id/searchViewDeck"
+        <TextView
+            android:id="@+id/tvDateChosen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/background_border"/>
-
+            android:textSize="25dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="Today"/>
         <ListView
-            android:id="@+id/lvDecks"
+            android:id="@+id/lvReminders"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fabChooseDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/round_add_white_24dp"
+        android:src="@drawable/ic_today_black_60dp"
         />
 
 
