@@ -13,6 +13,7 @@ import com.example.flashcard.Utilities.ConstantVariable;
 import com.example.flashcard.Utilities.ValidateCheckForReminder;
 import com.example.flashcard.adapters.SectionsPagerAdapterForResultPage;
 import com.example.flashcard.models.QuizResult;
+import com.example.flashcard.models.Reminder;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -42,11 +43,16 @@ public class ShowTestResultActivity extends AppCompatActivity
             public void onClick(View v) {
                 // process for validate check reminder
                 if(ValidateCheckForReminder.isFinishTest){
-                    ValidateCheckForReminder.reminderSave.setIsActivated("true");
+                    Reminder reminderChecked = new Reminder(ValidateCheckForReminder.reminderSave.getReminderId()
+                            ,ValidateCheckForReminder.reminderSave.getName()
+                            ,ValidateCheckForReminder.reminderSave.getNameDay()
+                            ,ValidateCheckForReminder.reminderSave.getDate()
+                            ,ValidateCheckForReminder.reminderSave.getDeckId());
+                    reminderChecked.setIsActivated("true");
                     FirebaseDatabase.getInstance().getReference("DBFlashCard/reminders").child(userId)
                             .child(ValidateCheckForReminder.reminderSave.getDeckId())
                             .child(ValidateCheckForReminder.reminderSave.getReminderId())
-                            .setValue(ValidateCheckForReminder.reminderSave);
+                            .setValue(reminderChecked);
                     ValidateCheckForReminder.setDefault();
                 }else {
                     ValidateCheckForReminder.setDefault();

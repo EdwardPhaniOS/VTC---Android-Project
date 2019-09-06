@@ -27,6 +27,7 @@ import com.example.flashcard.adapters.QuestionTestFragmentAdapter;
 import com.example.flashcard.fragments.TestQuestionFinishFragment;
 import com.example.flashcard.fragments.TestQuestionFragment;
 import com.example.flashcard.models.Card;
+import com.example.flashcard.models.Reminder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -155,7 +156,7 @@ public class TestActivity extends AppCompatActivity {
                 return;
 
             if(getItem(+1) == sizeOfCards){
-                if(ValidateCheckForReminder.isTriggerFromTestTotalButton){
+                if(ValidateCheckForReminder.isTriggerFromTestTotalButton && ValidateCheckForReminder.reminderSave!=null){
                     ValidateCheckForReminder.isFinishTest = true;
                 }
                 lastQuestion = true;
@@ -255,7 +256,7 @@ public class TestActivity extends AppCompatActivity {
                             result_color.add(cards.get(i).getCardStatus());
                         }
                     }
-                    if(ValidateCheckForReminder.isTriggerFromTestTotalButton){
+                    if(ValidateCheckForReminder.isTriggerFromTestTotalButton && ValidateCheckForReminder.reminderSave!=null){
                         ValidateCheckForReminder.isFinishTest = true;
                     }
                     addTestFinishFragment(result_question,result_answer_right,result_answer_wrong,result_color);
@@ -293,10 +294,15 @@ public class TestActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // process for validate check reminder
                 if(ValidateCheckForReminder.isFinishTest){
+                    Reminder reminderChecked = new Reminder(ValidateCheckForReminder.reminderSave.getReminderId()
+                            ,ValidateCheckForReminder.reminderSave.getName()
+                            ,ValidateCheckForReminder.reminderSave.getNameDay()
+                            ,ValidateCheckForReminder.reminderSave.getDate()
+                            ,ValidateCheckForReminder.reminderSave.getDeckId());
                     FirebaseDatabase.getInstance().getReference("DBFlashCard/reminders").child(userId)
                             .child(ValidateCheckForReminder.reminderSave.getDeckId())
                             .child(ValidateCheckForReminder.reminderSave.getReminderId())
-                            .setValue(ValidateCheckForReminder.reminderSave);
+                            .setValue(reminderChecked);
                     ValidateCheckForReminder.setDefault();
                 }else {
                     ValidateCheckForReminder.setDefault();
@@ -329,13 +335,13 @@ public class TestActivity extends AppCompatActivity {
             countDownTimer.cancel();
 
         }
-        String s = "";
-
-        for(int i = 0 ; i< result_question.size();i++){
-            s += result_question.get(i).toString() + "\n";
-        }
-
-        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+//        String s = "";
+//
+//        for(int i = 0 ; i< result_question.size();i++){
+//            s += result_question.get(i).toString() + "\n";
+//        }
+//
+//        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
         // https://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this-action-after-onsaveinstancestate-wit
     }
 
