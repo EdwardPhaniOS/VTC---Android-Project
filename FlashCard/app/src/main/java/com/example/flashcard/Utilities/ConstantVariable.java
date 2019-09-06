@@ -19,4 +19,7 @@ public class ConstantVariable {
     public final static String RESULT_ANSWER_WRONG_FOR_SHOWTESTRESULT = "RESULT_ANSWER_WRONG_FOR_SHOWTESTRESULT";
     public final static String RESULT_COLOR_FOR_SHOWTESTRESULT = "RESULT_COLOR_FOR_SHOWTESTRESULT";
 
+    public final static String ONE_THOUSAND_COMMON_WORDS = "1000 Common English words";
+    public final static String ONE_THOUSAND_COMMON_PHRASES = "1000 Common English phrases";
+
 }

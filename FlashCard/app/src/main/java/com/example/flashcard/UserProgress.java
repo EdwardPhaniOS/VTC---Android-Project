@@ -9,7 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import com.example.flashcard.fragments.AccountInfoFragment;
+import com.example.flashcard.fragments.DownloadCardsFragment;
 import com.example.flashcard.fragments.MyDecksFragment;
+import com.example.flashcard.fragments.UserProgressFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

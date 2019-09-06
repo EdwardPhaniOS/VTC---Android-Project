@@ -1,4 +1,4 @@
-package com.example.flashcard;
+package com.example.flashcard.fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Pie;
 import com.anychart.enums.Align;
 import com.anychart.enums.LegendLayout;
+import com.example.flashcard.R;
 import com.example.flashcard.models.Card;
 import com.example.flashcard.models.Deck;
 import com.google.firebase.auth.FirebaseAuth;
