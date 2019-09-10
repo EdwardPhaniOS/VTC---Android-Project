@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <EditText
         android:id="@+id/etRenameDeck"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:hint="Enter new deck name" />
+        android:fontFamily="monospace"
+        android:hint="Enter new deck name"
+        android:paddingLeft="20dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,6 +22,7 @@
             android:id="@+id/buttonCancelRenameDeck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="monospace"
             android:text="CANCEL" />
 
         <Button
@@ -27,6 +30,7 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="monospace"
             android:text="OK" />
 
     </LinearLayout>

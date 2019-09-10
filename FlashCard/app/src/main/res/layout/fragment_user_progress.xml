@@ -15,19 +15,21 @@
         android:layout_height="35dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
+        android:fontFamily="monospace"
         android:text="Total Cards:"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/total_decks_text" />
 
     <TextView
         android:id="@+id/total_cards_number"
-        android:layout_width="60dp"
+        android:layout_width="100dp"
         android:layout_height="25dp"
+        android:fontFamily="monospace"
         android:text="loading"
         android:textAlignment="viewStart"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/total_cards_text"
         app:layout_constraintStart_toEndOf="@+id/total_cards_text" />
@@ -38,18 +40,20 @@
         android:layout_height="37dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
+        android:fontFamily="monospace"
         android:text="Total Decks:"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/total_decks_number"
-        android:layout_width="80dp"
+        android:layout_width="100dp"
         android:layout_height="21dp"
+        android:fontFamily="monospace"
         android:text="loading"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/total_decks_text"
         app:layout_constraintStart_toEndOf="@+id/total_decks_text" />

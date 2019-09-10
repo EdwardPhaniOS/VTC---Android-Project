@@ -54,6 +54,7 @@
             android:padding="@dimen/appbar_padding"
             android:text="Quiz Result"
             android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+            android:textColor="#F9F9F9"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.294"
             app:layout_constraintStart_toEndOf="@+id/cancel_button_in_result_page"

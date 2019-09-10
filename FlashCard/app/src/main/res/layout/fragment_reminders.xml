@@ -9,14 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/tvDateChosen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="25dp"
+            android:fontFamily="monospace"
             android:gravity="center"
-            android:textStyle="bold"
-            android:text="Today"/>
+            android:text="Today"
+            android:textSize="25dp"
+            android:textStyle="bold" />
         <ListView
             android:id="@+id/lvReminders"
             android:layout_marginTop="5dp"

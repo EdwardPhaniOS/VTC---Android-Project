@@ -193,6 +193,8 @@ public class UserProgressFragment extends Fragment {
         pie.palette(settings);
 
         pie.title("Progression Report");
+        pie.title().fontFamily("monospace");
+        pie.labels().fontFamily("monospace");
         pie.labels().position("outside");
         pie.legend()
                 .position("center-bottom")
@@ -218,8 +220,8 @@ public class UserProgressFragment extends Fragment {
 
     private void showProgress()
     {
-        totalDeck.setText("Loading...");
-        totalCard.setText("Loading...");
+        totalDeck.setText(getString(R.string.loading_text));
+        totalCard.setText(getString(R.string.loading_text));
     }
 
 //    private class MyTask extends AsyncTask<Void, Integer, Pie> {
