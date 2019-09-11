@@ -17,6 +17,16 @@
             android:gravity="center"
             android:textStyle="bold"
             android:text="Today"/>
+        <TextView
+            android:id="@+id/tvNoReminders"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:textStyle="italic"
+            android:layout_marginTop="30dp"
+            android:text="There are no reminders on this day"/>
         <ListView
             android:id="@+id/lvReminders"
             android:layout_marginTop="5dp"

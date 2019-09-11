@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
@@ -157,6 +158,8 @@ public class ManageFlashcardsActivity extends AppCompatActivity {
         });
     }
 
+
+
     private void showCreateFlashCardDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -295,6 +298,7 @@ public class ManageFlashcardsActivity extends AppCompatActivity {
 
                 databaseDeckDetails.child(card.getCardId()).removeValue();
                 b.dismiss();
+
                 Toast.makeText(getApplicationContext(), "Card deleted", Toast.LENGTH_LONG).show();
             }
         });

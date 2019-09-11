@@ -152,6 +152,7 @@ public class MyDecksFragment extends Fragment {
                                                 listDeck.add(item);
                                             }
                                             deckAdapter = new DeckList(getActivity(), listDeck);
+                                            listViewDecks.setAdapter(null);
                                             listViewDecks.setAdapter(deckAdapter);
                                             setupSearchViewDeck();
                                         }
@@ -163,6 +164,9 @@ public class MyDecksFragment extends Fragment {
 
                                 }
                             });
+                }
+                if(decks.size() == 0){
+                    listViewDecks.setAdapter(null);
                 }
             }
 
@@ -203,7 +207,6 @@ public class MyDecksFragment extends Fragment {
 
                     // notify success
                     b.dismiss();
-                    //onStart();
                     Toast.makeText(getContext(), "Deck added", Toast.LENGTH_LONG).show();
                 } else {
                     //updateArtist(artistId, artistName, genre);

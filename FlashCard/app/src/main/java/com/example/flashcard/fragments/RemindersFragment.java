@@ -52,6 +52,7 @@ import java.util.TimeZone;
 public class RemindersFragment extends Fragment {
     ListView lvReminders;
     private TextView tvDateChosen;
+    private TextView tvNoReminders;
     List<Reminder> reminders;
     List<String> deckIds;
     private int count = 0;
@@ -82,6 +83,8 @@ public class RemindersFragment extends Fragment {
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         //
         tvDateChosen = view.findViewById(R.id.tvDateChosen);
+        tvNoReminders = view.findViewById(R.id.tvNoReminders);
+
         lvReminders = view.findViewById(R.id.lvReminders);
         lvReminders.setItemsCanFocus(false);
         // initial
@@ -108,7 +111,6 @@ public class RemindersFragment extends Fragment {
                 }else {
                     tvDateChosen.setText(dateChosen);
                 }
-
                 onStart();
             }
         };
@@ -189,6 +191,14 @@ public class RemindersFragment extends Fragment {
                                             }
                                             if(count == deckIds.size()){
                                                 if(getActivity()!=null){
+                                                    if(reminders.size() == 0){
+                                                        lvReminders.setVisibility(View.GONE);
+                                                        tvNoReminders.setVisibility(View.VISIBLE);
+                                                    }
+                                                    else {
+                                                        lvReminders.setVisibility(View.VISIBLE);
+                                                        tvNoReminders.setVisibility(View.GONE);
+                                                    }
                                                     ReminderListAdapter reminderListAdapterAdapter = new ReminderListAdapter(getActivity()
                                                             , reminders, new ReminderListAdapter.OnButtonAlarmClickListener() {
                                                         @Override
@@ -215,6 +225,7 @@ public class RemindersFragment extends Fragment {
                                         }
                                     });
                         }
+
                     }
 
                     @Override

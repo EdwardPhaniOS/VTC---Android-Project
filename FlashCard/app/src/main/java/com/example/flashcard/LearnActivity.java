@@ -1,5 +1,6 @@
 package com.example.flashcard;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -11,9 +12,12 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -113,6 +117,7 @@ public class LearnActivity extends AppCompatActivity{
                 }
             }
         });
+        buttonSpeakerVocabulary.setOnLongClickListener(speakButtonLongClickListener);
 
         viewPagerLearn = findViewById(R.id.pagerLearnAcivity);
         viewPagerLearn.addOnPageChangeListener(swipeListener);
@@ -128,6 +133,9 @@ public class LearnActivity extends AppCompatActivity{
 
         @Override
         public void onPageSelected(int position) {
+            if(textToSpeech.isSpeaking()){
+                textToSpeech.stop();
+            }
             if (lastPosition > position) {
                 updateUI(position);
             }else if (lastPosition < position) {
@@ -329,9 +337,14 @@ public class LearnActivity extends AppCompatActivity{
                             .setValue(reminderChecked);
                     Toast.makeText(LearnActivity.this, "The reminder of "
                                                             + reminderChecked.getName() + " is done", Toast.LENGTH_LONG).show();
-                    ValidateCheckForReminder.setDefault();
+                    //ValidateCheckForReminder.setDefault();
                 }else {
-                    ValidateCheckForReminder.setDefault();
+                    if(ValidateCheckForReminder.reminderSave == null){
+                        ValidateCheckForReminder.setDefault();
+                    }else {
+                        ValidateCheckForReminder.isTriggerFromLearnTotalButton = false;
+                    }
+
                 }
                 finish();
                 //onBackPressed();
@@ -349,6 +362,62 @@ public class LearnActivity extends AppCompatActivity{
                 res.add(c);
         }
         return res;
+    }
+
+
+    View.OnLongClickListener speakButtonLongClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            showRepeatSpeakerDialog();
+            return true;
+        }
+    };
+
+    private void showRepeatSpeakerDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(LearnActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.numberoftimes_repeat_speaker_dialog, null);
+        dialogBuilder.setView(dialogView);
+
+        final EditText etRepetitionSpeaker = (EditText)dialogView.findViewById(R.id.etRepetitionSpeaker);
+        final Button buttonOk = (Button)dialogView.findViewById(R.id.buttonOkRepeat);
+        final Button buttonCancel = (Button)dialogView.findViewById(R.id.buttonCancelRepeat);
+
+        dialogBuilder.setTitle("Repetition");
+        final AlertDialog b = dialogBuilder.create();
+        b.show();
+
+        buttonOk.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                String input = etRepetitionSpeaker.getText().toString().trim();
+                if(!TextUtils.isEmpty(input)){
+                    int times = Integer.parseInt(input);
+                    if(times<1){
+                        return;
+                    }
+                    b.dismiss();
+                    for(int j=0;j<times;j++){
+                        String toSpeak = cards.get(currentPosition).getVocabulary();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            textToSpeech.speak(toSpeak + "...\n", TextToSpeech.QUEUE_ADD, null,null);
+                        } else {
+                            textToSpeech.speak(toSpeak + "...\n", TextToSpeech.QUEUE_ADD, null);
+                        }
+                    }
+                }
+                else {
+                    etRepetitionSpeaker.setError("Cannot empty");
+                }
+            }
+        });
+
+        buttonCancel.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                b.dismiss();
+            }
+        });
     }
 
 

@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.flashcard.Utilities.ConstantVariable;
+import com.example.flashcard.Utilities.TestActivity;
 import com.example.flashcard.Utilities.ValidateCheckForReminder;
 import com.example.flashcard.adapters.SectionsPagerAdapterForResultPage;
 import com.example.flashcard.models.QuizResult;
@@ -53,9 +55,15 @@ public class ShowTestResultActivity extends AppCompatActivity
                             .child(ValidateCheckForReminder.reminderSave.getDeckId())
                             .child(ValidateCheckForReminder.reminderSave.getReminderId())
                             .setValue(reminderChecked);
-                    ValidateCheckForReminder.setDefault();
+                    Toast.makeText(ShowTestResultActivity.this, "The reminder of "
+                            + reminderChecked.getName() + " is done", Toast.LENGTH_LONG).show();
+                    //ValidateCheckForReminder.setDefault();
                 }else {
-                    ValidateCheckForReminder.setDefault();
+                    if(ValidateCheckForReminder.reminderSave == null){
+                        ValidateCheckForReminder.setDefault();
+                    }else {
+                        ValidateCheckForReminder.isTriggerFromTestTotalButton = false;
+                    }
                 }
                 finish();
             }

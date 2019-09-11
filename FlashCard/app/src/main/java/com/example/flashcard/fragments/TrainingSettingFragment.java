@@ -46,12 +46,15 @@ public class TrainingSettingFragment extends Fragment {
     private TextView textViewRenameDeck;
     private TextView textViewDeleteDeck;
     private TextView tvAddListCards;
+    private TextView tvActiveReminders;
     private Switch switchButton;
+    private String dateActivated;
 
     private boolean statusSwitch = false;
-    public TrainingSettingFragment(boolean statusSwitchOfSettingFragment) {
+    public TrainingSettingFragment(boolean statusSwitchOfSettingFragment, String _dateActivated) {
         // Required empty public constructor
         this.statusSwitch = statusSwitchOfSettingFragment;
+        this.dateActivated = _dateActivated;
     }
 
 
@@ -65,6 +68,7 @@ public class TrainingSettingFragment extends Fragment {
         //
         textViewAddEditFlashcards = (TextView) view.findViewById(R.id.tvAddEdit);
         textViewRenameDeck = (TextView) view.findViewById(R.id.tvRenameDeck);
+        tvActiveReminders = (TextView) view.findViewById(R.id.tvActiveReminders);
         textViewDeleteDeck = (TextView) view.findViewById(R.id.tvDelete);
         tvAddListCards = (TextView) view.findViewById(R.id.tvAddListCards);
         switchButton = (Switch) view.findViewById(R.id.switchActiveReminders);
@@ -87,6 +91,17 @@ public class TrainingSettingFragment extends Fragment {
                 showUpdateDeckNameDialog(getActivity().getIntent().getStringExtra(ConstantVariable.DECK_ID)
                                         ,getActivity().getIntent().getStringExtra(ConstantVariable.DECK_NAME)
                                         ,getActivity().getIntent().getStringExtra(ConstantVariable.USER_ID));
+            }
+        });
+        tvActiveReminders.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!dateActivated.isEmpty()){
+                    Toast.makeText(getContext(), "Activated: " + dateActivated, Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(getContext(), "Status: Inactivated", Toast.LENGTH_LONG).show();
+                }
             }
         });
         textViewDeleteDeck.setOnClickListener(new View.OnClickListener() {
@@ -192,9 +207,13 @@ public class TrainingSettingFragment extends Fragment {
             public void onClick(View v) {
                 String text = etTextListCards.getText().toString().trim();
                 if(!TextUtils.isEmpty(text)){
-                    addMultipleCardToFirebase(text,deckId);
-                    Toast.makeText(getContext(), "List card is added.\nCheck your flashcard tab.", Toast.LENGTH_LONG).show();
-                    b.dismiss();
+                    try {
+                        addMultipleCardToFirebase(text,deckId);
+                        Toast.makeText(getContext(), "List card is added.\nCheck your flashcard tab.", Toast.LENGTH_LONG).show();
+                        b.dismiss();
+                    }catch (Exception e){
+                        Toast.makeText(getContext(), "Something is wrong.\nPlease check your input and try again.", Toast.LENGTH_LONG).show();
+                    }
                 }
                 else {
                     etTextListCards.setError("Cannot empty");
@@ -242,6 +261,7 @@ public class TrainingSettingFragment extends Fragment {
                     String name = deckName + "  [" + i + "]";
                     String nameDay = "The 1st day";
                     String date = df.format(d);
+                    dateActivated = date;
                     Reminder reminder = new Reminder(id,name,nameDay,date,deckId);
                     databaseReminders.child(id).setValue(reminder);
                 }
@@ -318,6 +338,7 @@ public class TrainingSettingFragment extends Fragment {
                         .child(userId);
                 databaseReminders.child(deckId).removeValue();
                 b.dismiss();
+                dateActivated = "";
                 Toast.makeText(getContext(), "The reminder is inactivated.", Toast.LENGTH_LONG).show();
             }
         });
@@ -351,6 +372,12 @@ public class TrainingSettingFragment extends Fragment {
         if(drFlashcards!=null){
             drFlashcards.removeValue();
         }
+
+        // must remove remiders related to deck
+        DatabaseReference drReminders = FirebaseDatabase.getInstance().getReference("DBFlashCard/reminders").child(userId).child(id);
+        if(drReminders!=null){
+            drReminders.removeValue();
+        }
         Toast.makeText(getContext(), "Delete completed", Toast.LENGTH_SHORT).show();
         getActivity().finish();
         return true;
@@ -367,9 +394,11 @@ public class TrainingSettingFragment extends Fragment {
                 dbAddCard.child(_id).setValue(card);
             }
             else if(sep.length == 1){
-                String _id = dbAddCard.push().getKey();
-                Card card = new Card(_id,sep[0].trim(),sep[0].trim());
-                dbAddCard.child(_id).setValue(card);
+                if(!sep[0].trim().isEmpty()) {
+                    String _id = dbAddCard.push().getKey();
+                    Card card = new Card(_id, sep[0].trim(), sep[0].trim());
+                    dbAddCard.child(_id).setValue(card);
+                }
             }
         }
     }

@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.example.flashcard.R;
@@ -18,7 +20,11 @@ import com.example.flashcard.SurveyActivity;
 import com.example.flashcard.Utilities.CardColor;
 import com.example.flashcard.Utilities.ConstantVariable;
 import com.example.flashcard.Utilities.DataAll;
+import com.example.flashcard.Utilities.TestActivity;
+import com.example.flashcard.Utilities.ValidateCheckForReminder;
 import com.example.flashcard.models.Card;
+import com.example.flashcard.models.Reminder;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,6 +40,7 @@ public class TestQuestionFinishFragment extends Fragment {
     private List<String> result_answer_right = new ArrayList<String>();
     private List<String> result_answer_wrong = new ArrayList<String>();
     private List<String> result_color = new ArrayList<String>();
+    private String userId;
 
     private Button buttonTestViewResult;
     private Button buttonTestExit;
@@ -42,12 +49,13 @@ public class TestQuestionFinishFragment extends Fragment {
 
 
     public TestQuestionFinishFragment(List<String> _result_question,List<String> _result_answer_right
-    ,List<String> _result_answer_wrong,List<String> _result_color) {
+    ,List<String> _result_answer_wrong,List<String> _result_color,String _userId) {
         // Required empty public constructor
         this.result_question = _result_question;
         this.result_answer_right = _result_answer_right;
         this.result_answer_wrong = _result_answer_wrong;
         this.result_color = _result_color;
+        this.userId = _userId;
     }
 
 
@@ -93,6 +101,29 @@ public class TestQuestionFinishFragment extends Fragment {
     View.OnClickListener onClickListener_buttonTestExit = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            // process for validate check reminder
+            if(ValidateCheckForReminder.isFinishTest){
+                Reminder reminderChecked = new Reminder(ValidateCheckForReminder.reminderSave.getReminderId()
+                        ,ValidateCheckForReminder.reminderSave.getName()
+                        ,ValidateCheckForReminder.reminderSave.getNameDay()
+                        ,ValidateCheckForReminder.reminderSave.getDate()
+                        ,ValidateCheckForReminder.reminderSave.getDeckId());
+                reminderChecked.setIsActivated("true");
+                FirebaseDatabase.getInstance().getReference("DBFlashCard/reminders").child(userId)
+                        .child(ValidateCheckForReminder.reminderSave.getDeckId())
+                        .child(ValidateCheckForReminder.reminderSave.getReminderId())
+                        .setValue(reminderChecked);
+                Toast.makeText(getContext(), "The reminder of "
+                        + reminderChecked.getName() + " is done", Toast.LENGTH_LONG).show();
+                //ValidateCheckForReminder.setDefault();
+            }else {
+                if(ValidateCheckForReminder.reminderSave == null){
+                    ValidateCheckForReminder.setDefault();
+                }else {
+                    ValidateCheckForReminder.isTriggerFromTestTotalButton = false;
+                }
+
+            }
             getActivity().finish();
         }
     };
