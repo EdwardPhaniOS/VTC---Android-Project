@@ -17,7 +17,8 @@
             android:fontFamily="monospace"
             android:gravity="center"
             android:text="Today"
-            android:textSize="25dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textSize="22dp"
             android:textStyle="bold" />
         <ListView
             android:id="@+id/lvReminders"
