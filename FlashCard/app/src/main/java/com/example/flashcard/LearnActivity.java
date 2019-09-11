@@ -62,7 +62,7 @@ public class LearnActivity extends AppCompatActivity{
     Button buttonGreen;
     Button buttonYellow;
 
-    ImageButton buttonSpeakerVocabulary;
+    private ImageButton buttonSpeakerVocabulary;
     private TextToSpeech textToSpeech;
 
     private int sizeOfCards;
@@ -102,6 +102,7 @@ public class LearnActivity extends AppCompatActivity{
         },"com.google.android.tts");
 
         buttonSpeakerVocabulary = findViewById(R.id.buttonSpeakerVocabulary);
+        buttonSpeakerVocabulary.bringToFront();
         buttonSpeakerVocabulary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -419,6 +420,4 @@ public class LearnActivity extends AppCompatActivity{
             }
         });
     }
-
-
 }

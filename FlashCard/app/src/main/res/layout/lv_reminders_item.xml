@@ -14,18 +14,22 @@
         android:layout_weight="8"
         android:layout_width="0dp"
         android:layout_height="wrap_content">
+
         <TextView
             android:id="@+id/tvNameReminder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:text="Name of deck" />
+            android:fontFamily="monospace"
+            android:text="Name of deck"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
         <TextView
             android:id="@+id/tvNameDayReminder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:text="The 1st day - dd/mm/yyyy"/>
+            android:fontFamily="monospace"
+            android:text="The 1st day - dd/mm/yyyy"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
     </LinearLayout>
     <LinearLayout

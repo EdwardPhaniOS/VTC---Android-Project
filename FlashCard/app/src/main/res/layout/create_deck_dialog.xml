@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <EditText
         android:id="@+id/editTextName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="30dp"
-        android:hint="Enter new name of deck" />
+        android:fontFamily="monospace"
+        android:hint="Enter new name of deck"
+        android:paddingLeft="30dp" />
 
 
     <LinearLayout
@@ -21,14 +23,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="CANCEL" />
+            android:background="#395E3A"
+            android:fontFamily="monospace"
+            android:text="CANCEL"
+            android:textColor="#F9F9F9" />
 
         <Button
             android:id="@+id/buttonOkDeck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="OK" />
+            android:background="#03A9F4"
+            android:fontFamily="monospace"
+            android:text="OK"
+            android:textColor="#F9F9F9" />
 
     </LinearLayout>
 </LinearLayout>

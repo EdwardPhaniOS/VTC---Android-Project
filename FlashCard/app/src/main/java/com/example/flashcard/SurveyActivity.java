@@ -6,7 +6,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.ConditionVariable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;

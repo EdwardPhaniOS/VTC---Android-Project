@@ -11,52 +11,69 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="monospace"
             android:gravity="center"
-            android:textSize="25sp"
-            android:text="Your score: "/>
+            android:text="Your score: "
+            android:textSize="25sp" />
+
         <TextView
             android:id="@+id/textViewShowScore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="monospace"
             android:gravity="center"
+            android:text="18/20 for 90% "
             android:textSize="30sp"
-            android:text="18/20 for 90% "/>
+            android:textStyle="bold" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="2"
             android:orientation="horizontal">
+
             <Button
                 android:id="@+id/buttonTestRetake"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:layout_weight="1"
-                android:padding="10dp"
                 android:layout_margin="20dp"
-                android:text="Retake"/>
+                android:layout_weight="1"
+                android:background="#03A9F4"
+                android:fontFamily="monospace"
+                android:padding="10dp"
+                android:text="Retake"
+                android:textColor="#F9F9F9"
+                android:textSize="20dp" />
+
             <Button
                 android:id="@+id/buttonTestExit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:layout_weight="1"
-                android:padding="10dp"
                 android:layout_margin="20dp"
-                android:text="Exit"/>
+                android:layout_weight="1"
+                android:background="#3F51B5"
+                android:fontFamily="monospace"
+                android:padding="10dp"
+                android:text="Exit"
+                android:textColor="#F9F9F9"
+                android:textSize="20dp" />
         </LinearLayout>
+
         <Button
             android:id="@+id/buttonTestViewResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:padding="10dp"
-            android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
-            android:text="View Results"/>
+            android:layout_marginRight="20dp"
+            android:background="@drawable/border_show_result"
+            android:fontFamily="monospace"
+            android:padding="10dp"
+            android:text="View Results"
+            android:textColor="#000000"
+            android:textSize="20dp" />
 
     </LinearLayout>
 </FrameLayout>

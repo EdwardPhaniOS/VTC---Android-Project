@@ -17,10 +17,10 @@
     <item
         android:id="@+id/navigation_download"
         android:title="Downloads"
-        android:icon="@drawable/icon_download" />
+        android:icon="@drawable/ic_file_download_black_24dp" />
     <item
         android:id="@+id/navigation_account_info"
         android:icon="@drawable/user_icon"
-        android:title="Account Info" />
+        android:title="Account" />
 
 </menu>

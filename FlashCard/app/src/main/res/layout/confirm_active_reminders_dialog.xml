@@ -12,62 +12,79 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:textStyle="bold"
+            android:fontFamily="monospace"
             android:padding="10dp"
-            android:text="The review process will be created by the system in 4 stages:"/>
+            android:text="The review process will be created by the system in 4 stages:"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="italic|bold"
+            android:fontFamily="monospace"
             android:paddingLeft="20dp"
-            android:text="Stage 1:"/>
+            android:text="Stage 1:"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:fontFamily="monospace"
             android:paddingLeft="30dp"
-            android:text="+ The first day, including 9 reminders."/>
+            android:text="+ The first day, including 9 reminders."
+            android:textSize="18sp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="italic|bold"
+            android:fontFamily="monospace"
             android:paddingLeft="20dp"
-            android:text="Stage 2:"/>
+            android:text="Stage 2:"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:fontFamily="monospace"
             android:paddingLeft="30dp"
-            android:text="+ The second day, including 3 reminders."/>
+            android:text="+ The second day, including 3 reminders."
+            android:textSize="18sp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="italic|bold"
+            android:fontFamily="monospace"
             android:paddingLeft="20dp"
-            android:text="Stage 3:"/>
+            android:text="Stage 3:"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:fontFamily="monospace"
             android:paddingLeft="30dp"
-            android:text="+ The 7th day, including 3 reminders."/>
+            android:text="+ The 7th day, including 3 reminders."
+            android:textSize="18sp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="italic|bold"
+            android:fontFamily="monospace"
             android:paddingLeft="20dp"
-            android:text="Stage 4:"/>
+            android:text="Stage 4:"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:fontFamily="monospace"
             android:paddingLeft="30dp"
-            android:text="+ The 30th day, including 3 reminders."/>
+            android:text="+ The 30th day, including 3 reminders."
+            android:textSize="18sp" />
 
     </LinearLayout>
     <LinearLayout
@@ -82,6 +99,7 @@
             android:id="@+id/buttonCancelConfirmActiveReminder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="monospace"
             android:text="CANCEL" />
 
         <Button
@@ -89,6 +107,7 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="monospace"
             android:text="Ok" />
 
     </LinearLayout>

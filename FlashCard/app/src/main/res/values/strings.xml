@@ -38,5 +38,6 @@
     <string name="textButton_Red">Peaceful</string>
     <string name="textButton_Yellow">Normal</string>
     <string name="textButton_Blue">Hard</string>
+    <string name="loading_text">Loading...</string>
     <!-- Nghia -->
 </resources>
