@@ -16,8 +16,8 @@
     <color name="cardYellow">#f2eb11</color>
     <color name="cardTotal">#8a8781</color>
 
-    <color name="cardGreenBlur">#99ff99</color>
-    <color name="cardBlueBlur">#a0bff2</color>
-    <color name="cardRedBlur">#ff8080</color>
-    <color name="cardYellowBlur">#ffff99</color>
+    <color name="cardGreenBlur">#99FF99</color>
+    <color name="cardBlueBlur">#A0BFF2</color>
+    <color name="cardRedBlur">#FF8080</color>
+    <color name="cardYellowBlur">#FFFF99</color>
 </resources>

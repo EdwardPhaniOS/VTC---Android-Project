@@ -98,13 +98,13 @@ public class AccountInfoFragment extends Fragment
                             Toast.LENGTH_SHORT).show();
                 } else {
                     String id = mDatabase.child("DBFlashCard").child("Library")
-                            .child(ConstantVariable.ONE_THOUSAND_COMMON_WORDS)
+                            .child(ConstantVariable.ONE_THOUSAND_COMMON_PHRASES)
                             .push().getKey();
 
                     final Card card = new Card(id, vocab, definition);
 
                     mDatabase.child("DBFlashCard").child("Library")
-                            .child(ConstantVariable.ONE_THOUSAND_COMMON_WORDS)
+                            .child(ConstantVariable.ONE_THOUSAND_COMMON_PHRASES)
                             .push().setValue(card);
                     }
 

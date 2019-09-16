@@ -86,7 +86,7 @@
         android:layout_width="274dp"
         android:layout_height="48dp"
         android:layout_marginTop="2dp"
-        android:backgroundTint="#4252AB"
+        android:backgroundTint="@color/cardRedBlur"
         android:fontFamily="monospace"
         android:text="Sign Up"
         android:textColor="#F2F2F2"
@@ -117,7 +117,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="40dp"
         android:backgroundTint="@color/fui_transparent"
-        android:tint="#333C9B"
+        android:tint="@color/cardRedBlur"
         app:layout_constraintStart_toStartOf="@+id/backGround"
         app:layout_constraintTop_toTopOf="@+id/backGround"
         app:srcCompat="@android:drawable/ic_delete" />

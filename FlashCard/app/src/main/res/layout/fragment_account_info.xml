@@ -63,7 +63,8 @@
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/definition_input"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="@string/hide_bottom_view_on_scroll_behavior" />
 
     <EditText
         android:id="@+id/definition_input"
@@ -77,7 +78,8 @@
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/upload_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="@string/hide_bottom_view_on_scroll_behavior" />
 
     <Button
         android:id="@+id/upload_button"
@@ -89,6 +91,7 @@
         android:text="Upload"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="@string/hide_bottom_view_on_scroll_behavior" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

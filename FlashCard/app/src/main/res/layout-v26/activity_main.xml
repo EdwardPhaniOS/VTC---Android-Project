@@ -92,7 +92,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="39dp"
         android:layout_marginEnd="8dp"
-        android:backgroundTint="#236CC4"
+        android:backgroundTint="@color/cardRedBlur"
         android:fontFamily="monospace"
         android:text="@string/login"
         android:textColor="#FFFFFF"
