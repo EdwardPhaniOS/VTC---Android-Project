@@ -39,8 +39,9 @@
         android:fontFamily="monospace"
         android:gravity="center"
         android:text="3/5"
-        android:textSize="25sp"
-        android:textStyle="bold"
+        android:textColor="#000000"
+        android:textSize="22sp"
+        android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -49,12 +50,19 @@
         android:id="@+id/buttonSubmitTest"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/fui_idp_button_background_twitter"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/border_button_training_red"
+        android:backgroundTint="@color/cardRedBlur"
         android:text="Submit"
+        android:textColor="#F9F9F9"
         android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewpagerTest" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpagerTest"

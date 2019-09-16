@@ -7,16 +7,20 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +42,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -47,6 +52,10 @@ import java.util.Locale;
  */
 public class TrainingFragment extends Fragment {
     public List<Card> cards;
+    public List<Card> cardsBlue;
+    public List<Card> cardsYellow;
+    public List<Card> cardsGreen;
+    public List<Card> cardsRed;
 
     public int numberOfBlueCards = 0;
     public int numberOfYellowCards = 0;
@@ -93,6 +102,10 @@ public class TrainingFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_training, null);
 
         cards = new ArrayList<>();
+        cardsBlue = new ArrayList<>();
+        cardsYellow = new ArrayList<>();
+        cardsGreen = new ArrayList<>();
+        cardsRed = new ArrayList<>();
 
         final String deckId = getActivity().getIntent().getStringExtra(ConstantVariable.DECK_ID);
         final String deckName = getActivity().getIntent().getStringExtra(ConstantVariable.DECK_NAME);
@@ -133,15 +146,16 @@ public class TrainingFragment extends Fragment {
                  }
             }
         });
-        buttonSpeak.setOnLongClickListener(speakButtonLongClickListener);
 
-        buttonLearnBlue = (Button) view.findViewById(R.id.buttonLearnBlue);
-        buttonTestBlue = (Button) view.findViewById(R.id.buttonTestBlue);
-        buttonTrainingBlue = (Button) view.findViewById(R.id.buttonTrainingBlue);
+        buttonSpeak.setOnLongClickListener(speakButtonLongClickListener);
 
         buttonLearnTotal = (Button) view.findViewById(R.id.buttonLearnTotal);
         buttonTestTotal = (Button) view.findViewById(R.id.buttonTestTotal);
         buttonTrainingTotal = (Button) view.findViewById(R.id.buttonTrainingTotal);
+
+        buttonLearnBlue = (Button) view.findViewById(R.id.buttonLearnBlue);
+        buttonTestBlue = (Button) view.findViewById(R.id.buttonTestBlue);
+        buttonTrainingBlue = (Button) view.findViewById(R.id.buttonTrainingBlue);
 
         buttonLearnYellow = (Button) view.findViewById(R.id.buttonLearnYellow);
         buttonTestYellow = (Button) view.findViewById(R.id.buttonTestYellow);
@@ -154,6 +168,12 @@ public class TrainingFragment extends Fragment {
         buttonLearnRed = (Button) view.findViewById(R.id.buttonLearnRed);
         buttonTestRed = (Button) view.findViewById(R.id.buttonTestRed);
         buttonTrainingRed = (Button) view.findViewById(R.id.buttonTrainingRed);
+
+
+        buttonTrainingBlue.setOnLongClickListener(blueButtonLongClickListener);
+        buttonTrainingYellow.setOnLongClickListener(yellowButtonLongClickListener);
+        buttonTrainingGreen.setOnLongClickListener(greenButtonLongClickListener);
+        buttonTrainingRed.setOnLongClickListener(redButtonLongClickListener);
 
 
         buttonTrainingTotal.setOnClickListener(new View.OnClickListener() {
@@ -418,6 +438,10 @@ public class TrainingFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 cards.clear();
+                cardsBlue.clear();
+                cardsYellow.clear();
+                cardsGreen.clear();
+                cardsRed.clear();
                 numberOfBlueCards=0;
                 numberOfYellowCards=0;
                 numberOfGreenCards=0;
@@ -430,12 +454,16 @@ public class TrainingFragment extends Fragment {
                 for(int i = 0; i<cards.size();i++){
                     if(cards.get(i).getCardStatus().equals(CardColor.BLUE.name())){
                         numberOfBlueCards++;
+                        cardsBlue.add(cards.get(i));
                     }else if(cards.get(i).getCardStatus().equals(CardColor.YELLOW.name())){
                         numberOfYellowCards++;
+                        cardsYellow.add(cards.get(i));
                     }else if(cards.get(i).getCardStatus().equals(CardColor.GREEN.name())){
                         numberOfGreenCards++;
+                        cardsGreen.add(cards.get(i));
                     }else if(cards.get(i).getCardStatus().equals(CardColor.RED.name())){
                         numberOfRedCards++;
+                        cardsRed.add(cards.get(i));
                     }
                 }
                 int total = cards.size();
@@ -462,6 +490,11 @@ public class TrainingFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        // finish activity to return to Reminders Activity
+        if(ValidateCheckForReminder.isFinishLearn || ValidateCheckForReminder.isFinishTest){
+            ValidateCheckForReminder.setDefault();
+            getActivity().finish();
+        }
         textToSpeech = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -587,8 +620,97 @@ public class TrainingFragment extends Fragment {
     View.OnLongClickListener speakButtonLongClickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
-            Toast.makeText(getContext(), "Long Click", Toast.LENGTH_SHORT).show();
+            showRepeatSpeakerDialog(cards);
             return true;
         }
     };
+
+    View.OnLongClickListener blueButtonLongClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            showRepeatSpeakerDialog(cardsBlue);
+            return true;
+        }
+    };
+    View.OnLongClickListener yellowButtonLongClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            showRepeatSpeakerDialog(cardsYellow);
+            return true;
+        }
+    };
+    View.OnLongClickListener greenButtonLongClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            showRepeatSpeakerDialog(cardsGreen);
+            return true;
+        }
+    };
+    View.OnLongClickListener redButtonLongClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            showRepeatSpeakerDialog(cardsRed);
+            return true;
+        }
+    };
+
+    private void showRepeatSpeakerDialog(final List<Card> _cards) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.numberoftimes_repeat_speaker_dialog, null);
+        dialogBuilder.setView(dialogView);
+
+        final EditText etRepetitionSpeaker = (EditText)dialogView.findViewById(R.id.etRepetitionSpeaker);
+        final CheckBox cbShuffleCards = (CheckBox)dialogView.findViewById(R.id.cbShuffleCards);
+        final Button buttonOk = (Button)dialogView.findViewById(R.id.buttonOkRepeat);
+        final Button buttonCancel = (Button)dialogView.findViewById(R.id.buttonCancelRepeat);
+
+        dialogBuilder.setTitle("Repetition");
+        final AlertDialog b = dialogBuilder.create();
+        b.show();
+
+        buttonOk.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(textToSpeech.isSpeaking()){
+                    textToSpeech.stop();
+                    textViewShowSpeaking.setText("");
+                }
+                if(cbShuffleCards.isChecked()){
+                    Collections.shuffle(_cards);
+                }
+                String input = etRepetitionSpeaker.getText().toString().trim();
+                if(!TextUtils.isEmpty(input)){
+                    int times = Integer.parseInt(input);
+                    if(times<1){
+                        return;
+                    }
+                    b.dismiss();
+                    for(int j=1;j<=times;j++){
+                        int size = _cards.size();
+                        for(int i = 0;i<size;i++){
+                            int count = i + 1;
+                            String toSpeak = _cards.get(i).getVocabulary();
+                            String showText = "" + count + "/" + size + " - (" + j + "|" +times + ")" + "\n" + "<[ " + toSpeak + " ]>";
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                textToSpeech.speak(toSpeak + "...\n", TextToSpeech.QUEUE_ADD, null,showText);
+                            } else {
+                                textToSpeech.speak(toSpeak + "...\n", TextToSpeech.QUEUE_ADD, null);
+                            }
+                        }
+                    }
+                }
+                else {
+                    etRepetitionSpeaker.setError("Cannot empty");
+                }
+            }
+        });
+
+        buttonCancel.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                b.dismiss();
+            }
+        });
+    }
 }

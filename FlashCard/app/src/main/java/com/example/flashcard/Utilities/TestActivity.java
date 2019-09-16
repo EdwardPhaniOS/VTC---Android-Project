@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.flashcard.LearnActivity;
 import com.example.flashcard.R;
 import com.example.flashcard.adapters.QuestionTestFragmentAdapter;
 import com.example.flashcard.fragments.TestQuestionFinishFragment;
@@ -65,7 +66,7 @@ public class TestActivity extends AppCompatActivity {
     private List<String> result_answer_wrong = new ArrayList<>();
     private List<String> result_color = new ArrayList<>();
 
-    Toolbar toolbarTest;
+    private Toolbar toolbarTest;
     private CountDownTimer countDownTimer;
 
     @Override
@@ -164,7 +165,7 @@ public class TestActivity extends AppCompatActivity {
                 buttonSubmitTest.setVisibility(View.GONE);
                 textViewProgressTest.setVisibility(View.GONE);
                 viewpagerTest.setVisibility(View.GONE);
-                addTestFinishFragment(result_question,result_answer_right,result_answer_wrong,result_color);
+                addTestFinishFragment(result_question,result_answer_right,result_answer_wrong,result_color,userId);
             }
 
             // go to next page
@@ -259,7 +260,7 @@ public class TestActivity extends AppCompatActivity {
                     if(ValidateCheckForReminder.isTriggerFromTestTotalButton && ValidateCheckForReminder.reminderSave!=null){
                         ValidateCheckForReminder.isFinishTest = true;
                     }
-                    addTestFinishFragment(result_question,result_answer_right,result_answer_wrong,result_color);
+                    addTestFinishFragment(result_question,result_answer_right,result_answer_wrong,result_color,userId);
                 }
             }.start();
         }
@@ -299,13 +300,20 @@ public class TestActivity extends AppCompatActivity {
                             ,ValidateCheckForReminder.reminderSave.getNameDay()
                             ,ValidateCheckForReminder.reminderSave.getDate()
                             ,ValidateCheckForReminder.reminderSave.getDeckId());
+                    reminderChecked.setIsActivated("true");
                     FirebaseDatabase.getInstance().getReference("DBFlashCard/reminders").child(userId)
                             .child(ValidateCheckForReminder.reminderSave.getDeckId())
                             .child(ValidateCheckForReminder.reminderSave.getReminderId())
                             .setValue(reminderChecked);
-                    ValidateCheckForReminder.setDefault();
+                    Toast.makeText(TestActivity.this, "The reminder of "
+                            + reminderChecked.getName() + " is done", Toast.LENGTH_LONG).show();
+                    //ValidateCheckForReminder.setDefault();
                 }else {
-                    ValidateCheckForReminder.setDefault();
+                    if(ValidateCheckForReminder.reminderSave == null){
+                        ValidateCheckForReminder.setDefault();
+                    }else {
+                        ValidateCheckForReminder.isTriggerFromTestTotalButton = false;
+                    }
                 }
                 //
                 finish();
@@ -317,10 +325,11 @@ public class TestActivity extends AppCompatActivity {
     private void addTestFinishFragment(List<String> __result_question
                                         ,List<String> __result_answer_right
                                         ,List<String> __result_answer_wrong
-                                        ,List<String> __result_color){
+                                        ,List<String> __result_color
+                                        ,String _userId){
         // Create new fragment and transaction
         TestQuestionFinishFragment newFragment = new TestQuestionFinishFragment(__result_question,__result_answer_right
-                                                                                ,__result_answer_wrong,__result_color);
+                                                                                ,__result_answer_wrong,__result_color, _userId);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         // Replace whatever is in the fragment_container view with this fragment,
@@ -349,5 +358,9 @@ public class TestActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         //No call for super(). Bug on API Level > 11.
         super.onSaveInstanceState(outState);
+    }
+
+    public Toolbar getToolbarTest(){
+        return this.toolbarTest;
     }
 }

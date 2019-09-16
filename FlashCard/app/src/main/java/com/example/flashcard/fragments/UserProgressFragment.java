@@ -74,7 +74,7 @@ public class UserProgressFragment extends Fragment {
         cards = new ArrayList<>();
 
         //AsyncTask task = new MyTask().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-        showProgress();
+        //showProgress();
 
         return rootView;
     }
@@ -152,7 +152,7 @@ public class UserProgressFragment extends Fragment {
 //                                    }
 //                                }
                                 //anyChartView.setChart(null);
-                                //anyChartView.clear();
+                                anyChartView.clear();
                                 Pie pie = createPieChart();
                                 updateUI();
                                 anyChartView.setChart(pie);
@@ -162,8 +162,10 @@ public class UserProgressFragment extends Fragment {
                         public void onCancelled(@NonNull DatabaseError databaseError) {
                         }
                     };
-
                     databaseDecks.child("deckdetails").child(id).addValueEventListener(deckListener);
+                }
+                if(decks.size() == 0){
+                    showProgressEmpty();
                 }
             }
 
@@ -173,6 +175,9 @@ public class UserProgressFragment extends Fragment {
             }
         };
         databaseDecks.child("decks").child(userId).addValueEventListener(userDecksListener);
+        showProgress();
+        Pie pie = createPieChart();
+        anyChartView.setChart(pie);
     }
 
     private Pie createPieChart() {
@@ -222,6 +227,12 @@ public class UserProgressFragment extends Fragment {
     {
         totalDeck.setText(getString(R.string.loading_text));
         totalCard.setText(getString(R.string.loading_text));
+    }
+
+    private void showProgressEmpty()
+    {
+        totalDeck.setText("0");
+        totalCard.setText("0");
     }
 
 //    private class MyTask extends AsyncTask<Void, Integer, Pie> {

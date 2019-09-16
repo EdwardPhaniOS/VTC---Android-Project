@@ -4,34 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:id="@+id/layoutFront"
-        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/border_flashcard_learn"
+        android:background="@drawable/border_flashcard_learn_blue"
+        android:clickable="true"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline6">
+
         <ScrollView
             android:id="@+id/scrollViewFront"
-            android:fillViewport="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fillViewport="true"
             android:paddingTop="5dp"
             android:paddingBottom="5dp">
+
             <LinearLayout
                 android:id="@+id/layoutFrontInside"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/imageView"
@@ -52,7 +54,9 @@
                     android:paddingRight="30dp"
                     android:text="TextView\nFRONT"
                     android:textAlignment="center"
-                    android:textSize="30sp" />
+                    android:textColor="#000000"
+                    android:textSize="25sp"
+                    android:textStyle="italic" />
             </LinearLayout>
 
         </ScrollView>
@@ -87,6 +91,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 >
+
                 <TextView
                     android:id="@+id/textViewBack"
                     android:layout_width="match_parent"
@@ -96,7 +101,9 @@
                     android:paddingRight="30dp"
                     android:text="TextView\nBACK"
                     android:textAlignment="center"
-                    android:textSize="30sp" />
+                    android:textColor="#000000"
+                    android:textSize="25sp"
+                    android:textStyle="italic" />
             </LinearLayout>
         </ScrollView>
 

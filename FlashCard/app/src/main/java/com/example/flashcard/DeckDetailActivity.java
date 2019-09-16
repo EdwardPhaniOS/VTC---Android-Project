@@ -21,6 +21,7 @@ import com.example.flashcard.adapters.DeckList;
 import com.example.flashcard.fragments.MyDecksFragment;
 import com.example.flashcard.fragments.TrainingFragment;
 import com.example.flashcard.fragments.TrainingSettingFragment;
+import com.example.flashcard.models.Reminder;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,6 +36,7 @@ public class DeckDetailActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private boolean statusSwitchOfSettingFragment = false;
+    private String dateActivated = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +82,11 @@ public class DeckDetailActivity extends AppCompatActivity {
                 .child(userId).child(deckId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                    Reminder reminder = postSnapshot.getValue(Reminder.class);
+                    dateActivated = reminder.getDate();  // get the 1st day
+                    break;
+                }
                 if (dataSnapshot.getValue() == null) {
                     statusSwitchOfSettingFragment = false;
                     setupAfterGetData();
@@ -109,7 +116,7 @@ public class DeckDetailActivity extends AppCompatActivity {
         //
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new TrainingFragment(listener), "TRAINING");
-        adapter.addFragment(new TrainingSettingFragment(statusSwitchOfSettingFragment), "SETTING");
+        adapter.addFragment(new TrainingSettingFragment(statusSwitchOfSettingFragment,dateActivated), "SETTING");
         viewPager.setAdapter(adapter);
     }
 

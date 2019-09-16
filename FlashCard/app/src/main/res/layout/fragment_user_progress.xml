@@ -24,7 +24,7 @@
 
     <TextView
         android:id="@+id/total_cards_number"
-        android:layout_width="100dp"
+        android:layout_width="200dp"
         android:layout_height="25dp"
         android:fontFamily="monospace"
         android:text="loading"
@@ -33,7 +33,6 @@
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/total_cards_text"
         app:layout_constraintStart_toEndOf="@+id/total_cards_text" />
-
     <TextView
         android:id="@+id/total_decks_text"
         android:layout_width="114dp"
@@ -49,7 +48,7 @@
 
     <TextView
         android:id="@+id/total_decks_number"
-        android:layout_width="100dp"
+        android:layout_width="200dp"
         android:layout_height="21dp"
         android:fontFamily="monospace"
         android:text="loading"
