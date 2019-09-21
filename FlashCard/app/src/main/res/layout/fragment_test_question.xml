@@ -19,6 +19,7 @@
             android:fontFamily="monospace"
             android:paddingLeft="30dp"
             android:text="Question 1"
+            android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="25sp"
             android:textStyle="bold" />

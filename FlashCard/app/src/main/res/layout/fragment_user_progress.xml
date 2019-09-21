@@ -9,38 +9,42 @@
     tools:context=".fragments.UserProgressFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
     <TextView
         android:id="@+id/total_cards_text"
-        android:layout_width="114dp"
+        android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:fontFamily="monospace"
-        android:text="Total Cards:"
+        android:text="Cards:"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/total_decks_text" />
+        app:layout_constraintStart_toEndOf="@+id/total_decks_number"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/total_cards_number"
-        android:layout_width="200dp"
+        android:layout_width="120dp"
         android:layout_height="25dp"
+        android:layout_marginStart="8dp"
         android:fontFamily="monospace"
         android:text="loading"
-        android:textAlignment="viewStart"
+        android:textAlignment="textStart"
+        android:textColor="#2578B3"
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/total_cards_text"
         app:layout_constraintStart_toEndOf="@+id/total_cards_text" />
+
     <TextView
         android:id="@+id/total_decks_text"
-        android:layout_width="114dp"
+        android:layout_width="wrap_content"
         android:layout_height="37dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:fontFamily="monospace"
-        android:text="Total Decks:"
+        android:text="Decks:"
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,10 +52,13 @@
 
     <TextView
         android:id="@+id/total_decks_number"
-        android:layout_width="200dp"
+        android:layout_width="100dp"
         android:layout_height="21dp"
+        android:layout_marginStart="8dp"
         android:fontFamily="monospace"
         android:text="loading"
+        android:textAlignment="textStart"
+        android:textColor="#2578B3"
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/total_decks_text"
@@ -60,12 +67,14 @@
     <com.anychart.AnyChartView
         android:id="@+id/any_chart_view"
         android:layout_width="411dp"
-        android:layout_height="444dp"
-        android:layout_marginTop="55dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
         android:background="#FBF9F9"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/total_cards_text" />
+        app:layout_constraintTop_toBottomOf="@+id/total_cards_text"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -71,6 +71,7 @@ public class DownloadCardsFragment extends Fragment {
             }
         });
 
+
         downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -7,6 +7,19 @@
     android:layout_height="match_parent"
     tools:context=".fragments.AccountInfoFragment">
 
+    <ImageView
+        android:id="@+id/account_picture"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="48dp"
+        android:src="@drawable/user"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
     <TextView
         android:id="@+id/user_email_info"
         android:layout_width="wrap_content"
@@ -15,6 +28,7 @@
         android:fontFamily="monospace"
         android:text="abc@gmail.com"
         android:textAlignment="center"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/account_picture"
@@ -22,24 +36,12 @@
         tools:layout_conversion_absoluteWidth="411dp"
         tools:visibility="visible" />
 
-    <ImageView
-        android:id="@+id/account_picture"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="48dp"
-        android:src="@drawable/user"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible" />
-
     <Button
         android:id="@+id/log_out_button"
         android:layout_width="189dp"
         android:layout_height="52dp"
         android:layout_marginTop="60dp"
-        android:backgroundTint="#E6F44336"
+        android:backgroundTint="#FF4442"
         android:fontFamily="monospace"
         android:text="LOG OUT"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
@@ -58,8 +60,8 @@
         android:layout_marginBottom="24dp"
         android:ems="10"
         android:hint="vocabulary_input"
-        android:visibility="gone"
         android:inputType="textPersonName"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/definition_input"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,8 +76,8 @@
         android:layout_marginBottom="24dp"
         android:ems="10"
         android:hint="definition_input"
-        android:visibility="gone"
         android:inputType="textPersonName"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/upload_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +91,7 @@
         android:layout_marginEnd="164dp"
         android:layout_marginBottom="32dp"
         android:text="Upload"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
