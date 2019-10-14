@@ -193,13 +193,13 @@ public class UserProgressFragment extends Fragment {
         pie.data(data);
 
         String[] settings = {
-                "#FF0000", "#00CC00", "#FFFF00", "#0099FF"
+                "#FF4A46", "#45FF80", "#FFD643", "#4254FF"
         };
 
         pie.palette(settings);
 
         pie.title("Progression Report");
-        pie.title().fontFamily("monospace");
+        pie.title().fontFamily("monospace").fontColor("#2578B3");
         pie.labels().fontFamily("monospace");
         pie.labels().position("outside");
         pie.legend()

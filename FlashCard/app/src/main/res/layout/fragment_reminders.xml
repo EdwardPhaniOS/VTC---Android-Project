@@ -9,15 +9,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/tvDateChosen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
             android:gravity="center"
+            android:text="Today"
+            android:textColor="#2578B3"
             android:textSize="25sp"
-            android:textStyle="bold"
-            android:text="Today"/>
+            android:textStyle="italic" />
         <TextView
             android:id="@+id/tvNoReminders"
             android:visibility="gone"

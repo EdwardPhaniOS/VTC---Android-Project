@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="customColor">#C1C1C1</color>
+    <color name="customColor">#FF8482</color>
     <color name="customColor2">#5A5A5A</color>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="RED">#f7142e</color>
-    <color name="YELLOW">#f2eb11</color>
-    <color name="GREEN">#0ce004</color>
-    <color name="BLUE">#458af7</color>
+    <color name="RED">#FF4A46</color>
+    <color name="YELLOW">#FFCB0D</color>
+    <color name="GREEN">#45FF80</color>
+    <color name="BLUE">#4254FF</color>
 
     <color name="cardGreen">#0ce004</color>
-    <color name="cardBlue">#458af7</color>
+    <color name="cardBlue">#458AF7</color>
     <color name="cardRed">#f7142e</color>
     <color name="cardYellow">#f2eb11</color>
     <color name="cardTotal">#8a8781</color>
 
-    <color name="cardGreenBlur">#99ff99</color>
-    <color name="cardBlueBlur">#a0bff2</color>
-    <color name="cardRedBlur">#ff8080</color>
-    <color name="cardYellowBlur">#ffff99</color>
+    <color name="cardGreenBlur">#99FF99</color>
+    <color name="cardBlueBlur">#A0BFF2</color>
+    <color name="cardRedBlur">#FF8080</color>
+    <color name="cardYellowBlur">#FFFF99</color>
+
+    <color name="white">#ffffff</color>
+    <color name="dark_gray">#141010</color>
+    <color name="ligh_gray">#D3D3D3</color>
 </resources>

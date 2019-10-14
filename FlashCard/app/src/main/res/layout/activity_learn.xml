@@ -91,10 +91,11 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:max="100"
             android:progress="25"
-            android:scaleY="5" />
+            android:progressTint="@color/cardRedBlur"
+            android:scaleY="1.5" />
 
         <TextView
             android:id="@+id/textViewProgress"
@@ -104,8 +105,8 @@
             android:fontFamily="monospace"
             android:gravity="center"
             android:text="5/10"
-            android:textSize="25sp"
-            android:textStyle="bold" />
+            android:textSize="22sp"
+            android:textStyle="italic" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline
