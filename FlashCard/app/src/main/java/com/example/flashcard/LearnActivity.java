@@ -68,6 +68,7 @@ public class LearnActivity extends AppCompatActivity{
     private int sizeOfCards;
     private int lastPosition = 0;
     private int currentPosition = 0;
+    private boolean learnByBackCard = false;
 
     DatabaseReference databaseReference;
 
@@ -83,7 +84,11 @@ public class LearnActivity extends AppCompatActivity{
         String deckID = getIntent().getStringExtra(ConstantVariable.DECK_ID);
         databaseReference = FirebaseDatabase.getInstance().getReference("DBFlashCard/deckdetails").child(deckID);
         String deckName = getIntent().getStringExtra(ConstantVariable.DECK_NAME);
+
         setTitle(deckName);
+
+        learnByBackCard = getIntent().getStringExtra("LEARN-BY-BACK-CARD").isEmpty() ? false : true;
+
 
         cards = new ArrayList<>();
 
@@ -181,7 +186,7 @@ public class LearnActivity extends AppCompatActivity{
                 //
                 Collections.shuffle(cards);
                 //
-                mAdapter = new FlashcardsFragmentAdapter(getSupportFragmentManager(),cards);
+                mAdapter = new FlashcardsFragmentAdapter(getSupportFragmentManager(),cards,learnByBackCard);
                 sizeOfCards = cards.size();
 
                 progressBar.setMax(sizeOfCards);

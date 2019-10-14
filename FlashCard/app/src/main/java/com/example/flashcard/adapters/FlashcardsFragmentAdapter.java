@@ -20,12 +20,14 @@ import java.util.List;
 public class FlashcardsFragmentAdapter extends FragmentStatePagerAdapter {
     public final static String TAG = "CheckFlowAsync";
     public List<Card> cards;
+    private boolean learnByBackCard;
 
     SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
 
-    public FlashcardsFragmentAdapter(FragmentManager fm,List<Card> cards){
+    public FlashcardsFragmentAdapter(FragmentManager fm,List<Card> cards,boolean _learnByBackCard){
         super(fm);
         this.cards = new ArrayList<Card>(cards);
+        this.learnByBackCard = _learnByBackCard;
     }
 
     @NonNull
@@ -35,7 +37,7 @@ public class FlashcardsFragmentAdapter extends FragmentStatePagerAdapter {
             ValidateCheckForReminder.isFinishLearn = true;
         }
         Log.d(TAG, "getItem");
-        FlashcardLearnFragment cardFragment = new FlashcardLearnFragment();
+        FlashcardLearnFragment cardFragment = new FlashcardLearnFragment(learnByBackCard);
         Bundle bundle = new Bundle();
 
 

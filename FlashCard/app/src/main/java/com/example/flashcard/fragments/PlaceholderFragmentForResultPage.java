@@ -80,7 +80,7 @@ public class PlaceholderFragmentForResultPage extends Fragment {
 
         for (int i = 0; i < result_question.size(); i++)
         {
-            if (result_answer_right.get(i).matches(result_user_answer.get(i))) {
+            if (result_answer_right.get(i).equals(result_user_answer.get(i))) {
                 indexNumberInSecondPage.add("" + (i + 1));
                 questionTitlesForSecondPage.add(result_question.get(i));
                 correctAnswersForSecondPage.add(result_answer_right.get(i));

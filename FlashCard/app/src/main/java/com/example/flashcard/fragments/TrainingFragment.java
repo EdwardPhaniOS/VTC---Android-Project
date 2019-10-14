@@ -1,13 +1,19 @@
 package com.example.flashcard.fragments;
 
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
@@ -25,6 +31,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.flashcard.DeckDetailActivity;
 import com.example.flashcard.LearnActivity;
 import com.example.flashcard.R;
 import com.example.flashcard.SurveyActivity;
@@ -100,7 +107,6 @@ public class TrainingFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_training, null);
-
         cards = new ArrayList<>();
         cardsBlue = new ArrayList<>();
         cardsYellow = new ArrayList<>();
@@ -111,6 +117,7 @@ public class TrainingFragment extends Fragment {
         final String deckName = getActivity().getIntent().getStringExtra(ConstantVariable.DECK_NAME);
 
         textViewShowSpeaking = (TextView) view.findViewById(R.id.textViewShowSpeaking);
+        textViewShowSpeaking.bringToFront();
         textViewShowSpeaking.setText("");
 
         buttonSpeak = (ImageButton) view.findViewById(R.id.buttonSpeak);
@@ -242,8 +249,28 @@ public class TrainingFragment extends Fragment {
                     intent.putExtra(ConstantVariable.DECK_ID, deckId);
                     intent.putExtra(ConstantVariable.DECK_NAME, deckName);
                     intent.putExtra(ConstantVariable.CARD_COLOR, "Total");
+                    intent.putExtra("LEARN-BY-BACK-CARD", "");
                     startActivity(intent);
                 }
+            }
+        });
+        buttonLearnTotal.setOnLongClickListener(new View.OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View v) {
+                if(checkLearn(cards.size())){
+                    //
+                    ValidateCheckForReminder.isTriggerFromLearnTotalButton = true;
+                    //
+                    Intent intent = new Intent(getContext(), LearnActivity.class);
+                    // put extra
+                    intent.putExtra(ConstantVariable.DECK_ID, deckId);
+                    intent.putExtra(ConstantVariable.DECK_NAME, deckName);
+                    intent.putExtra(ConstantVariable.CARD_COLOR, "Total");
+                    intent.putExtra("LEARN-BY-BACK-CARD", "LEARN-BY-BACK-CARD");
+                    startActivity(intent);
+                }
+                return true;
             }
         });
 
@@ -274,10 +301,29 @@ public class TrainingFragment extends Fragment {
                     intent.putExtra(ConstantVariable.DECK_ID, deckId);
                     intent.putExtra(ConstantVariable.DECK_NAME, deckName);
                     intent.putExtra(ConstantVariable.CARD_COLOR, CardColor.BLUE.name());
+                    intent.putExtra("LEARN-BY-BACK-CARD", "");
                     startActivity(intent);
                 }
             }
         });
+
+        buttonLearnBlue.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(checkLearn(numberOfBlueCards)) {
+                    Intent intent = new Intent(getContext(), LearnActivity.class);
+                    // put extra
+                    intent.putExtra(ConstantVariable.DECK_ID, deckId);
+                    intent.putExtra(ConstantVariable.DECK_NAME, deckName);
+                    intent.putExtra(ConstantVariable.CARD_COLOR, CardColor.BLUE.name());
+                    intent.putExtra("LEARN-BY-BACK-CARD", "LEARN-BY-BACK-CARD");
+                    startActivity(intent);
+                }
+                return true;
+            }
+        });
+
+
 
         buttonTestBlue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -302,8 +348,25 @@ public class TrainingFragment extends Fragment {
                     intent.putExtra(ConstantVariable.DECK_ID, deckId);
                     intent.putExtra(ConstantVariable.DECK_NAME, deckName);
                     intent.putExtra(ConstantVariable.CARD_COLOR, CardColor.YELLOW.name());
+                    intent.putExtra("LEARN-BY-BACK-CARD", "");
                     startActivity(intent);
                 }
+            }
+        });
+
+        buttonLearnYellow.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(checkLearn(numberOfYellowCards)) {
+                    Intent intent = new Intent(getContext(), LearnActivity.class);
+                    // put extra
+                    intent.putExtra(ConstantVariable.DECK_ID, deckId);
+                    intent.putExtra(ConstantVariable.DECK_NAME, deckName);
+                    intent.putExtra(ConstantVariable.CARD_COLOR, CardColor.YELLOW.name());
+                    intent.putExtra("LEARN-BY-BACK-CARD", "LEARN-BY-BACK-CARD");
+                    startActivity(intent);
+                }
+                return true;
             }
         });
 
@@ -330,8 +393,25 @@ public class TrainingFragment extends Fragment {
                     intent.putExtra(ConstantVariable.DECK_ID, deckId);
                     intent.putExtra(ConstantVariable.DECK_NAME, deckName);
                     intent.putExtra(ConstantVariable.CARD_COLOR, CardColor.GREEN.name());
+                    intent.putExtra("LEARN-BY-BACK-CARD", "");
                     startActivity(intent);
                 }
+            }
+        });
+
+        buttonLearnGreen.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(checkLearn(numberOfGreenCards)) {
+                    Intent intent = new Intent(getContext(), LearnActivity.class);
+                    // put extra
+                    intent.putExtra(ConstantVariable.DECK_ID, deckId);
+                    intent.putExtra(ConstantVariable.DECK_NAME, deckName);
+                    intent.putExtra(ConstantVariable.CARD_COLOR, CardColor.GREEN.name());
+                    intent.putExtra("LEARN-BY-BACK-CARD", "LEARN-BY-BACK-CARD");
+                    startActivity(intent);
+                }
+                return true;
             }
         });
 
@@ -358,8 +438,25 @@ public class TrainingFragment extends Fragment {
                     intent.putExtra(ConstantVariable.DECK_ID, deckId);
                     intent.putExtra(ConstantVariable.DECK_NAME, deckName);
                     intent.putExtra(ConstantVariable.CARD_COLOR, CardColor.RED.name());
+                    intent.putExtra("LEARN-BY-BACK-CARD", "");
                     startActivity(intent);
                 }
+            }
+        });
+
+        buttonLearnRed.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(checkLearn(numberOfRedCards)) {
+                    Intent intent = new Intent(getContext(), LearnActivity.class);
+                    // put extra
+                    intent.putExtra(ConstantVariable.DECK_ID, deckId);
+                    intent.putExtra(ConstantVariable.DECK_NAME, deckName);
+                    intent.putExtra(ConstantVariable.CARD_COLOR, CardColor.RED.name());
+                    intent.putExtra("LEARN-BY-BACK-CARD", "LEARN-BY-BACK-CARD");
+                    startActivity(intent);
+                }
+                return true;
             }
         });
 
@@ -382,40 +479,22 @@ public class TrainingFragment extends Fragment {
 //        buttonSpeak.setOnLongClickListener(new View.OnLongClickListener() {
 //            @Override
 //            public boolean onLongClick(View v) {
-//                    String speakTextTxt                  = "Good morning,have a nice day";
+//                if (Build.VERSION.SDK_INT >= 23) {
+//                    String speakTextTxt                  = generateTextFromVocabularyCards(cards);
 ////                    HashMap<String, String> myHashRender = new HashMap<String, String>();
 ////                    myHashRender.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, speakTextTxt);
-////                    String exStoragePath                = Environment.getExternalStorageDirectory().getAbsolutePath();
-////                    File appTmpPath                     = new File(exStoragePath + "/sounds/");
-////                    appTmpPath.mkdirs();
-////                    String tempFilename                 = "tmpaudio.mp3";
+//                    String exStoragePath                = Environment.getExternalStorageDirectory().getAbsolutePath();
+//                    File appTmpPath                     = new File(exStoragePath + "/sounds/");
+//                    appTmpPath.mkdirs();
+//                    File file = new File(appTmpPath,"generate-audio-vocab.wav");
+////                    String tempFilename                 = "tmpaudio.wav";
 ////                    String tempDestFile                 = appTmpPath.getAbsolutePath() + "/" + tempFilename;
-//                    //textToSpeech.synthesizeToFile(speakTextTxt, myHashRender, tempDestFile);
-////                    Toast.makeText(getContext(), "Long Click",Toast.LENGTH_SHORT).show();
-//
-//                String state = Environment.getExternalStorageState();
-//                boolean mExternalStorageWriteable = false;
-//                boolean mExternalStorageAvailable = false;
-//                if (Environment.MEDIA_MOUNTED.equals(state)) {
-//                    // Can read and write the media
-//                    mExternalStorageAvailable = mExternalStorageWriteable = true;
-//
-//                } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-//                    // Can only read the media
-//                    mExternalStorageAvailable = true;
-//                    mExternalStorageWriteable = false;
+////                    textToSpeech.synthesizeToFile(speakTextTxt, myHashRender, tempDestFile);
+//                    int test = textToSpeech.synthesizeToFile((CharSequence) speakTextTxt, null, file,"tts");
+//                    //Toast.makeText(getContext(),test + tempDestFile,Toast.LENGTH_LONG).show();
 //                } else {
-//                    // Can't read or write
-//                    mExternalStorageAvailable = mExternalStorageWriteable = false;
+//                    Toast.makeText(getContext(), "< 23",Toast.LENGTH_SHORT).show();
 //                }
-//                File root = android.os.Environment.getExternalStorageDirectory();
-//                File dir = new File(root.getAbsolutePath() + "/download");
-//                dir.mkdirs();
-//                File file = new File(dir, "myData.mp3");
-//                int test = textToSpeech.synthesizeToFile((CharSequence) speakTextTxt, null, file,
-//                        "tts");
-//                Toast.makeText(getContext(), "Long Click",Toast.LENGTH_SHORT).show();
-//
 //                return true;
 //            }
 //        });
@@ -713,4 +792,6 @@ public class TrainingFragment extends Fragment {
             }
         });
     }
+
+
 }

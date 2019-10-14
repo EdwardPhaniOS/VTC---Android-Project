@@ -25,7 +25,7 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
-    <string name="title_activity_user_progress">Progress</string>
+    <string name="title_activity_user_progress">FlashCard</string>
 
     <string name="tab_text_1">WRONG</string>
     <string name="tab_text_2">RIGHT</string>

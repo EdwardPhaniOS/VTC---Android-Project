@@ -38,8 +38,11 @@ public class FlashcardLearnFragment extends Fragment {
 
     private TextView textViewFront;
     private TextView textViewBack;
-    public FlashcardLearnFragment() {
+
+    private boolean learnByBackCard;
+    public FlashcardLearnFragment(boolean _learnByBackCard) {
         // Required empty public constructor
+        this.learnByBackCard = _learnByBackCard;
     }
 
     @Override
@@ -57,6 +60,14 @@ public class FlashcardLearnFragment extends Fragment {
 
         layoutFront = (LinearLayout) view.findViewById(R.id.layoutFront);
         layoutBack = (LinearLayout) view.findViewById(R.id.layoutBack);
+
+        if(learnByBackCard){
+            layoutFront.setVisibility(View.GONE);
+            layoutBack.setVisibility(View.VISIBLE);
+        }else {
+            layoutFront.setVisibility(View.VISIBLE);
+            layoutBack.setVisibility(View.GONE);
+        }
 
         textViewFront.setText(textVocabulary);
         textViewBack.setText(textDefinition);

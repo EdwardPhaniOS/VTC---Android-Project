@@ -50,12 +50,11 @@
             android:paddingLeft="8dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="Active remiders"
+            android:text="Activate reminder"
             android:textSize="25dp" />
         <Switch
             android:id="@+id/switchActiveReminders"
             android:layout_gravity="center"
-            android:paddingRight="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 <!--        <CheckBox-->
@@ -133,6 +132,29 @@
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:text="Add from text list"
+            android:textSize="25dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_library_music_black_40dp" />
+
+        <TextView
+            android:id="@+id/tvGenerateVocabAudio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Generate audio file"
             android:textSize="25dp" />
     </LinearLayout>
 </LinearLayout>

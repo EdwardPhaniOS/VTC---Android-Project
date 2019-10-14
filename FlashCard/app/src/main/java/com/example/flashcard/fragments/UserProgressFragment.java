@@ -70,6 +70,7 @@ public class UserProgressFragment extends Fragment {
         totalDeck = rootView.findViewById(R.id.total_decks_number);
         totalCard = rootView.findViewById(R.id.total_cards_number);
 
+        deckIds = new ArrayList<String>();
         decks = new ArrayList<>();
         cards = new ArrayList<>();
 
@@ -94,6 +95,7 @@ public class UserProgressFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 decks.clear();
                 cards.clear();
+                deckIds.clear();
                 blueCards = 0;
                 redCards = 0;
                 yellowCards = 0;
@@ -112,7 +114,6 @@ public class UserProgressFragment extends Fragment {
 
                 for (String id : deckIds)
                 {
-
                     ValueEventListener deckListener = new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot)
@@ -152,10 +153,10 @@ public class UserProgressFragment extends Fragment {
 //                                    }
 //                                }
                                 //anyChartView.setChart(null);
-                                anyChartView.clear();
-                                Pie pie = createPieChart();
+                                //anyChartView.clear();
+                                Pie pie3 = createPieChart();
                                 updateUI();
-                                anyChartView.setChart(pie);
+                                anyChartView.setChart(pie3);
                             }
                         }
                         @Override

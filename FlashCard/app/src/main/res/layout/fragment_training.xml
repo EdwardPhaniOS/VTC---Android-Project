@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_marginTop="?attr/actionBarSize"
     tools:context=".fragments.TrainingFragment">
 
 
@@ -250,13 +251,14 @@
     <TextView
         android:id="@+id/textViewShowSpeaking"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="60dp"
         android:layout_marginBottom="5dp"
         android:fontFamily="monospace"
         android:gravity="center"
         android:text="1/10\n[ Vocabulary ]"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toTopOf="@+id/buttonTrainingTotal"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

@@ -67,9 +67,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        // use offline
-//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-//        //
+        // use offline
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        //
         preSetUp();
 
         loginButton.setOnClickListener(new View.OnClickListener() {

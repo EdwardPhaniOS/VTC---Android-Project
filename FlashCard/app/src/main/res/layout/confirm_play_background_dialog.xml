@@ -14,17 +14,25 @@
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
             android:paddingLeft="10dp"
-            android:text="Are you sure to inactivate the reminders?"
-            android:textSize="25sp"
+            android:text="Audio file is generated"
+            android:textSize="20sp"
             android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tvPathAudioFile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:paddingLeft="10dp"
+            android:text="Path: "
+            android:textSize="20sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
             android:paddingLeft="10dp"
-            android:text="(The system will delete all reminders of the deck)"
-            android:textSize="17sp" />
+            android:text="Do you want to play it on background ?"
+            android:textSize="20sp" />
     </LinearLayout>
     <LinearLayout
         android:paddingTop="15dp"
@@ -35,14 +43,14 @@
         >
 
         <Button
-            android:id="@+id/buttonCancelConfirmInActiveReminder"
+            android:id="@+id/buttonCancelConfirmPlayBackground"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
             android:text="CANCEL" />
 
         <Button
-            android:id="@+id/buttonOKConfirmInActiveReminder"
+            android:id="@+id/buttonOKConfirmPlayBackground"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

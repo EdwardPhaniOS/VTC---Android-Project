@@ -4,15 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
-    app:cardCornerRadius="8dp">
+    >
     <LinearLayout
         android:id="@+id/layoutCardView"
         android:background="@drawable/style_card_egde"
-        android:layout_marginBottom="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="5"
+        android:layout_margin="3dp"
         android:orientation="horizontal">
 
         <TextView
@@ -27,7 +26,7 @@
             android:paddingRight="10dp"
             android:paddingBottom="6dp"
             android:text="Vocabulary"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/textViewDefinition"
@@ -41,6 +40,6 @@
             android:paddingRight="10dp"
             android:paddingBottom="6dp"
             android:text="Definition"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.flashcard.Utilities.ConstantVariable;
+import com.example.flashcard.Utilities.ValidateCheckForReminder;
 import com.example.flashcard.adapters.DeckList;
 import com.example.flashcard.fragments.MyDecksFragment;
 import com.example.flashcard.fragments.TrainingFragment;
@@ -58,6 +59,7 @@ public class DeckDetailActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ValidateCheckForReminder.setDefault();
                 onBackPressed();
             }
         });

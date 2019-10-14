@@ -1,14 +1,25 @@
 package com.example.flashcard.fragments;
 
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +31,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.flashcard.DeckDetailActivity;
 import com.example.flashcard.ManageFlashcardsActivity;
 import com.example.flashcard.R;
+import com.example.flashcard.Utilities.CardColor;
 import com.example.flashcard.Utilities.ConstantVariable;
+import com.example.flashcard.Utilities.ValidateCheckForReminder;
 import com.example.flashcard.models.Card;
 import com.example.flashcard.models.Deck;
 import com.example.flashcard.models.Reminder;
@@ -32,10 +46,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -47,8 +64,13 @@ public class TrainingSettingFragment extends Fragment {
     private TextView textViewDeleteDeck;
     private TextView tvAddListCards;
     private TextView tvActiveReminders;
+    private TextView tvGenerateVocabAudio;
     private Switch switchButton;
     private String dateActivated;
+    private List<Card> cards;
+
+    private TextToSpeech textToSpeech;
+
 
     private boolean statusSwitch = false;
     public TrainingSettingFragment(boolean statusSwitchOfSettingFragment, String _dateActivated) {
@@ -57,20 +79,84 @@ public class TrainingSettingFragment extends Fragment {
         this.dateActivated = _dateActivated;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        loadData();
+    }
+
+    private void setupTextToSpeech(){
+        textToSpeech = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                //buttonSpeak.setEnabled(status == TextToSpeech.SUCCESS);
+                if(status != TextToSpeech.ERROR) {
+                    textToSpeech.setLanguage(Locale.US);
+                    textToSpeech.setSpeechRate(0.80f);
+                    textToSpeech.setPitch(1.050f);
+                    textToSpeech.setOnUtteranceCompletedListener(new TextToSpeech.OnUtteranceCompletedListener() {
+                        @Override
+                        public void onUtteranceCompleted(String utteranceId) {
+                            Toast.makeText(getContext(), "Finished", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                        @Override
+                        public void onStart(String utteranceId) {
+                            Toast.makeText(getContext(), "Generating", Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onDone(String utteranceId) {
+                            Toast.makeText(getContext(), "Finished", Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onError(String utteranceId) {
+
+                        }
+                    });
+                }
+            }
+        },"com.google.android.tts");
+    }
+
+    private void loadData(){
+        String deckId = getActivity().getIntent().getStringExtra(ConstantVariable.DECK_ID);
+        FirebaseDatabase.getInstance().getReference("DBFlashCard").child("deckdetails").child(deckId)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        cards.clear();
+                        for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                            Card card = postSnapshot.getValue(Card.class);
+                            cards.add(card);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_training_setting, container, false);
-        // use offline
-        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        //
+
+        verifyStoragePermissions(getActivity());
+        cards = new ArrayList<>();
         textViewAddEditFlashcards = (TextView) view.findViewById(R.id.tvAddEdit);
         textViewRenameDeck = (TextView) view.findViewById(R.id.tvRenameDeck);
         tvActiveReminders = (TextView) view.findViewById(R.id.tvActiveReminders);
         textViewDeleteDeck = (TextView) view.findViewById(R.id.tvDelete);
         tvAddListCards = (TextView) view.findViewById(R.id.tvAddListCards);
+        tvGenerateVocabAudio = (TextView) view.findViewById(R.id.tvGenerateVocabAudio);
         switchButton = (Switch) view.findViewById(R.id.switchActiveReminders);
         switchButton.setChecked(statusSwitch);
 
@@ -131,6 +217,42 @@ public class TrainingSettingFragment extends Fragment {
                 showAddTextListCardDialog(getActivity().getIntent().getStringExtra(ConstantVariable.DECK_ID));
             }
         });
+        setupTextToSpeech();
+        tvGenerateVocabAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String deckName = getActivity().getIntent().getStringExtra(ConstantVariable.DECK_NAME);
+                String filename = deckName + ".wav";
+                if (Build.VERSION.SDK_INT >= 23) {
+                    String speakTextTxt                  = generateTextFromVocabularyCards(cards);
+                    String exStoragePath                = Environment.getExternalStorageDirectory().getAbsolutePath();
+                    File appTmpPath                     = new File(exStoragePath + "/sounds/");
+                    appTmpPath.mkdirs();
+                    //File file = new File(appTmpPath,"generate-audio-vocab.wav");
+                    File file = new File(appTmpPath,filename);
+
+//                    String tempFilename                 = "tmpaudio.wav";
+//                    String tempDestFile                 = appTmpPath.getAbsolutePath() + "/" + tempFilename;
+//                    textToSpeech.synthesizeToFile(speakTextTxt, myHashRender, tempDestFile);
+                    if(file.exists()){
+//                        Toast.makeText(getContext(), "Check path:\n" + file.getPath(),Toast.LENGTH_LONG).show();
+//                        Intent intent = new Intent(Intent.ACTION_VIEW);
+//                        Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath()
+//                                + "/sounds/");
+//                        intent.setDataAndType(uri, "audio/x-wav");
+//                        startActivity(intent);
+                        showConfirmPlayBackgroudDialog(filename);
+                    }
+                    else {
+                        new YourAsyncTask((DeckDetailActivity) getActivity(),speakTextTxt,file).execute();
+                        //int test = textToSpeech.synthesizeToFile((CharSequence) speakTextTxt, null, file, file.getAbsolutePath());
+                    }
+
+                } else {
+                    Toast.makeText(getContext(), "Cannot generate!!!",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         switchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,6 +270,14 @@ public class TrainingSettingFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private String generateTextFromVocabularyCards(List<Card> cards) {
+        String res = "";
+        for(Card card:cards){
+            res += card.getVocabulary() + "...\n";
+        }
+        return res;
     }
 
     private void showUpdateDeckNameDialog(final String deckId,final String deckName, final String userId) {
@@ -352,6 +482,40 @@ public class TrainingSettingFragment extends Fragment {
         });
     }
 
+    private void showConfirmPlayBackgroudDialog(final String nameFile) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.confirm_play_background_dialog, null);
+        dialogBuilder.setView(dialogView);
+
+        final Button buttonOKConfirmPlayBackground = (Button)dialogView.findViewById(R.id.buttonOKConfirmPlayBackground);
+        final Button buttonCancelConfirmPlayBackground = (Button)dialogView.findViewById(R.id.buttonCancelConfirmPlayBackground);
+        final TextView tvPathAudioFile = (TextView)dialogView.findViewById(R.id.tvPathAudioFile);
+        tvPathAudioFile.setText("Path: /sounds/" + nameFile);
+        final AlertDialog b = dialogBuilder.create();
+        b.show();
+
+        buttonOKConfirmPlayBackground.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath()
+                        + "/sounds/" + nameFile);
+                intent.setDataAndType(uri, "audio/x-wav");
+                startActivity(intent);
+                b.dismiss();
+                Toast.makeText(getContext(), "Playing background...", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        buttonCancelConfirmPlayBackground.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                b.dismiss();
+            }
+        });
+    }
+
     private boolean renameDeck(String deckId, String deckName, String userId) {
         DatabaseReference dR = FirebaseDatabase.getInstance().getReference("DBFlashCard/decks").child(userId).child(deckId);
 
@@ -399,6 +563,68 @@ public class TrainingSettingFragment extends Fragment {
                     Card card = new Card(_id, sep[0].trim(), sep[0].trim());
                     dbAddCard.child(_id).setValue(card);
                 }
+            }
+        }
+    }
+
+    // Storage Permissions
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+    /**
+     * Checks if the app has permission to write to device storage
+     *
+     * If the app does not has permission then the user will be prompted to grant permissions
+     *
+     * @param activity
+     */
+    public static void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
+    }
+
+
+    private class YourAsyncTask extends AsyncTask<Void, Void, Void> {
+        private ProgressDialog dialog;
+        private String input;
+        private File path;
+
+        public YourAsyncTask(DeckDetailActivity activity,String _input, File _path) {
+            dialog = new ProgressDialog(activity);
+            input = _input;
+            path = _path;
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            dialog.setMessage("Generating");
+            dialog.show();
+        }
+        @Override
+        protected Void doInBackground(Void... args) {
+            int test = textToSpeech.synthesizeToFile(input, null, path, "tts");
+            // do background work here
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void result) {
+            // do UI work here
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+                Toast.makeText(getContext(), "Completed", Toast.LENGTH_SHORT).show();
             }
         }
     }
