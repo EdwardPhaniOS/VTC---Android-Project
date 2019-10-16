@@ -67,6 +67,10 @@ public class RemindersFragment extends Fragment {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReminders = database.getReference("DBFlashCard");
 
+    // https://stackoverflow.com/questions/3014089/maintain-save-restore-scroll-position-when-returning-to-a-listview
+    int lastIndex;
+    int lastTop;
+    //
 
 
     public RemindersFragment() {
@@ -139,6 +143,11 @@ public class RemindersFragment extends Fragment {
                     ValidateCheckForReminder.reminderSave = reminder;
                     //
                     Intent intent = new Intent(getContext(), DeckDetailActivity.class);
+                    //
+                    lastIndex = lvReminders.getFirstVisiblePosition();
+                    View v = lvReminders.getChildAt(0);
+                    lastTop = (v == null) ? 0 : (v.getTop() - lvReminders.getPaddingTop());
+                    //
                     // put data to intent
                     intent.putExtra(ConstantVariable.DECK_NAME, reminder.getName());
                     intent.putExtra(ConstantVariable.DECK_ID, reminder.getDeckId());
@@ -203,6 +212,11 @@ public class RemindersFragment extends Fragment {
                                                             , reminders, new ReminderListAdapter.OnButtonAlarmClickListener() {
                                                         @Override
                                                         public void onButtonAlarmClick(String nameReminder) {
+                                                            //
+                                                            lastIndex = lvReminders.getFirstVisiblePosition();
+                                                            View v = lvReminders.getChildAt(0);
+                                                            lastTop = (v == null) ? 0 : (v.getTop() - lvReminders.getPaddingTop());
+                                                            //
                                                             Calendar now = Calendar.getInstance();
                                                             int hour = now.get(Calendar.HOUR_OF_DAY);
                                                             int minute = now.get(Calendar.MINUTE);
@@ -215,6 +229,7 @@ public class RemindersFragment extends Fragment {
                                                         }
                                                     },tvDateChosen.getText().toString());
                                                     lvReminders.setAdapter(reminderListAdapterAdapter);
+                                                    lvReminders.setSelectionFromTop(lastIndex, lastTop);
                                                 }
                                             }
                                         }

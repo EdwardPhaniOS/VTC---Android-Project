@@ -77,6 +77,21 @@ public class ManageFlashcardsActivity extends AppCompatActivity {
     //
     private SearchView searchViewCard;
     //
+    //
+    private int lastFirstVisiblePosition;
+    //
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        lastFirstVisiblePosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ((LinearLayoutManager) recyclerView.getLayoutManager()).scrollToPositionWithOffset(lastFirstVisiblePosition,0);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,12 +148,12 @@ public class ManageFlashcardsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 progressDialog.dismiss();
+
                 cards.clear();
                 for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
                     Card card = postSnapshot.getValue(Card.class);
                     cards.add(card);
                 }
-
                 adapter = new CardRecyclerAdapter(ManageFlashcardsActivity.this, cards, new CardRecyclerAdapter.OnCardClickListener() {
                     @Override
                     public void onCardClick(Card item) {
@@ -149,6 +164,11 @@ public class ManageFlashcardsActivity extends AppCompatActivity {
 
                 recyclerView.setAdapter(adapter);
                 setupSearchViewCard();
+                if(searchViewCard.getQuery().length() > 0){
+                    searchViewCard.setQuery(searchViewCard.getQuery(), true);
+                    searchViewCard.clearFocus();
+                }
+                ((LinearLayoutManager) recyclerView.getLayoutManager()).scrollToPositionWithOffset(lastFirstVisiblePosition,0);
             }
 
             @Override
@@ -161,6 +181,7 @@ public class ManageFlashcardsActivity extends AppCompatActivity {
 
 
     private void showCreateFlashCardDialog() {
+
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.create_flashcard_dialog, null);
@@ -191,6 +212,12 @@ public class ManageFlashcardsActivity extends AppCompatActivity {
                     etDefinition.setText("");
                     // notify success
                     b.dismiss();
+                    //lastFirstVisiblePosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition() + 1;
+                    lastFirstVisiblePosition = cards.size();
+                    if(searchViewCard.getQuery().length() > 0){
+                        searchViewCard.setQuery("", true);
+                        searchViewCard.clearFocus();
+                    }
                     Toast.makeText(ManageFlashcardsActivity.this, "Card added", Toast.LENGTH_LONG).show();
                 } else {
                     //updateArtist(artistId, artistName, genre);
@@ -208,6 +235,7 @@ public class ManageFlashcardsActivity extends AppCompatActivity {
     }
 
     private void showEditFlashCardDialog(final Card card) {
+
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.edit_flashcard_dialog, null);
@@ -271,6 +299,7 @@ public class ManageFlashcardsActivity extends AppCompatActivity {
 
                     // notify success
                     b.dismiss();
+                    lastFirstVisiblePosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
                     if(filePath != null){
                         card_To_UploadImage = newCard;
                         uploadFile();
@@ -298,7 +327,7 @@ public class ManageFlashcardsActivity extends AppCompatActivity {
 
                 databaseDeckDetails.child(card.getCardId()).removeValue();
                 b.dismiss();
-
+                lastFirstVisiblePosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
                 Toast.makeText(getApplicationContext(), "Card deleted", Toast.LENGTH_LONG).show();
             }
         });
@@ -409,6 +438,7 @@ public class ManageFlashcardsActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // filter recycler view when query submitted
+                lastFirstVisiblePosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
                 (ManageFlashcardsActivity.this).adapter.getFilter().filter(query);
                 return false;
             }

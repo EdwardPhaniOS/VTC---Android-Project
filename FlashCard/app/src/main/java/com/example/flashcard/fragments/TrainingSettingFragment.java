@@ -195,7 +195,7 @@ public class TrainingSettingFragment extends Fragment {
             public void onClick(View v) {
                 new AlertDialog.Builder(getContext())
                         .setTitle("Delete confirmation")
-                        .setMessage("Do you really want to delete" + getActivity().getIntent().getStringExtra(ConstantVariable.DECK_NAME) +" deck?")
+                        .setMessage("Do you really want to delete deck \'" + getActivity().getIntent().getStringExtra(ConstantVariable.DECK_NAME) +"\' ?")
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
